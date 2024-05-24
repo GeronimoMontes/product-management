@@ -5,6 +5,8 @@ import { CommonModule } from "@angular/common";
 import { ReactiveFormsModule } from "@angular/forms";
 import { ThemeModule } from "../../@theme/theme.module";
 import { TableProductComponent } from "./table-product/table-product.component";
+import { ViewProductComponent } from "./view-product/view-product.component";
+import { FormProductComponent } from "./form-product/form-product.component";
 
 @NgModule({
   imports: [
@@ -16,6 +18,8 @@ import { TableProductComponent } from "./table-product/table-product.component";
   declarations: [
     ProductComponent,
     TableProductComponent,
+    ViewProductComponent,
+    FormProductComponent,
   ],
 })
 export class ProductModule { }
