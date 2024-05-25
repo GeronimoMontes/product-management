@@ -1,16 +1,23 @@
-<!-- <div class="header-container">
-  <div class="logo-container ">
-    <a (click)="toggleSidebar()" href="#" class="sidebar-toggle text-white">
-    </a>
+  <!-- Header -->
+  <header class="bg-white border-b border-gray-200 py-4 top-0 w-full fixed flex justify-between items-center px-4">
+    <div>
+        <h1 class="text-2xl font-bold text-gray-800">Mi Sitio Web</h1>
+    </div>
+    <!-- Botón del sidebar -->
+    <button id="sidebarCollapse" class="text-gray-700 focus:outline-none lg:hidden" (click)="toggleSidebar()">
+        <svg class="w-6 h-6" fill="none" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+            viewBox="0 0 24 24" stroke="currentColor">
+            <path d="M4 6h16M4 12h16M4 18h16"></path>
+        </svg>
+    </button>
+</header>
 
-    <a class="logo" href="#" (click)="navigateHome()">
-      <img class="mr-2" src="./assets/favicon.png" alt="" height="60">
-      <strong class="h1 text-white">AUTH</strong>
-    </a>
-  </div>
+<!-- Sidebar -->
+<div id="sidebar" class="bg-white overflow-y-auto active:">
+    <ul>
+        <li><a href="#" class="block">Inicio</a></li>
+        <li><a href="#" class="block">Acerca</a></li>
+        <li><a href="#" class="block">Servicios</a></li>
+        <li><a href="#" class="block">Contacto</a></li>
+    </ul>
 </div>
-
-<div class="header-container">
-</div> -->
-
-<h1>component header</h1>

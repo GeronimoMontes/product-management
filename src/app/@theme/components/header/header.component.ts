@@ -20,6 +20,7 @@ export class HeaderComponent implements OnInit, OnDestroy {
   }
 
   toggleSidebar(): boolean {
+    // const a = document.getElementById('sidebar').classList.toggle('active');
     return false;
   }
 
@@ -27,7 +28,7 @@ export class HeaderComponent implements OnInit, OnDestroy {
     // this.menuService.navigateHome();
     return false;
   }
-  
+
   logOut() {
     // this.authService.logOut$();
     return false;
