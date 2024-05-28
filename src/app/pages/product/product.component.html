@@ -1,11 +1,21 @@
-<!-- Header -->
-<app-header />
+<div class="flex h-screen">
+  <!-- Sidebar -->
+  <div class="w-44 bg-gray-800 text-gray-100">
+    <app-sidebar />
+  </div>
 
-<!-- Contenido principal -->
-<div class="container mx-auto px-4 py-8 h-fit">
-  <h2 class="text-xl font-semibold mb-4">Contenido principal</h2>
-<router-outlet />
+  <!-- Contenedor principal -->
+  <div class="container py-10 h-100 overflow-hidden">
+    <!-- Header -->/
+    <app-header />
+
+    <!-- Contenido principal -->
+    <main class="container mx-auto px-4 py-8 h-90 overflow-y-clip">
+      <!-- Contenido de la sección principal -->
+      <router-outlet />
+    </main>
+
+    <!-- Footer -->
+    <app-footer />
+  </div>
 </div>
-
-<!-- Footer -->
-<app-footer />

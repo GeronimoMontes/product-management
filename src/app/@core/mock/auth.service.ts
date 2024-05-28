@@ -36,14 +36,16 @@ export class AuthService extends HeaderOption {
   }
 
   logOut$(): void {
-    this.httpClient
-      .delete<any>(`auth/sign-out`, this.getOptions())
-      .subscribe((response) => {
-        if (response.response)
-          // TODO: unset token localstorage
-
-          this.router.navigateByUrl('/auth/login');
-      });
+    //  TODO: Add rout `auth/sign-out` in backend
+    this.tokenService.clear()
+    this.router.navigateByUrl('/auth/login');
+    // this.httpClient
+    //   .delete<any>(`auth/sign-out`, this.getOptions())
+    //   .subscribe((response) => {
+    //     if (response.response)
+    //       this.tokenService.clear()
+    //       this.router.navigateByUrl('/auth/login');
+    //   });
   }
 
   /**
@@ -58,5 +60,10 @@ export class AuthService extends HeaderOption {
    */
   get tokenStorage(): Observable<TokenStorage> {
     return new Observable((obs) => obs.next(this.tokenService.get()));
+  }
+
+  // FIXME:
+  get tokenString(): TokenStorage {
+    return this.tokenService.get();
   }
 }

@@ -1,0 +1,21 @@
+<div class="p-4">
+  <!-- Contenido del sidebar -->
+  <h2 class="text-lg font-semibold mb-4">Sidebar</h2>
+  <ul>
+    <li class="py-1 flex items-center" (click)="navigateHome()">
+      <i class="fas fa-home mr-2"></i>
+      Home
+    </li>
+    <li class="py-1 flex items-center">
+      <i class="fas fa-user mr-2"></i>
+      Profile
+    </li>
+    <!-- Agrega más elementos según sea necesario -->
+  </ul>
+  <div class="absolute bottom-0 left-0 w-fit p-4" (click)="logOut();">
+    <div class="py-1 flex items-center align-bottom.">
+        <i class="fas fa-sign-out-alt mr-2"></i>
+        Logout
+      </div>
+  </div>
+</div>

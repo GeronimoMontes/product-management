@@ -5,7 +5,7 @@ import { filter, map, takeUntil } from 'rxjs/operators';
 @Component({
   selector: 'app-header',
   templateUrl: './header.component.html',
-  styleUrls: ['./header.component.scss'],
+  styleUrls: ['./header.component.css'],
 })
 export class HeaderComponent implements OnInit, OnDestroy {
   private destroy$: Subject<void> = new Subject<void>();
@@ -17,20 +17,5 @@ export class HeaderComponent implements OnInit, OnDestroy {
   ngOnDestroy() {
     this.destroy$.next();
     this.destroy$.complete();
-  }
-
-  toggleSidebar(): boolean {
-    // const a = document.getElementById('sidebar').classList.toggle('active');
-    return false;
-  }
-
-  navigateHome() {
-    // this.menuService.navigateHome();
-    return false;
-  }
-
-  logOut() {
-    // this.authService.logOut$();
-    return false;
   }
 }

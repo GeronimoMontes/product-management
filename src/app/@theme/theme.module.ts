@@ -3,8 +3,7 @@ import { CommonModule } from '@angular/common';
 
 import { RouterModule } from '@angular/router';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
-import { HeaderComponent } from './components';
-import { FooterComponent } from './components/footer/footer.component';
+import { FooterComponent, HeaderComponent, SidebarComponent } from './components';
 
 const NB_MODULES: any[] = [
 	ReactiveFormsModule,
@@ -15,6 +14,7 @@ const NB_MODULES: any[] = [
 const COMPONENTS: any[] = [
 	HeaderComponent,
 	FooterComponent,
+	SidebarComponent,
 ];
 
 const PIPES: any[] = [];

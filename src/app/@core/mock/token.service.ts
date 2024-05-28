@@ -18,5 +18,8 @@ export class TokenStoreService {
     const token = localStorage.getItem(this.keyStorage);
     return token;
   }
-  public clear(): void {}
+  
+  public clear(): void {
+    localStorage.clear();
+  }
 }
