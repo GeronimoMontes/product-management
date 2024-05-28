@@ -1,11 +1,11 @@
 import { NgModule, ModuleWithProviders } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { ProductoService } from './producto.service';
+import { ProductService } from './producto.service';
 import { UserProviderService } from './UserProvider.service';
 import { HttpClientModule } from '@angular/common/http';
 
 const SERVICES = [
-  ProductoService,
+  ProductService,
   UserProviderService,
 ];
 

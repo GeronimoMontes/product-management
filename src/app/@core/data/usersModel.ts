@@ -6,7 +6,7 @@ export interface IUser {
   ruta_imagen: string;
 }
 
-export abstract class UserData extends HeaderOption {
-  abstract getUser$(): Observable<IUser>;
+export abstract class UserData {
+  abstract getUser$(): Observable<boolean>;
   abstract logOut$(): void;
 }

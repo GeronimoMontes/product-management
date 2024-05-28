@@ -3,9 +3,9 @@ import { HeaderOption } from './headerOptions';
 
 export interface IProduct {
   _id: number;
-  nombre: string;
-  descripcion: string;
-  precio: number;
+  name: string; 
+  description: string; 
+  price: number; 
 }
 
 export abstract class ProductData extends HeaderOption {

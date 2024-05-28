@@ -1,6 +1,5 @@
 import { CommonModule } from '@angular/common';
 import { throwIfAlreadyLoaded } from './module-import-guard';
-import { ProductoService } from './mock/producto.service';
 import { MockDataModule } from './mock/mock-data.module';
 import {
   ModuleWithProviders,
@@ -8,53 +7,43 @@ import {
   Optional,
   SkipSelf,
 } from '@angular/core';
-import {
-  AnalyticsService,
-  LayoutService,
-  PlayerService,
-  SeoService,
-  StateService,
-} from './utils';
-import { environment } from '../../environments/environment';
-import { PublicData } from './data/publicModel';
-import { PublicProviderService } from './mock/PublicProvider.service';
-import { RolProviderService } from './mock/rolProvider.service';
 import { AuthGuard } from './guards/authGuard.guard';
+import { HTTP_INTERCEPTORS } from '@angular/common/http';
+import {
+  AuthInterceptorService,
+  ErrorInterceptorService,
+  URLInterceptorService,
+} from './http';
+import { ProductData } from './data/productoModel';
+import { ProductService } from './mock/producto.service';
 
-const GUARDS = [
-  AuthGuard,
-];
+const GUARDS = [AuthGuard];
 
-const DATA_SERVICES = [
-  { provide: ProductoData, useClass: ProductoService },
-  { provide: PublicData, useClass: PublicProviderService },
-];
+const DATA_SERVICES: any = [{ provide: ProductData, useClass: ProductService }];
 
-const formSetting: any = {
-  redirectDelay: 500,
-  strategy: 'email',
-  remember: true,
-  showMessages: {
-    success: true,
-    error: true,
+const INTERCEPTORES = [
+  { provide: HTTP_INTERCEPTORS, useClass: URLInterceptorService, multi: true },
+  {
+    provide: HTTP_INTERCEPTORS,
+    useClass: ErrorInterceptorService,
+    multi: true,
   },
-};
+  { provide: HTTP_INTERCEPTORS, useClass: AuthInterceptorService, multi: true },
+];
+
+const providersArray = MockDataModule.forRoot().providers;
+const providers = providersArray !== undefined ? [...providersArray] : [];
 
 export const NB_CORE_PROVIDERS = [
-  ...MockDataModule.forRoot().providers,
+  providers,
+  ...INTERCEPTORES,
   ...GUARDS,
   ...DATA_SERVICES,
-
-  AnalyticsService,
-  LayoutService,
-  PlayerService,
-  SeoService,
-  StateService,
 ];
 
 @NgModule({
   imports: [CommonModule],
-  exports: [NbAuthModule],
+  exports: [],
   declarations: [],
 })
 export class CoreModule {
