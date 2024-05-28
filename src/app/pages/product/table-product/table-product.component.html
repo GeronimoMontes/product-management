@@ -1,26 +1,18 @@
 <table class="w-full border-collapse border border-gray-300">
-    <thead>
-        <tr>
-            <th class="py-2 px-4 bg-gray-200 border border-gray-300">Nombre</th>
-            <th class="py-2 px-4 bg-gray-200 border border-gray-300">Descripción</th>
-            <th class="py-2 px-4 bg-gray-200 border border-gray-300">Precio</th>
-        </tr>
-    </thead>
-    <tbody>
-        <tr>
-            <td class="py-2 px-4 border border-gray-300">Producto 1</td>
-            <td class="py-2 px-4 border border-gray-300">Descripción del producto 1</td>
-            <td class="py-2 px-4 border border-gray-300">$100</td>
-        </tr>
-        <tr>
-            <td class="py-2 px-4 border border-gray-300">Producto 2</td>
-            <td class="py-2 px-4 border border-gray-300">Descripción del producto 2</td>
-            <td class="py-2 px-4 border border-gray-300">$150</td>
-        </tr>
-        <tr>
-            <td class="py-2 px-4 border border-gray-300">Producto 3</td>
-            <td class="py-2 px-4 border border-gray-300">Descripción del producto 3</td>
-            <td class="py-2 px-4 border border-gray-300">$200</td>
-        </tr>
-    </tbody>
+  <thead>
+    <tr>
+      <th class="py-2 px-4 bg-gray-200 border border-gray-300">Nombre</th>
+      <th class="py-2 px-4 bg-gray-200 border border-gray-300">Descripción</th>
+      <th class="py-2 px-4 bg-gray-200 border border-gray-300">Precio</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr *ngFor="let product of products">
+      <td class="py-2 px-4 border border-gray-300">{{ product.name }}</td>
+      <td class="py-2 px-4 border border-gray-300">
+        {{ product.description }}
+      </td>
+      <td class="py-2 px-4 border border-gray-300">{{ product.price }}</td>
+    </tr>
+  </tbody>
 </table>
