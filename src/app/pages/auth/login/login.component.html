@@ -5,7 +5,7 @@
       <!-- Icono de usuario -->
       <!-- <h2 class="text-2xl font-semibold">Iniciar sesión</h2> -->
     </div>
-    <form>
+    <form [formGroup]="formGroup" (submit)="formSubmit()">
       <div class="mb-4">
         <label for="username" class="block text-gray-700 text-sm font-bold mb-2"
           >Nombre de usuario</label
@@ -14,8 +14,10 @@
           type="text"
           id="username"
           name="username"
-          class="border border-gray-300 rounded-xl w-full px-3 py-2 focus:outline-none focus:border-blue-500"
+          formControlName="username"
+          class="border rounded-xl w-full px-3 py-2 focus:outline-none focus:border-blue-500"
           placeholder="Nombre de usuario"
+          [ngClass]="validatorInput('username')"
         />
       </div>
       <div class="mb-6">
@@ -26,6 +28,7 @@
           type="password"
           id="password"
           name="password"
+          formControlName="password"
           class="border border-gray-300 rounded-xl w-full px-3 py-2 focus:outline-none focus:border-blue-500"
           placeholder="Contraseña"
         />
