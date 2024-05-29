@@ -1,28 +1,41 @@
 import { Injectable } from '@angular/core';
-import { Observable, map } from 'rxjs';
+import { Observable } from 'rxjs';
 import { IProduct, ProductData } from '../data/productoModel';
 import { HttpClient } from '@angular/common/http';
 
 @Injectable()
 export class ProductService extends ProductData {
+  private readonly apiUrl = 'products'; // You can replace 'products' with your actual API endpoint
+
   constructor(protected httpClient: HttpClient) {
     super(httpClient);
   }
 
+  // GET /products
   getAllProducts$(): Observable<IProduct[]> {
-    const url = `products`;
-    return this.httpClient.get<IProduct[]>(url);
+    return this.httpClient.get<IProduct[]>(this.apiUrl);
   }
+
+  // GET /products/:id
   getProduct$(id: number): Observable<IProduct> {
-    return new Observable((obs) => obs.next());
+    const url = `${this.apiUrl}/${id}`;
+    return this.httpClient.get<IProduct>(url);
   }
-  createProduct$(id: number, product: IProduct): Observable<IProduct> {
-    return new Observable((obs) => obs.next());
+
+  // POST /products
+  createProduct$(product: IProduct): Observable<IProduct> {
+    return this.httpClient.post<IProduct>(this.apiUrl, product);
   }
-  deleteProduct$(id: number, product: IProduct): Observable<any> {
-    return new Observable((obs) => obs.next());
+
+  // PATCH /products/:id
+  updateProduct$(id: number, product: Partial<IProduct>): Observable<IProduct> {
+    const url = `${this.apiUrl}/${id}`;
+    return this.httpClient.patch<IProduct>(url, product);
   }
-  updateProduct$(id: number, product: IProduct): Observable<any> {
-    return new Observable((obs) => obs.next());
+
+  // DELETE /products/:id
+  deleteProduct$(id: number): Observable<any> {
+    const url = `${this.apiUrl}/${id}`;
+    return this.httpClient.delete<any>(url);
   }
 }

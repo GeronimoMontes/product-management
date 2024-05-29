@@ -11,7 +11,7 @@ export interface IProduct {
 export abstract class ProductData extends HeaderOption {
   abstract getAllProducts$(): Observable<IProduct[]>;
   abstract getProduct$(id: number): Observable<IProduct>;
-  abstract createProduct$(id: number, product: IProduct): Observable<IProduct>;
+  abstract createProduct$(product: IProduct): Observable<IProduct>;
   abstract deleteProduct$(id: number, product: IProduct): Observable<any>;
   abstract updateProduct$(id: number, product: IProduct): Observable<any>;
 }

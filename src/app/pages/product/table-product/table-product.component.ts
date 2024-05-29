@@ -16,11 +16,7 @@ export class TableProductComponent implements OnInit, OnDestroy {
   ) {}
 
   ngOnInit() {
-    this.productService.getAllProducts$().subscribe((data: IProduct[]) => {
-      this.loadingData = !this.loadingData;
-      this.products = data;
-      this.loadingData = !this.loadingData;
-    });
+    this.fetchData();
   }
 
   ngOnDestroy() {
@@ -28,11 +24,21 @@ export class TableProductComponent implements OnInit, OnDestroy {
     this.destroy$.complete();
   }
 
+  private fetchData(){
+    this.loadingData = !this.loadingData;
+    this.productService.getAllProducts$().subscribe((data: IProduct[]) => {
+      this.products = data;
+      this.loadingData = !this.loadingData;
+    });
+  }
+
+
   public showModal(product: IProduct) {
     const modal$ = this.modalService.openModal(FormProductComponent, product);
 
     modal$.subscribe((result) => {
       console.log('Modal closed with result:', result);
+      this.fetchData();
     });
   }
 

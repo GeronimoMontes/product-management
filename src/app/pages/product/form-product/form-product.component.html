@@ -10,18 +10,19 @@
             </svg>
           </button>
             <h2 class="text-xl font-semibold mb-4">Registro de Producto</h2>
-            <form>
+            <form [formGroup]="formGroup" (submit)="formSubmit();">
+              <input type="hidden" formControlName="_id" id="_id" name="_id">
                 <div class="mb-4">
                     <label for="name" class="block text-gray-700 font-medium mb-1">Nombre:</label>
-                    <input type="text" [value]=" data?.name" id="name" name="name" class="w-full px-3 py-2 border rounded-md border-gray-300 focus:outline-none focus:border-blue-500" placeholder="Nombre del producto">
+                    <input type="text" formControlName="name" id="name" name="name" class="w-full px-3 py-2 border rounded-md border-gray-300 focus:outline-none focus:border-blue-500" placeholder="Nombre del producto">
                 </div>
                 <div class="mb-4">
                     <label for="description" class="block text-gray-700 font-medium mb-1">Descripción:</label>
-                    <textarea [value]=" data?.description" id="description" name="description" class="w-full px-3 py-2 border rounded-md border-gray-300 focus:outline-none focus:border-blue-500" placeholder="Descripción del producto"></textarea>
+                    <textarea formControlName="description" id="description" name="description" class="w-full px-3 py-2 border rounded-md border-gray-300 focus:outline-none focus:border-blue-500" placeholder="Descripción del producto"></textarea>
                 </div>
                 <div class="mb-4">
                     <label for="price" class="block text-gray-700 font-medium mb-1">Precio:</label>
-                    <input type="text" [value]=" data?.price" id="price" name="price" class="w-full px-3 py-2 border rounded-md border-gray-300 focus:outline-none focus:border-blue-500" placeholder="Precio del producto">
+                    <input type="text" formControlName="price" id="price" name="price" class="w-full px-3 py-2 border rounded-md border-gray-300 focus:outline-none focus:border-blue-500" placeholder="Precio del producto">
                 </div>
                 <div class="flex justify-end">
                     <button type="submit" class="px-4 py-2 bg-blue-500 text-white rounded-md hover:bg-blue-600 focus:outline-none focus:bg-blue-600">Registrar Producto</button>
