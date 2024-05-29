@@ -6,7 +6,7 @@ export interface IProduct {
   name: string; 
   description: string; 
   price: number; 
-}
+} 
 
 export abstract class ProductData extends HeaderOption {
   abstract getAllProducts$(): Observable<IProduct[]>;

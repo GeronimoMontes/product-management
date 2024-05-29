@@ -11,7 +11,7 @@ import { AuthService } from '../mock/auth.service';
 /**
  * Rutas que no requieren autorizacion `Bearer Token`
  */
-const AUTH_BEARER_REQUIRE: string[] = ['auth/login', `products`];
+const AUTH_BEARER_REQUIRE: string[] = ['auth/login'];
 
 const BODY_FORM_DATA: string[] = [];
 
@@ -39,7 +39,7 @@ export class AuthInterceptorService implements HttpInterceptor {
     if (!AUTH_BEARER_REQUIRE.includes(URL)) {
       if (this.authService.authenticate) {
         req = req.clone({
-          setHeaders: { Authorization: `Bearer ${this.authService.token}` },
+          setHeaders: { Authorization: `Bearer ${this.authService.tokenString}` },
         });
       }
     }

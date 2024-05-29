@@ -1,6 +1,8 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { Observable, Subject } from 'rxjs';
 import { IProduct, ProductData } from '../../../@core/data/productoModel';
+import { ModalService } from '../../../@core/root/modal.service';
+import { FormProductComponent } from '../form-product/form-product.component';
 
 @Component({
   selector: 'app-table-products',
@@ -8,7 +10,10 @@ import { IProduct, ProductData } from '../../../@core/data/productoModel';
   styleUrls: ['./table-product.component.css'],
 })
 export class TableProductComponent implements OnInit, OnDestroy {
-  constructor(protected readonly productService: ProductData) {}
+  constructor(
+    protected readonly productService: ProductData,
+    protected readonly modalService: ModalService
+  ) {}
 
   ngOnInit() {
     this.productService.getAllProducts$().subscribe((data: IProduct[]) => {
@@ -21,6 +26,14 @@ export class TableProductComponent implements OnInit, OnDestroy {
   ngOnDestroy() {
     this.destroy$.next();
     this.destroy$.complete();
+  }
+
+  public showModal(product: IProduct) {
+    const modal$ = this.modalService.openModal(FormProductComponent, product);
+
+    modal$.subscribe((result) => {
+      console.log('Modal closed with result:', result);
+    });
   }
 
   get loading$(): Observable<boolean> {
