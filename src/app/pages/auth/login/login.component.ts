@@ -1,5 +1,5 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
-import { AuthService } from '../../../@core/mock/auth.service';
+import { AuthService } from '../../../@core/root/auth.service';
 import {
   FormBuilder,
   FormControl,

@@ -6,7 +6,7 @@ import { HttpHandler } from '@angular/common/http';
 import { HttpRequest } from '@angular/common/http';
 import { HttpInterceptor } from '@angular/common/http';
 import { environment } from '../../../environments/environment';
-import { AuthService } from '../mock/auth.service';
+import { AuthService } from '../root/auth.service';
 
 /**
  * Rutas que no requieren autorizacion `Bearer Token`

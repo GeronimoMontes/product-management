@@ -1,7 +1,7 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { Subject } from 'rxjs';
-import { AuthService } from '../../../@core/mock/auth.service';
+import { AuthService } from '../../../@core/root/auth.service';
 
 @Component({
   selector: 'app-sidebar',

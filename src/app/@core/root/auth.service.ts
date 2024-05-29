@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { TokenStorage, TokenStoreService } from './token.service';
+import { TokenStorage, TokenStoreService } from '../mock/token.service';
 import { Observable, map } from 'rxjs';
 import { HttpClient } from '@angular/common/http';
 import { HeaderOption } from '../data/headerOptions';
