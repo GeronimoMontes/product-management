@@ -23,7 +23,7 @@ export class ProductService extends ProductData {
   }
 
   // POST /products
-  createProduct$(product: IProduct): Observable<IProduct> {
+  createProduct$(product: Partial<IProduct>): Observable<IProduct> {
     return this.httpClient.post<IProduct>(this.apiUrl, product);
   }
 

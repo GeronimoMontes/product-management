@@ -4,6 +4,18 @@ import { ModalService } from '../../../@core/root/modal.service';
 import { Subject } from 'rxjs';
 import { FormBuilder, FormControl, FormGroup } from '@angular/forms';
 import { ProductService } from '../../../@core/mock/producto.service';
+import { IProduct } from '../../../@core/data/productoModel';
+
+export enum FormProductAction {
+  ADD = 'Agregar',
+  UPDATE = 'Modificar',
+  VIEW = 'View',
+}
+
+export interface FormProductData {
+  action: FormProductAction;
+  product: IProduct | undefined;
+}
 
 @Component({
   selector: 'app-form-product',
@@ -11,8 +23,6 @@ import { ProductService } from '../../../@core/mock/producto.service';
   styleUrls: ['./form-product.component.css'],
 })
 export class FormProductComponent implements OnInit {
-  @Input() data: any;
-
   constructor(
     private el: ElementRef,
     private modalService: ModalService,
@@ -45,13 +55,13 @@ export class FormProductComponent implements OnInit {
   closeModal() {
     this.modalService.closeModal();
   }
-  
+
   private initForm() {
     this.formGroup = this.formBuilder.group({
-      _id: new FormControl(this.data._id, []),
-      name: new FormControl(this.data.name, []),
-      description: new FormControl(this.data.description, []),
-      price: new FormControl(this.data.price, []),
+      _id: new FormControl(this.data?.product?._id, []),
+      name: new FormControl(this.data?.product?.name, []),
+      description: new FormControl(this.data?.product?.description, []),
+      price: new FormControl(this.data?.product?.price, []),
     });
   }
 
@@ -59,13 +69,31 @@ export class FormProductComponent implements OnInit {
     this.loadingData = !this.loadingData;
     const { _id, name, description, price } = this.formGroup.value;
 
-    this.productService
-      .updateProduct$(_id, { name, description, price })
-      .subscribe((response) => {
-        console.log('Exito', { response });
-        this.loadingData = !this.loadingData;
-        this.closeModal();
-      });
+    if (this.data?.action === FormProductAction.UPDATE) {
+      this.productService
+        .updateProduct$(_id, {
+          name,
+          description,
+          price,
+        })
+        .subscribe((response) => {
+          console.log('Exito', { response });
+          this.loadingData = !this.loadingData;
+          this.closeModal();
+        });
+    } else if (this.data?.action === FormProductAction.ADD) {
+      this.productService
+        .createProduct$({
+          name,
+          description,
+          price,
+        })
+        .subscribe((response) => {
+          console.log('Exito', { response });
+          this.loadingData = !this.loadingData;
+          this.closeModal();
+        });
+    }
   }
 
   /**
@@ -106,4 +134,5 @@ export class FormProductComponent implements OnInit {
   private destroy$: Subject<void> = new Subject<void>();
   public loadingData: boolean = false;
   public formGroup: any;
+  @Input() data!: FormProductData;
 }
