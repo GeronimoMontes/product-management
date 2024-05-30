@@ -32,7 +32,6 @@ export class FormProductComponent implements OnInit {
   constructor(
     private el: ElementRef,
     private modalService: ModalService,
-    @Inject(DOCUMENT) private document: Document,
     protected formBuilder: FormBuilder,
     protected readonly productService: ProductService,
     protected readonly notificationService: NotificationService
@@ -41,13 +40,9 @@ export class FormProductComponent implements OnInit {
   ngOnInit() {
     console.log({ data: this.data });
     this.initForm();
-    // Agrega un evento de clic en el documento para cerrar el modal al hacer clic fuera
-    this.document.addEventListener('click', this.onDocumentClick.bind(this));
   }
 
   ngOnDestroy() {
-    // Limpia el evento de clic del documento
-    this.document.removeEventListener('click', this.onDocumentClick.bind(this));
     this.destroy$.next();
     this.destroy$.complete();
   }
