@@ -2,7 +2,12 @@ import { Component, ElementRef, Inject, Input, OnInit } from '@angular/core';
 import { DOCUMENT } from '@angular/common';
 import { ModalService } from '../../../@core/root/modal.service';
 import { Subject } from 'rxjs';
-import { FormBuilder, FormControl, FormGroup } from '@angular/forms';
+import {
+  FormBuilder,
+  FormControl,
+  FormGroup,
+  Validators,
+} from '@angular/forms';
 import { ProductService } from '../../../@core/mock/producto.service';
 import { IProduct } from '../../../@core/data/productoModel';
 import { NotificationService } from '../../../@theme/components/notification/notification.service';
@@ -61,9 +66,18 @@ export class FormProductComponent implements OnInit {
   private initForm() {
     this.formGroup = this.formBuilder.group({
       _id: new FormControl(this.data?.product?._id, []),
-      name: new FormControl(this.data?.product?.name, []),
-      description: new FormControl(this.data?.product?.description, []),
-      price: new FormControl(this.data?.product?.price, []),
+      name: new FormControl(this.data?.product?.name, [
+        Validators.required,
+        Validators.maxLength(300),
+      ]),
+      description: new FormControl(this.data?.product?.description, [
+        Validators.required,
+        Validators.maxLength(300),
+      ]),
+      price: new FormControl(this.data?.product?.price, [
+        Validators.required,
+        Validators.pattern(/^([0-9]*[.])?[0-9]+$/),
+      ]),
     });
   }
 
@@ -108,12 +122,7 @@ export class FormProductComponent implements OnInit {
     }
   }
 
-  /**
-   * @description Obtiene el mensaje de error con respecto a la validacion violada
-   * @param controlName
-   * @returns
-   */
-  public getError(controlName: string, form: FormGroup): string {
+  public getError(controlName: string): string {
     // para lanzar el validador necesitamos levantar las bandreas dirty y touched
     this.formGroup.get(controlName).markAsDirty();
     this.formGroup.get(controlName).markAsTouched();
@@ -121,26 +130,18 @@ export class FormProductComponent implements OnInit {
 
     if (control.touched && control.errors != null)
       return control.errors.required
-        ? `Campo obligatorio.`
-        : control.errors.pattern && controlName === 'email'
-        ? `EL formato no corresponde a un correo válido.`
+        ? `${controlName} field is required.`
+        : control.errors.pattern && controlName === 'price'
+        ? `Ingrese solo numeros positivos.`
         : control.errors.pattern && controlName === 'password'
         ? `Mínimo 8 caracteres con sibomolos, mayúsculas, minúsculas y numeros.`
         : '';
     return '';
   }
 
-  /**
-   * @description Valida si la informacion del input y retorna un estatus.
-   * @param controlName
-   * @param form
-   * @returns <NbComponentStatus>
-   */
-  public validatorInput(controlName: string) {
-    const control = this.formGroup.get(controlName);
-    return !control.valid && control.dirty && control.touched
-      ? 'border-red-600'
-      : 'border-gray-300';
+  public controlValid(controlName: string, form: any): boolean {
+    const control = form.get(controlName);
+    return control.dirty && control.touched && control.valid;
   }
 
   private destroy$: Subject<void> = new Subject<void>();
