@@ -5,6 +5,7 @@ import { Subject } from 'rxjs';
 import { FormBuilder, FormControl, FormGroup } from '@angular/forms';
 import { ProductService } from '../../../@core/mock/producto.service';
 import { IProduct } from '../../../@core/data/productoModel';
+import { NotificationService } from '../../../@theme/components/notification/notification.service';
 
 export enum FormProductAction {
   ADD = 'Agregar',
@@ -28,7 +29,8 @@ export class FormProductComponent implements OnInit {
     private modalService: ModalService,
     @Inject(DOCUMENT) private document: Document,
     protected formBuilder: FormBuilder,
-    protected readonly productService: ProductService
+    protected readonly productService: ProductService,
+    protected readonly notificationService: NotificationService
   ) {}
 
   ngOnInit() {
@@ -76,8 +78,13 @@ export class FormProductComponent implements OnInit {
           description,
           price,
         })
-        .subscribe((response) => {
-          console.log('Exito', { response });
+        .subscribe((updateProduct: IProduct) => {
+          this.notificationService.showNotification({
+            type: 'success',
+            title: 'Producto actualizado',
+            message: `El producto ${updateProduct.name} se ha actualizado de forma correcta.`,
+            duration: 50000,
+          });
           this.loadingData = !this.loadingData;
           this.closeModal();
         });
@@ -88,8 +95,13 @@ export class FormProductComponent implements OnInit {
           description,
           price,
         })
-        .subscribe((response) => {
-          console.log('Exito', { response });
+        .subscribe((createProduct: IProduct) => {
+          this.notificationService.showNotification({
+            type: 'success',
+            title: 'Producto Creado',
+            message: `El producto ${createProduct.name} se ha creado de forma correcta.`,
+            duration: 50000,
+          });
           this.loadingData = !this.loadingData;
           this.closeModal();
         });

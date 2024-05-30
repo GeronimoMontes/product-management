@@ -16,12 +16,13 @@
     </tr>
   </thead>
   <tbody>
-    <tr *ngFor="let product of products">
-      <td class="py-2 px-4 border border-gray-300">{{ product.name }}</td>
-      <td class="py-2 px-4 border border-gray-300">
+    <tr *ngFor="let product of products"  class="cursor-pointer  hover:bg-slate-300 text-xl">
+      <!-- FIXME: Click event row no deja funcionar al event click of column acctions -->
+      <td (click)="showModal(product)" class="py-2 px-4 border border-gray-300">{{ product.name }}</td>
+      <td (click)="showModal(product)" class="py-2 px-4 border border-gray-300">
         {{ product.description }}
       </td>
-      <td class="py-2 px-4 border border-gray-300">
+      <td (click)="showModal(product)" class="py-2 px-4 border border-gray-300">
         {{ product.price | currency : "MXN" : "symbol" }}
       </td>
       <td class="py-2 px-4 border border-gray-300 text-center">
