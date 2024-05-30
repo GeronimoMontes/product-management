@@ -10,6 +10,7 @@ import {
   HttpRequest,
   HttpInterceptor,
 } from '@angular/common/http';
+import { NotificationService } from '../../@theme/components/notification/notification.service';
 
 /**
  * Handdler Error de las peticiones a la api
@@ -19,22 +20,28 @@ import {
  */
 @Injectable()
 export class ErrorInterceptorService implements HttpInterceptor {
-  constructor() {}
+  constructor(private readonly notificationService: NotificationService) {}
 
   intercept(
     req: HttpRequest<any>,
     next: HttpHandler
   ): Observable<HttpEvent<any>> {
     return next.handle(req).pipe(
-      map((event: HttpEvent<any>) => {
-        if (event instanceof HttpResponse) {
-          console.log(`${event.statusText} ${event.status} ${event.url}`);
-        }
-        return event;
-      }),
+      // map((event: HttpEvent<any>) => {
+      //   if (event instanceof HttpResponse) {
+      //     console.log(`${event.statusText} ${event.status} ${event.url}`);
+      //   }
+      //   return event;
+      // }),
       catchError((error: HttpErrorResponse) => {
-        console.log(error);
-        return throwError(`PETICION HTTP: ${error.message}`);
+        console.log({error});
+        this.notificationService.showNotification({
+          title: `${error.error.status} Error`,
+          type: 'error',
+          message: `${error.error.error} \n ${error.url}`,
+          duration: 5000,
+        });
+        throw error;
       })
     );
   }

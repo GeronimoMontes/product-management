@@ -15,10 +15,12 @@
           id="username"
           name="username"
           formControlName="username"
-          class="border rounded-xl w-full px-3 py-2 focus:outline-none focus:border-blue-500"
+          class="border rounded-xl w-full px-3 py-2 focus:border-blue-500 border-gray-300 focus:outline-none"
           placeholder="Nombre de usuario"
-          [ngClass]="validatorInput('username')"
         />
+        <div *ngIf="formGroup.controls.username.dirty &&  formGroup.controls.username.invalid" class="text-red-500 text-sm mt-1">
+          <div>{{ getError("username") }}</div>
+        </div>
       </div>
       <div class="mb-6">
         <label for="password" class="block text-gray-700 text-sm font-bold mb-2"

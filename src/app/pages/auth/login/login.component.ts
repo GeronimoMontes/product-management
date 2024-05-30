@@ -6,7 +6,7 @@ import {
   FormGroup,
   Validators,
 } from '@angular/forms';
-import { Subject } from 'rxjs';
+import { Subject, takeUntil } from 'rxjs';
 
 @Component({
   selector: 'app-login',
@@ -30,11 +30,7 @@ export class LoginComponent implements OnInit, OnDestroy {
 
   private initForm() {
     this.formGroup = this.formBuilder.group({
-      username: new FormControl('', [
-        Validators.required,
-        Validators.minLength(5),
-        Validators.maxLength(60),
-      ]),
+      username: new FormControl('', [Validators.required]),
       password: new FormControl('', [
         Validators.required,
         //  8 letras, con al menos un símbolo, letras mayúsculas y minúsculas y un número
@@ -48,16 +44,20 @@ export class LoginComponent implements OnInit, OnDestroy {
   }
 
   public formSubmit() {
-    this.loadingData = !this.loadingData;
+    this.loadingData = true;
+
     const { username, password } = this.formGroup.value;
     const body = {
       username: username,
       password: password,
     };
-    this.authService.login$(body).subscribe(() => {
-      console.log();
-      this.loadingData = !this.loadingData;
-    });
+    this.authService
+      .login$(body)
+      .pipe(takeUntil(this.destroy$))
+      .subscribe(() => {
+        console.log('asdfasdf');
+        this.loadingData = false;
+      });
   }
 
   /**
@@ -65,7 +65,7 @@ export class LoginComponent implements OnInit, OnDestroy {
    * @param controlName
    * @returns
    */
-  public getError(controlName: string, form: FormGroup): string {
+  public getError(controlName: string): string {
     // para lanzar el validador necesitamos levantar las bandreas dirty y touched
     this.formGroup.get(controlName).markAsDirty();
     this.formGroup.get(controlName).markAsTouched();
@@ -73,7 +73,7 @@ export class LoginComponent implements OnInit, OnDestroy {
 
     if (control.touched && control.errors != null)
       return control.errors.required
-        ? `Campo obligatorio.`
+        ? `${controlName} field is required.`
         : control.errors.pattern && controlName === 'email'
         ? `EL formato no corresponde a un correo válido.`
         : control.errors.pattern && controlName === 'password'
@@ -82,17 +82,9 @@ export class LoginComponent implements OnInit, OnDestroy {
     return '';
   }
 
-  /**
-   * @description Valida si la informacion del input y retorna un estatus.
-   * @param controlName
-   * @param form
-   * @returns <NbComponentStatus>
-   */
-  public validatorInput(controlName: string) {
-    const control = this.formGroup.get(controlName);
-    return !control.valid && control.dirty && control.touched
-      ? 'border-red-600'
-      : 'border-gray-300';
+  public controlValid(controlName: string, form: any): boolean {
+    const control = form.get(controlName);
+    return control.dirty && control.touched && control.valid;
   }
 
   private destroy$: Subject<void> = new Subject<void>();
