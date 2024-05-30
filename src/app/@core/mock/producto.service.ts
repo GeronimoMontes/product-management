@@ -17,7 +17,7 @@ export class ProductService extends ProductData {
   }
 
   // GET /products/:id
-  getProduct$(id: number): Observable<IProduct> {
+  getProduct$(id: string): Observable<IProduct> {
     const url = `${this.apiUrl}/${id}`;
     return this.httpClient.get<IProduct>(url);
   }
@@ -28,13 +28,13 @@ export class ProductService extends ProductData {
   }
 
   // PATCH /products/:id
-  updateProduct$(id: number, product: Partial<IProduct>): Observable<IProduct> {
+  updateProduct$(id: string, product: Partial<IProduct>): Observable<IProduct> {
     const url = `${this.apiUrl}/${id}`;
     return this.httpClient.patch<IProduct>(url, product);
   }
 
   // DELETE /products/:id
-  deleteProduct$(id: number): Observable<any> {
+  deleteProduct$(id: string): Observable<any> {
     const url = `${this.apiUrl}/${id}`;
     return this.httpClient.delete<any>(url);
   }

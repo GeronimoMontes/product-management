@@ -7,6 +7,7 @@ import { ThemeModule } from "../../@theme/theme.module";
 import { TableProductComponent } from "./table-product/table-product.component";
 import { ViewProductComponent } from "./view-product/view-product.component";
 import { FormProductComponent } from "./form-product/form-product.component";
+import { DeleteProductComponent } from "./delete-product/delete-product.component";
 
 @NgModule({
   imports: [
@@ -19,6 +20,7 @@ import { FormProductComponent } from "./form-product/form-product.component";
     ProductComponent,
     TableProductComponent,
     ViewProductComponent,
+    DeleteProductComponent,
     FormProductComponent,
   ],
 })
