@@ -2,7 +2,12 @@ import { Component, OnDestroy, OnInit } from '@angular/core';
 import { Observable, Subject } from 'rxjs';
 import { IProduct, ProductData } from '../../../@core/data/productoModel';
 import { ModalService } from '../../../@core/root/modal.service';
-import { FormProductComponent } from '../form-product/form-product.component';
+import {
+  FormProductComponent,
+  FormProductAction,
+  FormProductData,
+} from '../form-product/form-product.component';
+import { NotificationService } from '../../../@theme/components/notification/notification.service';
 
 @Component({
   selector: 'app-table-products',
@@ -12,8 +17,36 @@ import { FormProductComponent } from '../form-product/form-product.component';
 export class TableProductComponent implements OnInit, OnDestroy {
   constructor(
     protected readonly productService: ProductData,
-    protected readonly modalService: ModalService
+    protected readonly modalService: ModalService,
+    private notificationService: NotificationService
   ) {}
+
+  showSuccessNotification() {
+    this.notificationService.showNotification({
+      type: 'alert',
+      title: 'Alert',
+      message: 'La operación se completó con éxito.',
+      duration: 50000,
+    });
+    this.notificationService.showNotification({
+      type: 'error',
+      title: 'Error',
+      message: 'La operación se completó con éxito.',
+      duration: 50000,
+    });
+    this.notificationService.showNotification({
+      type: 'info',
+      title: 'Information',
+      message: 'La operación se completó con éxito.',
+      duration: 50000,
+    });
+    this.notificationService.showNotification({
+      type: 'success',
+      title: 'Éxito',
+      message: 'La operación se completó con éxito.',
+      duration: 50000,
+    });
+  }
 
   ngOnInit() {
     this.fetchData();
@@ -24,7 +57,7 @@ export class TableProductComponent implements OnInit, OnDestroy {
     this.destroy$.complete();
   }
 
-  private fetchData(){
+  private fetchData() {
     this.loadingData = !this.loadingData;
     this.productService.getAllProducts$().subscribe((data: IProduct[]) => {
       this.products = data;
@@ -32,9 +65,12 @@ export class TableProductComponent implements OnInit, OnDestroy {
     });
   }
 
-
-  public showModal(product: IProduct) {
-    const modal$ = this.modalService.openModal(FormProductComponent, product);
+  public showModal(product?: IProduct) {
+    const data: FormProductData = {
+      action: product ? FormProductAction.UPDATE : FormProductAction.ADD,
+      product: product,
+    };
+    const modal$ = this.modalService.openModal(FormProductComponent, data);
 
     modal$.subscribe((result) => {
       console.log('Modal closed with result:', result);
