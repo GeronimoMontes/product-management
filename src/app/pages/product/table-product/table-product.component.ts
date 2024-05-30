@@ -7,7 +7,6 @@ import {
   FormProductAction,
   FormProductData,
 } from '../form-product/form-product.component';
-import { NotificationService } from '../../../@theme/components/notification/notification.service';
 
 @Component({
   selector: 'app-table-products',
@@ -18,35 +17,7 @@ export class TableProductComponent implements OnInit, OnDestroy {
   constructor(
     protected readonly productService: ProductData,
     protected readonly modalService: ModalService,
-    private notificationService: NotificationService
   ) {}
-
-  showSuccessNotification() {
-    this.notificationService.showNotification({
-      type: 'alert',
-      title: 'Alert',
-      message: 'La operación se completó con éxito.',
-      duration: 50000,
-    });
-    this.notificationService.showNotification({
-      type: 'error',
-      title: 'Error',
-      message: 'La operación se completó con éxito.',
-      duration: 50000,
-    });
-    this.notificationService.showNotification({
-      type: 'info',
-      title: 'Information',
-      message: 'La operación se completó con éxito.',
-      duration: 50000,
-    });
-    this.notificationService.showNotification({
-      type: 'success',
-      title: 'Éxito',
-      message: 'La operación se completó con éxito.',
-      duration: 50000,
-    });
-  }
 
   ngOnInit() {
     this.fetchData();
