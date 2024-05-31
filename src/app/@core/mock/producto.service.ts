@@ -38,4 +38,16 @@ export class ProductService extends ProductData {
     const url = `${this.apiUrl}/${id}`;
     return this.httpClient.delete<any>(url);
   }
+
+  productFetch$(action: ProductEventFetch, product: Partial<IProduct>) {
+    return action === 'get'
+      ? this.getAllProducts$()
+      : action === 'create'
+      ? this.createProduct$(product)
+      : action === 'update'
+      ? this.updateProduct$(<string>product._id, product)
+      : this.deleteProduct$(<string>product._id);
+  }
 }
+
+export type ProductEventFetch = 'get' | 'create' | 'update' | 'delete';

@@ -1,27 +1,10 @@
-import { Component, ElementRef, Inject, Input, OnInit } from '@angular/core';
-import { DOCUMENT } from '@angular/common';
+import { Component, ElementRef, Input, OnInit } from '@angular/core';
 import { ModalService } from '../../../@core/root/modal.service';
 import { Subject } from 'rxjs';
-import {
-  FormBuilder,
-  FormControl,
-  FormGroup,
-  Validators,
-} from '@angular/forms';
+import { FormBuilder, FormControl, Validators } from '@angular/forms';
 import { ProductService } from '../../../@core/mock/producto.service';
 import { IProduct } from '../../../@core/data/productoModel';
 import { NotificationService } from '../../../@theme/components/notification/notification.service';
-
-export enum FormProductAction {
-  ADD = 'Agregar',
-  UPDATE = 'Modificar',
-  VIEW = 'View',
-}
-
-export interface FormProductData {
-  action: FormProductAction;
-  product: IProduct | undefined;
-}
 
 @Component({
   selector: 'app-form-product',
@@ -47,6 +30,7 @@ export class FormProductComponent implements OnInit {
     this.destroy$.complete();
   }
 
+  // FIXME: Nunca funciono...
   onDocumentClick(event: MouseEvent) {
     const modalContent = this.el.nativeElement.querySelector('.relative');
     if (event.target === modalContent) {
@@ -54,22 +38,22 @@ export class FormProductComponent implements OnInit {
     }
   }
 
-  closeModal() {
-    this.modalService.closeModal();
+  closeModal(response: boolean) {
+    this.modalService.closeModal(response);
   }
 
   private initForm() {
     this.formGroup = this.formBuilder.group({
-      _id: new FormControl(this.data?.product?._id, []),
-      name: new FormControl(this.data?.product?.name, [
+      _id: new FormControl(this.data?._id, []),
+      name: new FormControl(this.data?.name, [
         Validators.required,
         Validators.maxLength(300),
       ]),
-      description: new FormControl(this.data?.product?.description, [
+      description: new FormControl(this.data?.description, [
         Validators.required,
         Validators.maxLength(300),
       ]),
-      price: new FormControl(this.data?.product?.price, [
+      price: new FormControl(this.data?.price, [
         Validators.required,
         Validators.pattern(/^([0-9]*[.])?[0-9]+$/),
       ]),
@@ -78,43 +62,22 @@ export class FormProductComponent implements OnInit {
 
   public formSubmit() {
     this.loadingData = !this.loadingData;
-    const { _id, name, description, price } = this.formGroup.value;
+    const data = this.formGroup.value;
 
-    if (this.data?.action === FormProductAction.UPDATE) {
-      this.productService
-        .updateProduct$(_id, {
-          name,
-          description,
-          price,
-        })
-        .subscribe((updateProduct: IProduct) => {
-          this.notificationService.showNotification({
-            type: 'success',
-            title: 'Producto actualizado',
-            message: `El producto ${updateProduct.name} se ha actualizado de forma correcta.`,
-            duration: 50000,
-          });
-          this.loadingData = !this.loadingData;
-          this.closeModal();
+    // REVIEW: generar metodo get promise event
+    this.productService
+      .productFetch$(this.actionClick, data)
+      .subscribe((updateProduct: IProduct) => {
+        this.notificationService.showNotification({
+          type: 'success',
+          title: 'Producto actualizado',
+          message: `El producto ${updateProduct.name} se ha actualizado de forma correcta.`,
+          duration: 50000,
         });
-    } else if (this.data?.action === FormProductAction.ADD) {
-      this.productService
-        .createProduct$({
-          name,
-          description,
-          price,
-        })
-        .subscribe((createProduct: IProduct) => {
-          this.notificationService.showNotification({
-            type: 'success',
-            title: 'Producto Creado',
-            message: `El producto ${createProduct.name} se ha creado de forma correcta.`,
-            duration: 50000,
-          });
-          this.loadingData = !this.loadingData;
-          this.closeModal();
-        });
-    }
+        this.loadingData = !this.loadingData;
+        // REVIEW: No debe retornar false
+        this.closeModal(false);
+      });
   }
 
   public getError(controlName: string): string {
@@ -139,8 +102,13 @@ export class FormProductComponent implements OnInit {
     return control.dirty && control.touched && control.valid;
   }
 
+  eventClick() {
+    console.log('click');
+  }
+
   private destroy$: Subject<void> = new Subject<void>();
   public loadingData: boolean = false;
+  public actionClick: any;
   public formGroup: any;
-  @Input() data!: FormProductData;
+  @Input() data: IProduct | undefined;
 }

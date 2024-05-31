@@ -1,15 +1,12 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
-import { Observable, Subject, takeUntil } from 'rxjs';
+import { Subject, takeUntil } from 'rxjs';
 import { IProduct, ProductData } from '../../../@core/data/productoModel';
 import { ModalService } from '../../../@core/root/modal.service';
 import {
   FormProductComponent,
-  FormProductAction,
-  FormProductData,
 } from '../form-product/form-product.component';
 import {
   DeleteProductComponent,
-  DeleteProductResponse,
 } from '../delete-product/delete-product.component';
 import { NotificationService } from '../../../@theme/components/notification/notification.service';
 
@@ -27,7 +24,6 @@ export class TableProductComponent implements OnInit, OnDestroy {
 
   ngOnInit() {
     this.fetchData();
-    
   }
   ngOnDestroy() {
     this.destroy$.next();
@@ -35,9 +31,11 @@ export class TableProductComponent implements OnInit, OnDestroy {
   }
 
   endScroll($event: any) {
-    console.log($event.target.scrollTop + $event.target.offsetHeight, $event.target.scrollHeight)
+    console.log(
+      $event.target.scrollTop + $event.target.offsetHeight,
+      $event.target.scrollHeight
+    );
   }
-
 
   private fetchData() {
     this.productService
@@ -49,12 +47,8 @@ export class TableProductComponent implements OnInit, OnDestroy {
   }
 
   public showModal(product?: IProduct) {
-    const data: FormProductData = {
-      action: product ? FormProductAction.UPDATE : FormProductAction.ADD,
-      product: product,
-    };
     this.modalService
-      .openModal(FormProductComponent, data)
+      .openModal(FormProductComponent, product)
       .pipe(takeUntil(this.destroy$))
       .subscribe((result) => {
         console.log('Modal closed with result:', result);
