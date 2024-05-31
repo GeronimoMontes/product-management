@@ -1,0 +1,4 @@
+/* Personalización para calcular la altura del contenido principal */
+.content-wrapper {
+    height: calc(100vh - 8rem); /* Altura total menos altura del header (4rem) y del footer (4rem) */
+  }

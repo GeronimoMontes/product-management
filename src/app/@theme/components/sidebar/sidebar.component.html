@@ -1,26 +1,14 @@
-<div class="">
-  <!-- Contenido del sidebar -->
-  <!-- <h2 class="text-lg font-semibold mb-4">
-    
-  </h2> -->
-  <div class="flex items-center justify-center mb-4 p-4">
-    <img src="../../../../assets/logo-original.png" alt="">
-  </div>
-  <ul>
-    <li class="p-2  pr-4 pl-4 flex items-center cursor-pointer hover:bg-slate-500 text-xl" (click)="navigateHome()">
-      <i class="fas fa-home mr-2"></i>
-      Home
-    </li>
-    <li class="p-2 pr-4 pl-4 flex items-center cursor-pointer hover:bg-slate-500 text-xl">
-      <i class="fas fa-user mr-2"></i>
-      Profile
-    </li>
-    <!-- Agrega más elementos según sea necesario -->
-  </ul>
-  <div class="absolute bottom-0 left-0 w-fit" (click)="logOut()">
-    <div class="p-2  pr-4 pl-4 flex items-center align-bottom cursor-pointer text-xl">
-      <i class="fas fa-sign-out-alt mr-2"></i>
-      Logout
-    </div>
-  </div>
-</div>
+<nav>
+  <button (click)="navigateHome()" class="block w-full text-left px-4 py-2 mb-2 bg-gray-800 rounded">
+    <i class="fas fa-home mr-2"></i>
+    Home
+  </button>
+  <button (click)="navigateProfile()" class="block w-full text-left px-4 py-2 mb-2 bg-gray-800 rounded">
+    <i class="fas fa-user mr-2"></i>
+    Profile
+  </button>
+  <button (click)="logOut()" class="block w-full text-left px-4 py-2 mb-2 bg-gray-800 rounded">
+    <i class="fas fa-sign-out-alt mr-2"></i>
+    Logout
+  </button>
+</nav>

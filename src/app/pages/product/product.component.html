@@ -1,21 +1,19 @@
-<div class="flex h-screen">
+<app-header />
+
+
+<!-- Wrapper para contenido principal y sidebar -->
+<div class="flex flex-1 overflow-hidden content-wrapper">
   <!-- Sidebar -->
-  <div class="w-44 bg-gray-800 text-gray-100">
-    <app-sidebar />
-  </div>
-
-  <!-- Contenedor principal -->
-  <div class="container py-10 h-100 overflow-hidden">
-    <!-- Header -->/
-    <app-header />
-
-    <!-- Contenido principal -->
-    <main class="container mx-auto px-4 py-8 h-90 overflow-y-clip">
-      <!-- Contenido de la sección principal -->
-      <router-outlet />
-    </main>
-
-    <!-- Footer -->
-    <app-footer />
-  </div>
+  <aside class="bg-gray-700 text-white w-64 p-4 flex-shrink-0 overflow-y-auto">
+    <app-sidebar></app-sidebar>
+  </aside>
+  
+  <!-- Main Content -->
+  <main (scroll)="endScroll($event)" class="flex-1  overflow-y-auto">
+    <router-outlet />
+    
+  </main>
 </div>
+  
+  
+  <app-footer />

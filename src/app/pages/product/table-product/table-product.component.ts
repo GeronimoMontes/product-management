@@ -27,21 +27,24 @@ export class TableProductComponent implements OnInit, OnDestroy {
 
   ngOnInit() {
     this.fetchData();
+    
   }
-
   ngOnDestroy() {
     this.destroy$.next();
     this.destroy$.complete();
   }
 
+  endScroll($event: any) {
+    console.log($event.target.scrollTop + $event.target.offsetHeight, $event.target.scrollHeight)
+  }
+
+
   private fetchData() {
-    this.loadingData = !this.loadingData;
     this.productService
       .getAllProducts$()
       .pipe(takeUntil(this.destroy$))
       .subscribe((data: IProduct[]) => {
         this.products = data;
-        this.loadingData = !this.loadingData;
       });
   }
 
@@ -82,6 +85,5 @@ export class TableProductComponent implements OnInit, OnDestroy {
   }
 
   private destroy$: Subject<void> = new Subject<void>();
-  public loadingData: boolean = false;
   protected products: IProduct[] = [];
 }

@@ -19,6 +19,7 @@ export class DeleteProductComponent implements OnInit {
   ngOnInit(): void {
     console.log(this.data );
   }
+  
   emittResponse(response: boolean) {
     this.modalService.closeModal(response);
   }
