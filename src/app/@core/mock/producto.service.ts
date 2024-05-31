@@ -13,7 +13,7 @@ export class ProductService extends ProductData {
 
   // GET /products
   getAllProducts$(): Observable<IProduct[]> {
-    return this.httpClient.get<IProduct[]>(this.apiUrl);
+    return this.httpClient.get<IProduct[]>(`${this.apiUrl}?skip=8&limit=100`);
   }
 
   // GET /products/:id
