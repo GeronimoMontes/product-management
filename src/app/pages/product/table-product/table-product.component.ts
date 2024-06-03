@@ -31,10 +31,7 @@ export class TableProductComponent implements OnInit, OnDestroy {
   }
 
   endScroll($event: any) {
-    console.log(
-      $event.target.scrollTop + $event.target.offsetHeight,
-      $event.target.scrollHeight
-    );
+    console.log($event.target.scrollTop + $event.target.offsetHeight >= $event.target.scrollHeight)
   }
 
   private fetchData() {

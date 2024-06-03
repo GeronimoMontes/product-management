@@ -16,24 +16,24 @@
   </div>
 </div>
 
-<div > 
+<div class="overflow-y-auto" > 
   <table class="w-full border border-gray-300">
     <thead>
       <tr>
-        <th class="py-2 px-4 bg-gray-200 border border-gray-300">Name</th>
-        <th class="py-2 px-4 bg-gray-200 border border-gray-300">Description</th>
-        <th class="py-2 px-4 bg-gray-200 border border-gray-300">Price</th>
-        <th class="py-2 px-4 bg-gray-200 border border-gray-300">Edit</th>
+        <th class="col-name py-2 px-4 bg-gray-200 border border-gray-300">Name</th>
+        <th class="col-description py-2 px-4 bg-gray-200 border border-gray-300">Description</th>
+        <th class="col-price py-2 px-4 bg-gray-200 border border-gray-300">Price</th>
+        <th class="col-action py-2 px-4 bg-gray-200 border border-gray-300">Edit</th>
       </tr>
     </thead>
-    <tbody>
+    <tbody (scroll)="endScroll($event)">
       <tr *ngFor="let product of products" class="hover:bg-slate-300 text-xl">
         <!-- FIXME: Click event row no deja funcionar al event click of column acctions -->
-        <td class="py-2 px-4 border border-gray-300">{{ product.name }}</td>
-        <td class="py-2 px-4 border border-gray-300">{{ product.description | slice:0:60}}...</td>
-        <td class="py-2 px-4 border border-gray-300">{{ product.price | currency : "MXN" : "symbol" }}</td>
+        <td class="col-name py-2 px-4 border border-gray-300">{{ product.name }}</td>
+        <td class="col-description py-2 px-4 border border-gray-300">{{ product.description | slice:0:60}}...</td>
+        <td class="col-price py-2 px-4 border border-gray-300">{{ product.price | currency : "MXN" : "symbol" }}</td>
 
-        <td class="py-2 px-4 border border-gray-300 text-center">
+        <td class="col-action py-2 px-4 border border-gray-300 text-center">
           <i class="fas fa-pen mr-1 cursor-pointer text-blue-500" (click)="showModal(product)"></i>
         </td>
       </tr>

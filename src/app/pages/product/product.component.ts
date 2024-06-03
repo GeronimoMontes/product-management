@@ -5,9 +5,4 @@ import { Component } from '@angular/core';
   templateUrl: './product.component.html',
   styleUrls: ['./product.component.css'],
 })
-export class ProductComponent {
-  endScroll($event: any) {
-    console.log($event.target.scrollTop + $event.target.offsetHeight >= $event.target.scrollHeight)
-  }
-
-}
+export class ProductComponent {}
