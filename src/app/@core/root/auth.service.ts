@@ -17,7 +17,7 @@ export class AuthService extends HeaderOption {
     super(httpClient);
   }
 
-  private isAuthenticate(): Observable<boolean> {
+  isAuthenticate(): Observable<boolean> {
     return this.tokenStorage.pipe(map((token) => (token ? true : false)));
   }
 
@@ -37,7 +37,7 @@ export class AuthService extends HeaderOption {
 
   logOut$(): void {
     //  TODO: Add rout `auth/sign-out` in backend
-    this.tokenService.clear()
+    this.tokenService.clear();
     this.router.navigateByUrl('/auth/login');
     // this.httpClient
     //   .delete<any>(`auth/sign-out`, this.getOptions())

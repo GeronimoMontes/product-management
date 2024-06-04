@@ -2,10 +2,12 @@ import { Component, ElementRef, Input, OnInit } from '@angular/core';
 import { IProduct } from '../../../@core/data/productoModel';
 import { ModalService } from '../../../@core/root/modal.service';
 
-export interface DeleteProductResponse {
-  delete: boolean;
+export interface ModalProdcutData {
   product: IProduct;
   message?: string;
+  title?: string;
+  icon: string;
+  colorBtn: string;
 }
 
 @Component({
@@ -24,5 +26,5 @@ export class DeleteProductComponent implements OnInit {
     this.modalService.closeModal(response);
   }
 
-  @Input() data!: IProduct;
+  @Input() data!: ModalProdcutData;
 }

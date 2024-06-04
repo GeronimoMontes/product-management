@@ -1,4 +1,7 @@
-table {
+.ao-table-container {
+  height: calc(100vh - 16rem);
+}
+/* table {
   width: 100%;
   border-spacing: 0;
 }
@@ -26,25 +29,25 @@ tr:after {
   clear: both;
 }
 
-tbody {
-  height: calc(100vh - 18rem);
-  overflow-y: auto;
-  overflow-x: hidden;
-}
-
 .col-name {
   width: 20%;
   float: left;
 }
 .col-description {
-  width: 55%;
-  float: left;
+    width: 55%;
+    float: left;
 }
 .col-price {
   width: 20%;
   float: left;
 }
 .col-action {
-  width: 5%;
-  float: left;
-}
+    width: 5%;
+    float: left;
+    
+    tbody {
+      height: calc(100vh - 18rem);
+      overflow-y: auto;
+      overflow-x: hidden;
+    }
+} */

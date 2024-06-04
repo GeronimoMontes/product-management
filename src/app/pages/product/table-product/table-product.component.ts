@@ -1,14 +1,11 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
-import { Subject, takeUntil } from 'rxjs';
+import { Subject, skip, takeUntil } from 'rxjs';
 import { IProduct, ProductData } from '../../../@core/data/productoModel';
 import { ModalService } from '../../../@core/root/modal.service';
-import {
-  FormProductComponent,
-} from '../form-product/form-product.component';
-import {
-  DeleteProductComponent,
-} from '../delete-product/delete-product.component';
+import { FormProductComponent } from '../form-product/form-product.component';
+import { DeleteProductComponent } from '../delete-product/delete-product.component';
 import { NotificationService } from '../../../@theme/components/notification/notification.service';
+import { PaginateData } from '../../../@theme/components';
 
 @Component({
   selector: 'app-table-products',
@@ -30,16 +27,23 @@ export class TableProductComponent implements OnInit, OnDestroy {
     this.destroy$.complete();
   }
 
-  endScroll($event: any) {
-    console.log($event.target.scrollTop + $event.target.offsetHeight >= $event.target.scrollHeight)
+  search($event: any) {
+    this.fetchData();
+  }
+
+  changePage(value: number) {
+    this.paramsFilter.skip = value
+    this.fetchData();
   }
 
   private fetchData() {
+    const { skip, limit, search } = this.paramsFilter;
     this.productService
-      .getAllProducts$()
+      .getAllProducts$(skip, limit, search)
       .pipe(takeUntil(this.destroy$))
       .subscribe((data: IProduct[]) => {
         this.products = data;
+        console.log({ data });
       });
   }
 
@@ -77,4 +81,21 @@ export class TableProductComponent implements OnInit, OnDestroy {
 
   private destroy$: Subject<void> = new Subject<void>();
   protected products: IProduct[] = [];
+  protected paginate: PaginateData = {
+    numberPages: 5,
+    current: 1,
+    next: 2,
+    previous: -1,
+    numberResult: 125,
+  };
+
+  public paramsFilter: {
+    skip: number;
+    limit: number;
+    search: string;
+  } = {
+    skip: 1,
+    limit: 24,
+    search: '',
+  };
 }

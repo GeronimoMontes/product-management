@@ -7,7 +7,6 @@ import {
   Optional,
   SkipSelf,
 } from '@angular/core';
-import { AuthGuard } from './guards/authGuard.guard';
 import { HTTP_INTERCEPTORS } from '@angular/common/http';
 import {
   AuthInterceptorService,
@@ -16,8 +15,9 @@ import {
 } from './http';
 import { ProductData } from './data/productoModel';
 import { ProductService } from './mock/producto.service';
+import { authGuard } from './guards';
 
-const GUARDS = [AuthGuard];
+const GUARDS: any[] = [];
 
 const DATA_SERVICES: any = [{ provide: ProductData, useClass: ProductService }];
 
@@ -54,7 +54,7 @@ export class CoreModule {
   static forRoot(): ModuleWithProviders<CoreModule> {
     return {
       ngModule: CoreModule,
-      providers: [...NB_CORE_PROVIDERS],
+      providers: [...NB_CORE_PROVIDERS, ...GUARDS],
     };
   }
 }

@@ -1,10 +1,19 @@
 import { Component, ElementRef, Input, OnInit } from '@angular/core';
 import { ModalService } from '../../../@core/root/modal.service';
 import { Subject } from 'rxjs';
-import { FormBuilder, FormControl, Validators } from '@angular/forms';
+import {
+  FormBuilder,
+  FormControl,
+  FormGroup,
+  Validators,
+} from '@angular/forms';
 import { ProductService } from '../../../@core/mock/producto.service';
 import { IProduct } from '../../../@core/data/productoModel';
 import { NotificationService } from '../../../@theme/components/notification/notification.service';
+import {
+  DeleteProductComponent,
+  ModalProdcutData,
+} from '../delete-product/delete-product.component';
 
 @Component({
   selector: 'app-form-product',
@@ -60,23 +69,51 @@ export class FormProductComponent implements OnInit {
     });
   }
 
-  public formSubmit() {
+  public formSubmit(form: FormGroup) {
     this.loadingData = !this.loadingData;
-    const data = this.formGroup.value;
 
-    // REVIEW: generar metodo get promise event
-    this.productService
-      .productFetch$(this.actionClick, data)
-      .subscribe((updateProduct: IProduct) => {
-        this.notificationService.showNotification({
-          type: 'success',
-          title: 'Producto actualizado',
-          message: `El producto ${updateProduct.name} se ha actualizado de forma correcta.`,
-          duration: 50000,
-        });
-        this.loadingData = !this.loadingData;
-        // REVIEW: No debe retornar false
-        this.closeModal(false);
+    if (!form.valid) {
+      this.loadingData = false;
+      console.log({ form });
+      return;
+    }
+    const data = this.formGroup.value;
+    const modalData: ModalProdcutData = {
+      product: data,
+      message: `You want to ${this.actionClick} the ${data.name} product from the system?`,
+      title: `${
+        this.actionClick.charAt(0).toUpperCase() + this.actionClick.slice(1)
+      } product.`,
+      icon: 'fa fa-question',
+      colorBtn:
+        this.actionClick === 'delete'
+          ? 'bg-red-600'
+          : this.actionClick === 'create'
+          ? 'bg-blue-600'
+          : 'bg-yellow-600',
+    };
+
+    this.closeModal(false);
+
+    this.modalService
+      .openModal(DeleteProductComponent, modalData)
+      .subscribe((response) => {
+        if (response) {
+          // REVIEW: generar metodo get promise event
+          this.productService
+            .productFetch$(this.actionClick, data)
+            .subscribe((updateProduct: IProduct) => {
+              this.notificationService.showNotification({
+                type: 'success',
+                title: 'Producto actualizado',
+                message: `El producto ${updateProduct.name} se ha actualizado de forma correcta.`,
+                duration: 50000,
+              });
+              this.loadingData = !this.loadingData;
+              // REVIEW: No debe retornar false
+              this.closeModal(false);
+            });
+        }
       });
   }
 

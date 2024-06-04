@@ -12,8 +12,13 @@ export class ProductService extends ProductData {
   }
 
   // GET /products
-  getAllProducts$(): Observable<IProduct[]> {
-    return this.httpClient.get<IProduct[]>(`${this.apiUrl}?skip=8&limit=100`);
+  getAllProducts$(
+    skip: number = 1,
+    limit: number = 25,
+    search: string = ''
+  ): Observable<IProduct[]> {
+    const _skip = (limit * skip) - (limit - 1);
+    return this.httpClient.get<IProduct[]>(`${this.apiUrl}?skip=${_skip}&limit=${limit}&search=${search}`);
   }
 
   // GET /products/:id
