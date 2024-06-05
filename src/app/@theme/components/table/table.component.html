@@ -1,42 +1,35 @@
-<div class="overflow-y-auto" style="height: calc(100vh - 16rem)">
-    <table class="w-full border-collapse border border-gray-800">
-      <thead class="sticky top-0 bg-gray-200">
-        <tr class="py-2 px-4 bg-gray-200 border border-gray-400">
-          <th class="py-2 px-4 bg-gray-200 border border-gray-400">#</th>
-          <th
-            *ngFor="let header of this.dataSource.headers"
-            class="py-2 px-4 bg-gray-200 border border-gray-400" >
-            {{ header }}
-        </th>
-          <th class="py-2 px-4 bg-gray-200 border border-gray-400">actions</th>
-      </tr>
-    </thead>
-      <tbody class="mt-3">
-        <tr
-          *ngFor="let row of dataSource.data; index as index"
-          class="hover:bg-slate-300 text-xl " >
-          <td class="py-2 px-4 border border-gray-400 text-center" >{{(index + 1) + ((currentPage-1) * itemsPerPage)}}</td>
-          <td
-          *ngFor="let header of this.dataSource.headers"
-          class="py-2 px-4 border border-gray-400" >
-            {{ row[header] }}
-          </td>
-          <td class="py-2 px-4 border border-gray-400 text-center">
-            <i
-            class="fas fa-pen mr-2 cursor-pointer text-blue-500"
-            (click)="emittEventClickAction(row, 'add')" ></i>
-            <!-- <i
-              class="fas fa-eye mr-2 cursor-pointer text-black"
-              (click)="emittEventClickAction(row, 'view')" ></i>
-            <i
-              class="fas fa-circle mr-2 cursor-pointer text-yellow-500"
-              (click)="emittEventClickAction(row, 'update')" ></i>
-            <i
-              class="fas fa-trash mr-2 cursor-pointer text-red-500"
-              (click)="emittEventClickAction(row, 'delete')" ></i> -->
-        </td>
-      </tr>
-    </tbody>
-  </table>
-</div>
-    
+
+<div class="overflow-y-auto" style="height: calc(100vh - 16rem)">  
+  <table class="w-full border-collapse border border-gray-800">   
+    <thead class="sticky top-0 bg-gray-200">   
+      <tr class="py-2 px-4 bg-gray-200 border border-gray-400"> 
+        <th class="py-2 px-4 bg-gray-200 border border-gray-400">#</th> 
+        <th *ngFor="let header of dataSource.headers" class="py-2 px-4 bg-gray-200 border border-gray-400" > {{ header }}   </th> 
+        <th class="py-2 px-4 bg-gray-200 border border-gray-400">actions</th>
+      </tr>  
+    </thead>   
+    <tbody class="table-fixed mt-3">   
+        <tr  *ngIf="dataSource.data.length == 0;" class="py-2 px-4 border border-gray-400  text-xl text-center" >      
+          No data fund...
+        </tr>  
+        <tr  *ngFor="let row of dataSource.data; index as index; empty noResults" class="hover:bg-slate-300 text-xl " > 
+          <td class="py-2 px-4 border border-gray-400 text-center" >
+            {{(index + 1) + ((currentPage-1) * itemsPerPage)}}
+          </td> 
+          <td *ngFor="let header of this.dataSource.headers;" class="py-2 px-4 border border-gray-400" > 
+            {{ row[header] }}   
+          </td> 
+          <td class="py-2 px-4 border border-gray-400 text-center"> 
+            <i class="fas fa-pen mr-2 cursor-pointer text-blue-500" (click)="emittEventClickAction(row, 'add')" ></i> 
+          </td>  
+        </tr>  
+    </tbody> 
+  </table> 
+</div> 
+ <!-- 
+ <i  class="fas fa-eye mr-2 cursor-pointer text-black"  (click)="emittEventClickAction(row, 'view')" >
+</i> 
+ <i  class="fas fa-circle mr-2 cursor-pointer text-yellow-500"  (click)="emittEventClickAction(row, 'update')" >
+</i> 
+ <i  class="fas fa-trash mr-2 cursor-pointer text-red-500"  (click)="emittEventClickAction(row, 'delete')" >
+</i> -->

@@ -19,7 +19,7 @@ export class ProductService extends ProductData {
       params: new HttpParams()
         .set('skip', _skip)
         .set('limit', limit)
-        .set('search', search.replaceAll("  ", " ").replaceAll("  ", " ").trim()),
+        .set('search', search.split(" ").filter(e => e !== '').join(" ").trim()),
     };
 
     return this.httpClient.get<IProduct[]>(`${this.apiUrl}`, options);

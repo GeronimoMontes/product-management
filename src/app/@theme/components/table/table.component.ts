@@ -9,7 +9,7 @@ export interface ActionTable {
 
 export interface DataSoucer {
   headers: string[];
-  data: any;
+  data: any[];
 }
 
 export interface EmitterData {
@@ -22,13 +22,13 @@ export interface EmitterData {
   styleUrls: ['./table.component.css'],
 })
 export class TableComponent {
-  constructor() {}
+  constructor() { }
 
   emittEventClickAction(rowSelected: any, action: Action) {
     this.emitterRowAction.emit({ rowSelected, action });
   }
 
-  @Input() dataSource: any;
+  @Input() dataSource!: DataSoucer;
   @Input() itemsPerPage: any;
   @Input() currentPage: any;
   @Input() loadData: any;
