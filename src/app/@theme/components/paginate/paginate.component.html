@@ -1,99 +1,66 @@
-<div
-  class="flex items-center justify-between border-t border-gray-200 bg-white px-4 py-3 sm:px-6"
->
+<div class="flex items-center justify-between border-t border-gray-200 bg-white px-4 py-3 sm:px-6">
   <div class="flex flex-1 justify-between sm:hidden">
-    <button
-      class="relative inline-flex items-center rounded-md border border-gray-300 bg-white px-4 py-2 text-sm font-medium text-gray-700 hover:bg-gray-50"
-    >
+    <a
+      class="relative inline-flex items-center rounded-md border border-gray-400 bg-white px-4 py-2 text-sm font-medium text-gray-700 hover:bg-gray-50">
       Previous
-    </button>
-    <button
-      class="relative ml-3 inline-flex items-center rounded-md border border-gray-300 bg-white px-4 py-2 text-sm font-medium text-gray-700 hover:bg-gray-50"
-    >
+    </a>
+    <a
+      class="relative ml-3 inline-flex items-center rounded-md border border-gray-300 bg-white px-4 py-2 text-sm font-medium text-gray-700 hover:bg-gray-50">
       Next
-    </button>
+    </a>
   </div>
   <div class="hidden sm:flex sm:flex-1 sm:items-center sm:justify-between">
     <div>
       <p class="text-sm text-gray-700">
         Showing
-        <span class="font-medium">{{ paginate.current }}</span>
+        <span class="font-medium">
+          {{current}}
+        </span>
         to
-        <span class="font-medium">{{ paginate.numberPages }}</span>
+        <span class="font-medium">
+          {{total}}
+        </span>
         of
-        <span class="font-medium">{{ paginate.numberResult }}</span>
+        <span class="font-medium">
+          {{resultsCount}}
+        </span>
         results
       </p>
     </div>
+
+    <div class="hidden sm:flex sm:flex-1 sm:items-center sm:justify-center">
+          <label for="itemsPerPage" class="block text-sm font-medium text-gray-700 mr-2">Items per page:</label>
+          <select (change)="onPerPage($event)" [ngModel]="itemsPerPage" id="itemsPerPage" class="relative inline-flex items-center rounded-md px-2 py-2 text-gray-900 ring-1 ring-inset ring-gray-300 hover:bg-indigo-100 focus:z-20 focus:outline-offset-0">
+              <option [value]="i" *ngFor="let i of [5,10,15,20,25]">{{i}}</option>
+          </select>
+      </div>
+
     <div>
-      <nav
-        class="isolate inline-flex -space-x-px rounded-md shadow-sm"
-        aria-label="Pagination"
-      >
-        <button
-          *ngIf="paginate.previous > 0"
-          class="relative inline-flex items-center rounded-l-md px-2 py-2 text-gray-400 ring-1 ring-inset ring-gray-300 hover:bg-gray-50 focus:z-20 focus:outline-offset-0"
-          (click)="changePage(paginate.previous)"
-        >
+      <nav class="isolate inline-flex -space-x-px rounded-md shadow-sm" aria-label="Pagination">
+        <button [disabled]="current === 1" (click)="onFirst()"
+          class="relative inline-flex items-center rounded-l-md px-2 py-2 text-gray-400 ring-1 ring-inset ring-gray-300 hover:bg-indigo-100 focus:z-20 focus:outline-offset-0">
           <span class="sr-only">Previous</span>
-          <svg
-            class="h-5 w-5"
-            viewBox="0 0 20 20"
-            fill="currentColor"
-            aria-hidden="true"
-          >
-            <path
-              fill-rule="evenodd"
-              d="M12.79 5.23a.75.75 0 01-.02 1.06L8.832 10l3.938 3.71a.75.75 0 11-1.04 1.08l-4.5-4.25a.75.75 0 010-1.08l4.5-4.25a.75.75 0 011.06.02z"
-              clip-rule="evenodd"
-            />
-          </svg>
+          <i class="fas fa-angle-double-left"></i>
         </button>
-        <!-- 
-            Current: "z-10 bg-indigo-600 text-white focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600", 
-            Default: "text-gray-900 ring-1 ring-inset ring-gray-300 hover:bg-gray-50 focus:outline-offset-0" 
-            -->
 
-        <button
-          *ngFor="let item of arryPaginate"
-          [ngClass]="{
-            'z-10 bg-indigo-600 text-white focus-visible:5 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600':
-              item == paginate.current,
-            'text-gray-900 ring-1 ring-inset ring-gray-300 hover:bg-gray-50 focus:outline-offset-0':
-              item != paginate.current
-          }"
-          class="relative z-10 inline-flex items-center bg-indigo-600 px-4 py-2 text-sm font-semibold text-white focus:z-20 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
-          (click)="changePage(item)"
-        >
-          {{ item }}
+        <button [disabled]="current === 1" (click)="onPrevious()"
+          class="relative inline-flex items-center rounded-l-md px-2 py-2 text-gray-400 ring-1 ring-inset ring-gray-300 hover:bg-indigo-100 focus:z-20 focus:outline-offset-0">
+          <span class="sr-only">Previous</span>
+          <i class="fas fa-angle-left"></i>
         </button>
-        <!-- <button class="relative inline-flex items-center px-4 py-2 text-sm font-semibold text-gray-900 ring-1 ring-inset ring-gray-300 hover:bg-gray-50 focus:z-20 focus:outline-offset-0">2</button>
-            <button class="relative hidden items-center px-4 py-2 text-sm font-semibold text-gray-900 ring-1 ring-inset ring-gray-300 hover:bg-gray-50 focus:z-20 focus:outline-offset-0 md:inline-flex">3</button>
-            <span class="relative inline-flex items-center px-4 py-2 text-sm font-semibold text-gray-700 ring-1 ring-inset ring-gray-300 focus:outline-offset-0">...</span>
-            <button class="relative hidden items-center px-4 py-2 text-sm font-semibold text-gray-900 ring-1 ring-inset ring-gray-300 hover:bg-gray-50 focus:z-20 focus:outline-offset-0 md:inline-flex">8</button>
-            <button class="relative inline-flex items-center px-4 py-2 text-sm font-semibold text-gray-900 ring-1 ring-inset ring-gray-300 hover:bg-gray-50 focus:z-20 focus:outline-offset-0">9</button>
-            <button class="relative inline-flex items-center px-4 py-2 text-sm font-semibold text-gray-900 ring-1 ring-inset ring-gray-300 hover:bg-gray-50 focus:z-20 focus:outline-offset-0">10</button> -->
 
-        <button
-          class="relative inline-flex items-center rounded-r-md px-2 py-2 text-gray-400 ring-1 ring-inset ring-gray-300 hover:bg-gray-50 focus:z-20 focus:outline-offset-0"
-          *ngIf="paginate.next < paginate.numberPages"
-          (click)="changePage(paginate.next)"
-        >
+        <button (click)="onChangePage(page);" *ngFor="let page of pages" class="relative inline-flex items-center px-4 py-2 text-sm font-semibold text-gray-900 ring-1 ring-inset ring-gray-300 hover:bg-indigo-100 focus:z-20 focus:outline-offset-0" [ngClass]="{'z-10 bg-indigo-600 text-white focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600': current === page}">{{page}}</button>
+
+        <button [disabled]="current === total" (click)="onNext()"
+          class="relative inline-flex items-center rounded-r-md px-2 py-2 text-gray-400 ring-1 ring-inset ring-gray-300 hover:bg-indigo-100 focus:z-20 focus:outline-offset-0">
           <span class="sr-only">Next</span>
-          <svg
-            class="h-5 w-5"
-            viewBox="0 0 20 20"
-            fill="currentColor"
-            aria-hidden="true"
-          >
-            <path
-              fill-rule="evenodd"
-              d="M7.21 14.77a.75.75 0 01.02-1.06L11.168 10 7.23 6.29a.75.75 0 111.04-1.08l4.5 4.25a.75.75 0 010 1.08l-4.5 4.25a.75.75 0 01-1.06-.02z"
-              clip-rule="evenodd"
-            />
-          </svg>
+          <i class="fas fa-angle-right"></i>
+        </button>
+
+        <button [disabled]="current === total" (click)="onLast()" class="relative inline-flex items-center rounded-r-md px-2 py-2 text-gray-400 ring-1 ring-inset ring-gray-300 hover:bg-indigo-100 focus:z-20 focus:outline-offset-0">
+          <span class="sr-only">Next</span>
+          <i class="fas fa-angle-double-right"></i>
         </button>
       </nav>
     </div>
   </div>
-</div>

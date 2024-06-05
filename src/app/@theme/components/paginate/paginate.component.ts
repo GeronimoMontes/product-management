@@ -1,32 +1,84 @@
-import { Component, EventEmitter, Input, Output } from '@angular/core';
-
+import {
+  Component,
+  EventEmitter,
+  Input,
+  OnChanges,
+  Output,
+  SimpleChanges,
+} from '@angular/core';
 export interface PaginateData {
-  numberPages: number;
-  current: number;
-  next: number;
-  previous: number;
-  numberResult: number;
+  current: number,
+  perPage: number,
+  countPages: number,
+  resultsCount: number;
 }
+
+
 @Component({
   selector: 'app-paginate',
   templateUrl: './paginate.component.html',
-  styleUrls: ['./paginate.component.scss'],
+  styleUrls: ['./paginate.component.css'],
 })
-export class PaginateComponent {
-  changePage(value: number) {
-    this.paginate.current = value;
-    this.paginate.next = value + 1 ;
-    this.paginate.previous = value - 1;
-    this.emittValue.emit(value);
+export class PaginateComponent implements OnChanges {
+  ngOnChanges(changes: SimpleChanges): void {
+    if (
+      (changes['current'] && changes['current'].currentValue) ||
+      (changes['total'] && changes['total'].currentValue)
+    ) {
+      this.pages = this.getPages(this.current, this.total);
+    }
   }
-  get arryPaginate() {
-    return Array(this.paginate.numberPages)
-      .fill(0)
-      .map((_, i) => i + 1);
+  public onChangePage(page: number): void {
+    this.changePage.emit(page);
   }
- 
-  @Input() paginate!: PaginateData;
 
-  @Output() emittValue = new EventEmitter<number>();
+  public onNext(): void {
+    this.next.emit(this.current + 1);
+  }
+
+  public onPrevious(): void {
+    this.previous.next(this.current - 1);
+  }
+
+  public onFirst(): void {
+    this.onChangePage(1);
+  }
+
+  public onLast(): void {
+    this.onChangePage(this.total);
+  }
+
+  public onPerPage($event: any): void {
+    console.log($event.target.value)
+    this.itemsPerPage = $event.target.value;
+    this.perPage.emit($event.target.value);
+  }
+
+  private getPages(current: number, total: number): number[] {
+    if (total <= 3) {
+      return [...Array(total).keys()].map(x => ++x)
+    }
+
+    if (current >= 3) {
+      if (current >= total - 2) {
+        return [ total - 2, total - 1, total]
+      } else {
+        return [current - 1, current, current + 1]
+      }
+    }
+
+    return [1, 2, 3]
+  }
+
+  public pages: number[] = [];
+
+  @Input() total!: number;
+  @Input() current!: number;
+  @Input() itemsPerPage!: number;
+  @Input() resultsCount!: number;
+
+  @Output() changePage: EventEmitter<number> = new EventEmitter<number>();
+  @Output() next: EventEmitter<number> = new EventEmitter<number>();
+  @Output() previous: EventEmitter<number> = new EventEmitter<number>();
+  @Output() perPage: EventEmitter<number> = new EventEmitter<number>();
 }
-//
