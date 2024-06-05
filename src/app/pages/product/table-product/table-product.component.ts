@@ -1,11 +1,11 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
-import { Subject, skip, takeUntil } from 'rxjs';
+import { Subject, takeUntil } from 'rxjs';
 import { IProduct, ProductData } from '../../../@core/data/productoModel';
 import { ModalService } from '../../../@core/root/modal.service';
 import { FormProductComponent } from '../form-product/form-product.component';
 import { DeleteProductComponent } from '../delete-product/delete-product.component';
 import { NotificationService } from '../../../@theme/components/notification/notification.service';
-import { PaginateData } from '../../../@theme/components';
+import { DataSoucer, PaginateData } from '../../../@theme/components';
 
 @Component({
   selector: 'app-table-products',
@@ -17,7 +17,7 @@ export class TableProductComponent implements OnInit, OnDestroy {
     protected readonly productService: ProductData,
     protected readonly modalService: ModalService,
     protected readonly notificationService: NotificationService
-  ) {}
+  ) { }
 
   ngOnInit() {
     this.fetchData();
@@ -27,23 +27,32 @@ export class TableProductComponent implements OnInit, OnDestroy {
     this.destroy$.complete();
   }
 
-  search($event: any) {
+  searchEvent($event: any) {
+    this.search = $event;
+    this.paginate.current = 1;
     this.fetchData();
   }
-
-  changePage(value: number) {
-    this.paramsFilter.skip = value
+  perPageChangeEmitter($event: number) {
+    this.paginate.perPage = $event
+    this.fetchData();
+  }
+  pageChangeEmitter($event: number) {
+    this.paginate.current = $event
     this.fetchData();
   }
 
   private fetchData() {
-    const { skip, limit, search } = this.paramsFilter;
+    this.loaddata = true;
+    const { current, perPage } = this.paginate;
+
     this.productService
-      .getAllProducts$(skip, limit, search)
+      .getAllProducts$(current, perPage, this.search)
       .pipe(takeUntil(this.destroy$))
-      .subscribe((data: IProduct[]) => {
-        this.products = data;
-        console.log({ data });
+      .subscribe((data: any) => {
+        this.datasource.data = data.data;
+        this.paginate.resultsCount = data.documents_count;
+        this.paginate.countPages = data.page_total;
+        this.loaddata = false;
       });
   }
 
@@ -80,22 +89,17 @@ export class TableProductComponent implements OnInit, OnDestroy {
   }
 
   private destroy$: Subject<void> = new Subject<void>();
-  protected products: IProduct[] = [];
-  protected paginate: PaginateData = {
-    numberPages: 5,
-    current: 1,
-    next: 2,
-    previous: -1,
-    numberResult: 125,
-  };
+  public loaddata: boolean = false;
 
-  public paramsFilter: {
-    skip: number;
-    limit: number;
-    search: string;
-  } = {
-    skip: 1,
-    limit: 24,
-    search: '',
+  public datasource: DataSoucer = {
+    data: [],
+    headers: ['name', 'description', 'price'],
+  };
+  public search: string = '';
+  protected paginate: PaginateData = {
+    current: 1,
+    perPage: 25,
+    countPages: 0,
+    resultsCount: 0
   };
 }
