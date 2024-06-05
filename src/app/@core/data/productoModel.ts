@@ -9,11 +9,7 @@ export interface IProduct {
 }
 
 export abstract class ProductData extends HeaderOption {
-  abstract getAllProducts$(
-    skip: number,
-    limit: number,
-    search: string
-  ): Observable<IProduct[]>;
+  abstract getAllProducts$(skip: number, limit: number, search: string): Observable<IProduct[]>;
   abstract getProduct$(id: string): Observable<IProduct>;
   abstract createProduct$(product: IProduct): Observable<IProduct>;
   abstract deleteProduct$(id: string, product: IProduct): Observable<any>;

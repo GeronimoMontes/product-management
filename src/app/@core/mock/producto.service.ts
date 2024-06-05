@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { IProduct, ProductData } from '../data/productoModel';
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpParams } from '@angular/common/http';
 
 @Injectable()
 export class ProductService extends ProductData {
@@ -12,13 +12,17 @@ export class ProductService extends ProductData {
   }
 
   // GET /products
-  getAllProducts$(
-    skip: number = 1,
-    limit: number = 25,
-    search: string = ''
-  ): Observable<IProduct[]> {
-    const _skip = (limit * skip) - (limit - 1);
-    return this.httpClient.get<IProduct[]>(`${this.apiUrl}?skip=${_skip}&limit=${limit}&search=${search}`);
+  getAllProducts$(skip: number = 1, limit: number = 25, search: string = '') {
+    const _skip = (skip - 1) * limit;
+
+    const options = {
+      params: new HttpParams()
+        .set('skip', _skip)
+        .set('limit', limit)
+        .set('search', search.replaceAll("  ", " ").replaceAll("  ", " ").trim()),
+    };
+
+    return this.httpClient.get<IProduct[]>(`${this.apiUrl}`, options);
   }
 
   // GET /products/:id

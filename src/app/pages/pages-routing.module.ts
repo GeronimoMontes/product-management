@@ -1,7 +1,6 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 import { PagesComponent } from './pages.component';
-import { authGuard } from '../@core/guards';
 
 const routes: Routes = [
   {
@@ -10,31 +9,16 @@ const routes: Routes = [
     children: [
       {
         path: 'products',
-        loadChildren: () =>
-          import('./product/product.module').then((m) => m.ProductModule),
-        canActivate: [authGuard],
-      },
-
-      {
-        path: 'auth',
-        loadChildren: () =>
-          import('./auth/auth.module').then((m) => m.AuthModule),
-      },
-      {
-        path: '',
-        redirectTo: 'auth',
-        pathMatch: 'full',
-      },
-      {
-        path: '**',
-        redirectTo: 'products',
-      },
-    ],
-  },
-];
+        loadChildren: () => import('./product/product.module')
+          .then(m => m.ProductModule),
+      }
+    ]
+  }
+]
 
 @NgModule({
   imports: [RouterModule.forChild(routes)],
   exports: [RouterModule],
 })
-export class PagesRoutingModule {}
+export class PagesRoutingModule {
+}

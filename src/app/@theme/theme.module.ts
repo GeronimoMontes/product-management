@@ -9,6 +9,7 @@ import {
   NotificationComponent,
   SidebarComponent,
   PaginateComponent,
+  TableComponent,
 } from './components';
 
 const MODULES: any[] = [ReactiveFormsModule, FormsModule, RouterModule];
@@ -19,6 +20,7 @@ const COMPONENTS: any[] = [
   SidebarComponent,
   NotificationComponent,
   PaginateComponent,
+  TableComponent,
 ];
 
 const PIPES: any[] = [];

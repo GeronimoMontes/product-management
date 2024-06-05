@@ -1,26 +1,19 @@
 import { NgModule } from '@angular/core';
 import { Routes, RouterModule, ExtraOptions } from '@angular/router';
-import { AuthComponent } from './pages/auth/auth.component';
-import { LoginComponent } from './pages/auth/login/login.component';
 
 const routes: Routes = [
   {
     path: 'auth',
-    component: AuthComponent,
-    children: [
-      {
-        path: 'login ',
-        component: LoginComponent,
-      },
-    ],
+    loadChildren: () => import('./pages/auth/auth.module')
+      .then(m => m.AuthModule),
   },
   {
     path: 'pages',
-    loadChildren: () =>
-      import('./pages/pages.module').then((m) => m.PagesModule),
+    loadChildren: () => import('./pages/pages.module')
+      .then(m => m.PagesModule),
   },
-  { path: '', redirectTo: 'pages', pathMatch: 'full' },
-  { path: '**', redirectTo: 'pages' },
+  { path: '', redirectTo: 'auth', pathMatch: 'full' },
+  { path: '**', redirectTo: 'auth' },
 ];
 
 const config: ExtraOptions = {
@@ -29,6 +22,6 @@ const config: ExtraOptions = {
 
 @NgModule({
   imports: [RouterModule.forRoot(routes)],
-  exports: [RouterModule],
+  exports: [RouterModule]
 })
-export class AppRoutingModule {}
+export class AppRoutingModule { }
