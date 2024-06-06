@@ -3,7 +3,6 @@ import { AuthService } from '../../../@core/root/auth.service';
 import {
   FormBuilder,
   FormControl,
-  FormGroup,
   Validators,
 } from '@angular/forms';
 import { Subject, takeUntil } from 'rxjs';
@@ -25,6 +24,7 @@ export class LoginComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit(): void {
+    this.authService.logOut$()
     this.initForm();
   }
 
