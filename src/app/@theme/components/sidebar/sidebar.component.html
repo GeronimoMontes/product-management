@@ -1,17 +1,12 @@
-<div class="flex items-center justify-center mb-4 p-4">
-  <img src="../../../../assets/logo-original.png" alt="">
+<div class="fixed z-50 top-0 left-0 w-1/2 md:w-1/4 h-full bg-gray-800 text-white transition-transform transform-gpu -translate-x-full" [class.translate-x-0]="isOpen | async">
+  <div class="flex justify-between items-center p-4 bg-gray-900">
+    <h2 class="text-xl">Mi Sidebar</h2>
+    <span class="text-2xl cursor-pointer" (click)="closeSidebar()">&times;</span>
+  </div>
+  <nav>
+    <button *ngFor="let item of menuSidebar" (click)="navigate(item.action)" class="block w-full text-left px-4 py-2 mb-2 bg-gray-800 rounded hover:bg-gray-400 hover:text-black">
+      <i class="m-6 text-2xl" [className]="item.icon"></i>
+      {{ item.text }}
+    </button>
+  </nav>
 </div>
-<nav>
-  <button *ngFor="let item of menuSidebar" (click)="navigate(item.action)" class="block w-full text-left px-4 py-2 mb-2 bg-gray-800 rounded hover:bg-slate-400 hover:text-black">
-    <i class=" mr-2" [className]="item.icon"></i>
-    {{item.text}}
-  </button>
-  <!-- <button (click)="navigateProfile()" class="block w-full text-left px-4 py-2 mb-2 bg-gray-800 rounded hover:bg-slate-400 hover:text-black">
-    <i class="fas fa-user mr-2"></i>
-    Profile
-  </button>
-  <button (click)="logOut()" class="block w-full text-left px-4 py-2 mb-2 bg-gray-800 rounded hover:bg-slate-400 hover:text-black">
-    <i class="fas fa-sign-out-alt mr-2"></i>
-    Logout
-  </button> -->
-</nav>
