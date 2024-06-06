@@ -1,0 +1,27 @@
+<div class="mb-4 p-4 flex items-center justify-between ">
+  <h1 class="text-2xl font-bold">Lista de Productos</h1>
+  <div class="flex items-center">
+    <input (input)="onSearchChange($event)"   type="text" placeholder="Buscar..." 
+    class="border border-gray-400 rounded-xl px-2 py-2 focus:outline-none focus:border-blue-500 mr-6"/>
+    <button (click)="showModal()" class="bg-blue-500 text-white px-4 py-2 rounded-xl hover:bg-blue-600 focus:outline-none focus:bg-blue-600">
+      Agregar
+    </button>
+  </div>
+</div>
+
+<!-- <div class="p-4 flex justify-center w-full text-6xl border border-l-orange-300 bg-slate-500 rounded">
+  <i class="animate-spin  fas fa-spinner"></i>
+</div> -->
+
+<div *ngIf="loaddata" role="status" class="m-4 mt-0 p-4 pt-0 flex flex-col items-center justify-center w-[85vw] absolute rounded-xl bg-slate-800 bg-opacity-90 z-40" style="height: calc(100vh - 13rem)">
+  <i class="animate-spin fas fa-spinner text-8xl"></i>
+  <span class="sr-only">Loading...</span>
+</div>
+
+<app-table
+  [currentPage]="current"
+  [itemsPerPage]="perPage" 
+  [dataSource]="datasource"
+  (emitterRowAction)="showModal($event.rowSelected)"
+  (emitterScrollAction)="onScrollEvent($event)"
+></app-table>

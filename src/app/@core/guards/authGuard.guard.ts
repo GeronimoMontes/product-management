@@ -3,13 +3,12 @@ import { CanActivateFn, Router } from '@angular/router';
 import { TokenStoreService } from '../mock/token.service';
 
 export const authGuard: CanActivateFn = (route, state) => {
-  console.log('entro')
   const tokenService = inject(TokenStoreService);
   const router = inject(Router);
 
-  const isAuthenticate = tokenService.get() !== null;
+  const isAuthenticate = !!tokenService.get();
   if (!isAuthenticate) {
-    router.navigateByUrl('/pages/auth/login');
+    router.navigateByUrl('/auth/login');
     return false;
   }
 

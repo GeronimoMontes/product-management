@@ -4,6 +4,7 @@ import { ProductComponent } from './product.component';
 import { TableProductComponent } from './table-product/table-product.component';
 import { ViewProductComponent } from './view-product/view-product.component';
 import { FormProductComponent } from './form-product/form-product.component';
+import { TableScrollProductComponent } from './table-scroll-product/table-scroll-product.component';
 
 const routes: Routes = [
   {
@@ -11,8 +12,12 @@ const routes: Routes = [
     component: ProductComponent,
     children: [
       {
-        path: 'table',
+        path: 'table-paginate',
         component: TableProductComponent,
+      },
+      {
+        path: 'table-scroll',
+        component: TableScrollProductComponent,
       },
       {
         path: 'detail/:id',
@@ -24,12 +29,12 @@ const routes: Routes = [
       },
       {
         path: '',
-        redirectTo: 'table',
+        redirectTo: 'table-paginate',
         pathMatch: 'full',
       },
       {
         path: '**',
-        redirectTo: 'table',
+        redirectTo: 'table-paginate',
       },
     ],
   },

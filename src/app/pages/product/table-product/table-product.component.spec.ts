@@ -1,20 +1,20 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { TableScrollProductComponent } from '../table-scroll-product/table-scroll-product.component';
 
-import {  TableProductComponent } from './table-product.component';
 
-describe('TableProductsComponent', () => {
-  let component: TableProductComponent;
-  let fixture: ComponentFixture<TableProductComponent>;
+describe('TableScrollProductComponent', () => {
+  let component: TableScrollProductComponent;
+  let fixture: ComponentFixture<TableScrollProductComponent>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [ TableProductComponent ]
+      declarations: [ TableScrollProductComponent ]
     })
     .compileComponents();
   });
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(TableProductComponent);
+    fixture = TestBed.createComponent(TableScrollProductComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });
