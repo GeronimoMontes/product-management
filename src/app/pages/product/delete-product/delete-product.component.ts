@@ -1,5 +1,5 @@
 import { Component, ElementRef, Input, OnInit } from '@angular/core';
-import { IProduct } from '../../../@core/data/productoModel';
+import { IProduct } from '../../../@core/data';
 import { ModalService } from '../../../@core/root/modal.service';
 
 export interface ModalProdcutData {

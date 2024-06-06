@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
-import { IProduct, ProductData } from '../data/productoModel';
+import { IProduct, ProductData } from '../data/producto.model';
 import { HttpClient, HttpParams } from '@angular/common/http';
 
 @Injectable()
@@ -52,10 +52,10 @@ export class ProductService extends ProductData {
     return action === 'get'
       ? this.getAllProducts$()
       : action === 'create'
-      ? this.createProduct$(product)
-      : action === 'update'
-      ? this.updateProduct$(<string>product._id, product)
-      : this.deleteProduct$(<string>product._id);
+        ? this.createProduct$(product)
+        : action === 'update'
+          ? this.updateProduct$(<string>product._id, product)
+          : this.deleteProduct$(<string>product._id);
   }
 }
 

@@ -13,7 +13,7 @@ import {
   ErrorInterceptorService,
   URLInterceptorService,
 } from './http';
-import { ProductData } from './data/productoModel';
+import { ProductData } from './data/producto.model';
 import { ProductService } from './mock/producto.service';
 import { authGuard } from './guards';
 

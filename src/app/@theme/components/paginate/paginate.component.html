@@ -14,11 +14,15 @@
       <p class="text-sm text-gray-700">
         Showing
         <span class="font-medium">
-          {{current}}
+          {{current}} page
         </span>
         to
         <span class="font-medium">
-          {{total}}
+          {{total}} pages
+        </span>
+        of
+        <span class="font-medium">
+          {{count_current_data}}
         </span>
         of
         <span class="font-medium">
@@ -28,14 +32,14 @@
       </p>
     </div>
 
-    <div class="hidden sm:flex sm:flex-1 sm:items-center sm:justify-center">
-          <label for="itemsPerPage" class="block text-sm font-medium text-gray-700 mr-2">Items per page:</label>
-          <select (change)="onPerPage($event)" [ngModel]="itemsPerPage" id="itemsPerPage" class="relative inline-flex items-center rounded-md px-2 py-2 text-gray-900 ring-1 ring-inset ring-gray-300 hover:bg-indigo-100 focus:z-20 focus:outline-offset-0">
-              <option [value]="i" *ngFor="let i of [5,10,15,20,25]">{{i}}</option>
-          </select>
-      </div>
+    <div *ngIf="render_only_totalElements" class="hidden sm:flex sm:flex-1 sm:items-center sm:justify-center">
+      <label for="itemsPerPage" class="block text-sm font-medium text-gray-700 mr-2">Items per page:</label>
+      <select (change)="onPerPage($event)" [ngModel]="itemsPerPage" id="itemsPerPage" class="relative inline-flex items-center rounded-md px-2 py-2 text-gray-900 ring-1 ring-inset ring-gray-300 hover:bg-indigo-100 focus:z-20 focus:outline-offset-0">
+          <option [value]="i" *ngFor="let i of [5,10,15,20,25]">{{i}}</option>
+      </select>
+    </div>
 
-    <div>
+    <div *ngIf="render_only_totalElements">
       <nav class="isolate inline-flex -space-x-px rounded-md shadow-sm" aria-label="Pagination">
         <button [disabled]="current === 1" (click)="onFirst()"
           class="relative inline-flex items-center rounded-l-md px-2 py-2 text-gray-400 ring-1 ring-inset ring-gray-300 hover:bg-indigo-100 focus:z-20 focus:outline-offset-0">
@@ -62,5 +66,11 @@
           <i class="fas fa-angle-double-right"></i>
         </button>
       </nav>
+    </div>
+
+    <!-- <div *ngIf="!render_only_totalElements" class="flex flex-1 justify-end">
+      <button (click)="onScrollGoTop(true)" class=" relative  rounded-xl px-2 py-2 text-gray-800 ring-1 ring-inset shadow shadow-slate-600 ring-gray-300 hover:bg-indigo-100 focus:z-20 focus:outline-offset-0">
+        <i class="fas fa-angle-double-up"></i>
+      </button> -->
     </div>
   </div>

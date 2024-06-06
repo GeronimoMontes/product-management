@@ -9,13 +9,12 @@ import {
   Validators,
 } from '@angular/forms';
 import { ProductService } from '../../../@core/mock/producto.service';
-import { IProduct } from '../../../@core/data/productoModel';
+import { IProduct } from '../../../@core/data';
 import { NotificationService } from '../../../@theme/components/notification/notification.service';
 import {
   DeleteProductComponent,
   ModalProdcutData,
 } from '../delete-product/delete-product.component';
-import { ModalDeleteService } from '../../../@core/root/modalDelete.service';
 
 @Component({
   selector: 'app-form-product',
@@ -29,7 +28,7 @@ export class FormProductComponent implements OnInit {
     protected formBuilder: FormBuilder,
     protected readonly productService: ProductService,
     protected readonly notificationService: NotificationService
-  ) {}
+  ) { }
 
   ngOnInit() {
     console.log({ data: this.data });
@@ -83,16 +82,15 @@ export class FormProductComponent implements OnInit {
     const modalData: ModalProdcutData = {
       product: data,
       message: `You want to ${this.actionClick} the ${data.name} product from the system?`,
-      title: `${
-        this.actionClick.charAt(0).toUpperCase() + this.actionClick.slice(1)
-      } product.`,
+      title: `${this.actionClick.charAt(0).toUpperCase() + this.actionClick.slice(1)
+        } product.`,
       icon: 'fa fa-question',
       colorBtn:
         this.actionClick === 'delete'
           ? 'bg-red-600'
           : this.actionClick === 'create'
-          ? 'bg-blue-600'
-          : 'bg-yellow-600',
+            ? 'bg-blue-600'
+            : 'bg-yellow-600',
     };
 
     this.closeModal(false);
@@ -134,10 +132,10 @@ export class FormProductComponent implements OnInit {
       return control.errors.required
         ? `${controlName} field is required.`
         : control.errors.pattern && controlName === 'price'
-        ? `Ingrese solo numeros positivos.`
-        : control.errors.pattern && controlName === 'password'
-        ? `Mínimo 8 caracteres con sibomolos, mayúsculas, minúsculas y numeros.`
-        : '';
+          ? `Ingrese solo numeros positivos.`
+          : control.errors.pattern && controlName === 'password'
+            ? `Mínimo 8 caracteres con sibomolos, mayúsculas, minúsculas y numeros.`
+            : '';
     return '';
   }
 

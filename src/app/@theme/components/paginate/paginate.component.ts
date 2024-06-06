@@ -8,9 +8,11 @@ import {
 } from '@angular/core';
 export interface PaginateData {
   current: number,
-  perPage: number,
-  countPages: number,
-  resultsCount: number;
+  items_per_page: number,
+  count_pages: number,
+  results_count: number;
+  count_current_data: number;
+  render_only_totalElements: boolean;
 }
 
 
@@ -21,6 +23,7 @@ export interface PaginateData {
 })
 export class PaginateComponent implements OnChanges {
   ngOnChanges(changes: SimpleChanges): void {
+    console.log(changes)
     if (
       (changes['current'] && changes['current'].currentValue) ||
       (changes['total'] && changes['total'].currentValue)
@@ -49,10 +52,9 @@ export class PaginateComponent implements OnChanges {
   }
 
   public onPerPage($event: any): void {
-    console.log($event.target.value)
-    this.itemsPerPage = $event.target.value;
     this.perPage.emit($event.target.value);
   }
+
 
   private getPages(current: number, total: number): number[] {
     if (total <= 3) {
@@ -76,6 +78,8 @@ export class PaginateComponent implements OnChanges {
   @Input() current!: number;
   @Input() itemsPerPage!: number;
   @Input() resultsCount!: number;
+  @Input() count_current_data!: number;
+  @Input() render_only_totalElements!: boolean;
 
   @Output() changePage: EventEmitter<number> = new EventEmitter<number>();
   @Output() next: EventEmitter<number> = new EventEmitter<number>();

@@ -1,6 +1,6 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { Subject, takeUntil } from 'rxjs';
-import { IProduct, ProductData } from '../../../@core/data/productoModel';
+import { IProduct, ProductData } from '../../../@core/data/producto.model';
 import { ModalService } from '../../../@core/root/modal.service';
 import { FormProductComponent } from '../form-product/form-product.component';
 import { DeleteProductComponent } from '../delete-product/delete-product.component';
@@ -33,7 +33,7 @@ export class TableProductComponent implements OnInit, OnDestroy {
     this.fetchData();
   }
   perPageChangeEmitter($event: number) {
-    this.paginate.perPage = $event
+    this.paginate.items_per_page = $event
     this.fetchData();
   }
   pageChangeEmitter($event: number) {
@@ -43,15 +43,16 @@ export class TableProductComponent implements OnInit, OnDestroy {
 
   private fetchData() {
     this.loaddata = true;
-    const { current, perPage } = this.paginate;
+    const { current, items_per_page } = this.paginate;
 
     this.productService
-      .getAllProducts$(current, perPage, this.search)
+      .getAllProducts$(current, items_per_page, this.search)
       .pipe(takeUntil(this.destroy$))
       .subscribe((data: any) => {
         this.datasource.data = data.data;
-        this.paginate.resultsCount = data.documents_count;
-        this.paginate.countPages = data.page_total;
+        this.paginate.results_count = data.resultsCount;
+        this.paginate.count_pages = data.countPages;
+        this.paginate.count_current_data = data.count_current_data;
         this.loaddata = false;
       });
   }
@@ -96,10 +97,12 @@ export class TableProductComponent implements OnInit, OnDestroy {
     headers: ['name', 'description', 'price'],
   };
   public search: string = '';
-  protected paginate: PaginateData = {
+  public paginate: PaginateData = {
     current: 1,
-    perPage: 25,
-    countPages: 0,
-    resultsCount: 0
-  };
+    items_per_page: 25,
+    count_pages: 0,
+    results_count: 0,
+    count_current_data: 0,
+    render_only_totalElements: true,
+  }
 }

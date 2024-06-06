@@ -1,4 +1,6 @@
 import { Component, EventEmitter, Input, OnChanges, Output, SimpleChanges } from '@angular/core';
+import { PaginateData } from '../paginate/paginate.component';
+import { Observable } from 'rxjs';
 
 export type Action = 'view' | 'add' | 'update' | 'delete';
 
@@ -33,18 +35,24 @@ export class TableComponent implements OnChanges {
   }
 
   onScroll($event: any) {
-    const target = $event.target;
-    console.log(Math.round(target.scrollTop), target.offsetHeight, target.scrollHeight)
-    if (Math.round(target.scrollTop) + target.offsetHeight >= target.scrollHeight - 1) {
-      // const nextPage = Math.floor(this.dataSource.data.length / this.itemsPerPage) + 1;
-      this.emitterScrollAction.emit(this.currentPage + 1)
+    if (Math.round($event.target.scrollTop) + $event.target.offsetHeight >= $event.target.scrollHeight - 1) {
+      this.emitterScrollAction.emit(this.paginate.current + 1)
     }
   }
 
-  @Input() dataSource: DataSoucer = { data: [], headers: [] };
-  @Input() itemsPerPage: any;
-  @Input() currentPage: any;
-  @Input() loadData: any;
+  onPaginateChange($event: number) {
+    this.emitterPaginateChage.emit($event);
+  }
+  onPerPageChange($event: number) {
+    this.emitterPerPageChage.emit($event);
+  }
+
+  @Input() dataSource!: DataSoucer;
+  @Input() paginate!: PaginateData;
+  @Input() loaddata: any;
+
   @Output() emitterRowAction = new EventEmitter<EmitterData>();
   @Output() emitterScrollAction = new EventEmitter<number>();
+  @Output() emitterPaginateChage = new EventEmitter<number>();
+  @Output() emitterPerPageChage = new EventEmitter<number>();
 }

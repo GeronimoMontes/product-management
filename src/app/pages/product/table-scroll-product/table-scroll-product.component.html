@@ -9,19 +9,10 @@
   </div>
 </div>
 
-<!-- <div class="p-4 flex justify-center w-full text-6xl border border-l-orange-300 bg-slate-500 rounded">
-  <i class="animate-spin  fas fa-spinner"></i>
-</div> -->
-
-<div *ngIf="loaddata" role="status" class="m-4 mt-0 p-4 pt-0 flex flex-col items-center justify-center w-[85vw] absolute rounded-xl bg-slate-800 bg-opacity-90 z-40" style="height: calc(100vh - 13rem)">
-  <i class="animate-spin fas fa-spinner text-8xl"></i>
-  <span class="sr-only">Loading...</span>
-</div>
-
 <app-table
-  [currentPage]="current"
-  [itemsPerPage]="perPage" 
+  [loaddata]="loaddata"
   [dataSource]="datasource"
+  [paginate]="paginate"
   (emitterRowAction)="showModal($event.rowSelected)"
   (emitterScrollAction)="onScrollEvent($event)"
 ></app-table>
