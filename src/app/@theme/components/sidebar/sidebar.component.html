@@ -1,14 +1,17 @@
+<div class="flex items-center justify-center mb-4 p-4">
+  <img src="../../../../assets/logo-original.png" alt="">
+</div>
 <nav>
-  <button (click)="navigateHome()" class="block w-full text-left px-4 py-2 mb-2 bg-gray-800 rounded">
-    <i class="fas fa-home mr-2"></i>
-    Home
+  <button *ngFor="let item of menuSidebar" (click)="navigate(item.action)" class="block w-full text-left px-4 py-2 mb-2 bg-gray-800 rounded hover:bg-slate-400 hover:text-black">
+    <i class=" mr-2" [className]="item.icon"></i>
+    {{item.text}}
   </button>
-  <button (click)="navigateProfile()" class="block w-full text-left px-4 py-2 mb-2 bg-gray-800 rounded">
+  <!-- <button (click)="navigateProfile()" class="block w-full text-left px-4 py-2 mb-2 bg-gray-800 rounded hover:bg-slate-400 hover:text-black">
     <i class="fas fa-user mr-2"></i>
     Profile
   </button>
-  <button (click)="logOut()" class="block w-full text-left px-4 py-2 mb-2 bg-gray-800 rounded">
+  <button (click)="logOut()" class="block w-full text-left px-4 py-2 mb-2 bg-gray-800 rounded hover:bg-slate-400 hover:text-black">
     <i class="fas fa-sign-out-alt mr-2"></i>
     Logout
-  </button>
+  </button> -->
 </nav>
