@@ -1,6 +1,6 @@
 describe('Testing authenticate page!', () => {
   it('', () => {
-    const userCredenctials = { username: "test", password: "123" };
-    cy.login(userCredenctials);
+    // const userCredenctials = { username: Cypress.env('username'), password: Cypress.env('password') };
+    cy.login(Cypress.env('auth'));
   })
 });

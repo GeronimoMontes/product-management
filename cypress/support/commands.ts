@@ -1,7 +1,4 @@
 /// <reference types="cypress" />
-
-import { keys } from "cypress/types/lodash"
-
 // ***********************************************
 // This example commands.ts shows you how to
 // create various custom commands and overwrite
@@ -14,29 +11,27 @@ import { keys } from "cypress/types/lodash"
 //
 //
 // -- This is a parent command --
-Cypress.Commands.add("login", (userCredenctials) => {
-    cy.session(
-        userCredenctials,
-        () => {
-            cy.visit('auth/login/')
-            cy.visit('/login')
-            cy.get('input[name=username]').type(userCredenctials.username)
-            cy.get('input[name=password]').type(userCredenctials.password)
-            cy.get('form').submit()
-        },
-        {
-            validate: () => {
-                cy.getAllLocalStorage().then((result) => {
-                    expect(result).to.deep.equal({
-                        keys: ['token']
-                    })
-                })
-            },
-        }
-
-    )
-    cy.visit("/auth/login/")
-})
+Cypress.Commands.add('login', (userCredenctials) => {
+	cy.session(
+		userCredenctials,
+		() => {
+			cy.visit('auth/login/');
+			cy.get('[data-cy=cy-input-username]').type(userCredenctials.username);
+			cy.get('[data-cy=cy-input-password]').type(userCredenctials.password);
+			cy.get('[data-cy=cy-form-login]').submit();
+			cy.location('pathname').should('contains', '/pages/');
+		},
+		{
+			validate: () => {
+				cy.getAllLocalStorage({ log: true }).then((result) => {
+					expect(result)
+						.to.have.ownProperty('http://localhost:4200')
+						.ownProperty('token');
+				});
+			},
+		}
+	);
+});
 //
 //
 // -- This is a child command --

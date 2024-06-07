@@ -16,7 +16,7 @@ export class LoginComponent implements OnInit, OnDestroy {
   constructor(
     protected readonly authService: AuthService,
     protected formBuilder: FormBuilder
-  ) {}
+  ) { }
 
   ngOnDestroy() {
     this.destroy$.next();
@@ -75,10 +75,10 @@ export class LoginComponent implements OnInit, OnDestroy {
       return control.errors.required
         ? `${controlName} field is required.`
         : control.errors.pattern && controlName === 'email'
-        ? `EL formato no corresponde a un correo válido.`
-        : control.errors.pattern && controlName === 'password'
-        ? `Mínimo 8 caracteres con sibomolos, mayúsculas, minúsculas y numeros.`
-        : '';
+          ? `EL formato no corresponde a un correo válido.`
+          : control.errors.pattern && controlName === 'password'
+            ? `Mínimo 8 caracteres con sibomolos, mayúsculas, minúsculas y numeros.`
+            : '';
     return '';
   }
 
