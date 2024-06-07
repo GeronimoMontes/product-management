@@ -20,14 +20,6 @@ const routes: Routes = [
         component: TableScrollProductComponent,
       },
       {
-        path: 'detail/:id',
-        component: ViewProductComponent,
-      },
-      {
-        path: 'create',
-        component: FormProductComponent,
-      },
-      {
         path: '',
         redirectTo: 'table-paginate',
         pathMatch: 'full',
