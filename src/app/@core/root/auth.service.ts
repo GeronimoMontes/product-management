@@ -21,15 +21,18 @@ export class AuthService extends HeaderOption {
     return this.tokenStorage.pipe(map((token) => (token ? true : false)));
   }
 
-  login$(body: { username: string; password: string }): any {
+  login$(body: { username: string; password: string }) {
     const url = `auth/login`;
     return this.httpClient.post<any>(url, body, {}).pipe(
       map((response) => {
+        console.log({ response })
+        if (!response.token)
+          return response;
         // TODO: Set token localstora
         const { access_token } = response;
         this.tokenService.set(access_token);
         // TODO: Redict home page
-        this.router.navigateByUrl('/pages/products/table');
+        this.router.navigateByUrl('/pages/');
         return response;
       })
     );

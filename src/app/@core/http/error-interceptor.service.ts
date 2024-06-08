@@ -1,6 +1,4 @@
-import { Observable } from 'rxjs';
-import { throwError } from 'rxjs';
-import { catchError, map } from 'rxjs/operators';
+import { catchError, Observable, map, of } from 'rxjs';
 import { Injectable } from '@angular/core';
 import {
   HttpErrorResponse,
@@ -20,29 +18,37 @@ import { NotificationService } from '../../@theme/components/notification/notifi
  */
 @Injectable()
 export class ErrorInterceptorService implements HttpInterceptor {
-  constructor(private readonly notificationService: NotificationService) {}
+  constructor(private readonly notificationService: NotificationService) { }
 
   intercept(
     req: HttpRequest<any>,
     next: HttpHandler
   ): Observable<HttpEvent<any>> {
     return next.handle(req).pipe(
-      // map((event: HttpEvent<any>) => {
-      //   if (event instanceof HttpResponse) {
-      //     console.log(`${event.statusText} ${event.status} ${event.url}`);
-      //   }
-      //   return event;
-      // }),
-      catchError((error: HttpErrorResponse) => {
-        console.log({error});
-        this.notificationService.showNotification({
-          title: `${error.error.status} Error`,
-          type: 'error',
-          message: `${error.error.error} \n ${error.url}`,
-          duration: 5000,
-        });
-        throw error;
-      })
+      map((event: HttpEvent<any>) => {
+        console.log(event)
+        if (event instanceof HttpResponse) {
+          if (event.body.exception)
+            this.notificationService.showNotification({
+              title: `${event.body.exception.response.status} Error`,
+              type: 'error',
+              message: `${event.body.exception.response.error} \n ${event.url}`,
+              duration: 5000,
+            });
+          // console.log(`${event.statusText} ${event.status} ${event.url}`);
+        }
+
+        return event;
+      }),
+      // catchError((error) => {
+      //   // if (error?.error?.error === "Authentication failed.") {
+
+      //   //   console.log({ error })
+      //   //   return of()
+      //   // }
+      //   console.log(error)
+      //   throw new Error(error)
+      // })
     );
   }
 }

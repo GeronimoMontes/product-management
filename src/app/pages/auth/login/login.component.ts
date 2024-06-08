@@ -1,8 +1,10 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { AuthService } from '../../../@core/root/auth.service';
 import {
+  AbstractControl,
   FormBuilder,
   FormControl,
+  FormGroup,
   Validators,
 } from '@angular/forms';
 import { Subject, takeUntil } from 'rxjs';
@@ -31,33 +33,36 @@ export class LoginComponent implements OnInit, OnDestroy {
   private initForm() {
     this.formGroup = this.formBuilder.group({
       username: new FormControl('', [Validators.required]),
-      password: new FormControl('', [
-        Validators.required,
-        //  8 letras, con al menos un símbolo, letras mayúsculas y minúsculas y un número
-        Validators.pattern(
-          /^(?=.*\d)(?=.*[!@#$%^&*])(?=.*[a-z])(?=.*[A-Z]).{8,30}$/
-        ),
-        Validators.minLength(8),
-        Validators.maxLength(30),
-      ]),
+      password: new FormControl('', [Validators.required]),
     });
   }
 
-  public formSubmit() {
-    this.loadingData = true;
+  public async formSubmit() {
+    this.loading = true;
+    this.submitted = true;
 
-    const { username, password } = this.formGroup.value;
-    const body = {
-      username: username,
-      password: password,
-    };
-    this.authService
-      .login$(body)
-      .pipe(takeUntil(this.destroy$))
-      .subscribe(() => {
-        console.log('asdfasdf');
-        this.loadingData = false;
-      });
+    if (this.formGroup.valid) {
+      const { username, password } = this.formGroup.value;
+      const body = {
+        username: username,
+        password: password,
+      };
+      this.authService
+        .login$(body)
+        .pipe(takeUntil(this.destroy$))
+        .subscribe((res) => {
+          this.error_form_response = res.exception.response.error;
+          setInterval(
+            () => { this.error_form_response = '' },
+            5000
+          )
+          console.log(this.error_form_response)
+          this.loading = false;
+        });
+
+    } else {
+      this.loading = false;
+    }
   }
 
   /**
@@ -71,7 +76,7 @@ export class LoginComponent implements OnInit, OnDestroy {
     this.formGroup.get(controlName).markAsTouched();
     const control = this.formGroup.get(controlName);
 
-    if (control.touched && control.errors != null)
+    if (this.controlValid(controlName))
       return control.errors.required
         ? `${controlName} field is required.`
         : control.errors.pattern && controlName === 'email'
@@ -82,12 +87,14 @@ export class LoginComponent implements OnInit, OnDestroy {
     return '';
   }
 
-  public controlValid(controlName: string, form: any): boolean {
-    const control = form.get(controlName);
-    return control.dirty && control.touched && control.valid;
+  public controlValid(controlName: string): boolean {
+    const control: any = this.formGroup.get(controlName);
+    return (control.dirty && control.invalid) || (this.submitted && control.invalid);
   }
 
   private destroy$: Subject<void> = new Subject<void>();
-  public loadingData: boolean = false;
+  public error_form_response: string = '';
+  public loading: boolean = false;
+  public submitted: boolean = false;
   public formGroup: any;
 }
