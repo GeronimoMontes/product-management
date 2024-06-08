@@ -1,36 +1,41 @@
-<div *ngIf="loaddata" style="height: calc(100vh - 13rem); width: calc(100vw - 10rem);" class="rounded-xl mr-2 ml-2 pt-0 flex flex-row items-center justify-center absolute bg-slate-800 bg-opacity-60 z-40">
+<div *ngIf="loaddata" style="height: calc(100vh - 13rem); width: calc(100vw - 1rem);" class="rounded-xl mr-2 ml-2 pt-0 flex flex-row items-center justify-center absolute rounded-xl bg-slate-800 bg-opacity-60 z-40">
     <i class="animate-spin fas fa-spinner text-8xl"></i>
     <span class="sr-only">Loading...</span>
 </div>
-<div (scroll)="onScroll($event)" class="overflow-y-auto rounded-xl mr-2 ml-2 pt-0" style="height: calc(100vh - 17rem)">
-  <table class="w-full border-collapse border border-gray-800 rounded-xl shadow-2xl">   
-    <thead class="sticky top-0 bg-gray-200">   
-      <tr class="py-2 px-4 bg-gray-200 border border-gray-400"> 
-        <th class="py-2 px-4 bg-gray-200 border border-gray-400">#</th> 
-        <th *ngFor="let header of dataSource.headers" class="py-2 px-4 bg-gray-200 border border-gray-400" > {{ header }}   </th> 
-        <th class="py-2 px-4 bg-gray-200 border border-gray-400">actions</th>
-      </tr>  
-    </thead>   
-    <tbody class="table-fixed mt-3">   
-        <!-- <tr  *ngIf="dataSource.data.length == 0;" class="py-2 px-4 border border-gray-400  text-xl text-center" >      
-          No data fund...
-        </tr>   -->
-        <tr  *ngFor="let row of dataSource.data; index as index" class="hover:bg-slate-300 text-xl " > 
-          <td class="py-2 px-4 border border-gray-400 text-center" >
-            {{(index + 1) + ((paginate.current-1) * paginate.items_per_page)}}
-          </td> 
-          <td *ngFor="let header of dataSource.headers;" class="py-2 px-4 border border-gray-400" > 
-            {{ row[header] }}   
-          </td> 
-          <td class="py-2 px-4 border border-gray-400 text-center"> 
-            <i class="fas fa-pen mr-2 cursor-pointer text-blue-500" (click)="emittEventClickAction(row, 'view')" ></i> 
-          </td>  
+<div class="rounded-xl mr-2 ml-2 pt-0"> 
+  <div (scroll)="onScroll($event)" class="overflow-y-auto" style="height: calc(100vh - 17rem)">
+    <table class="table w-full">   
+      <thead class="sticky top-0 bg-gray-200">   
+        <tr class="py-2 px-4 bg-gray-200 border border-gray-400"> 
+          <th class="py-2 px-4 bg-gray-200 border border-gray-400">#</th> 
+          <th *ngFor="let header of dataSource.headers" class="py-2 px-4 bg-gray-200 border border-gray-400" > {{ header }}   </th> 
+          <th class="py-2 px-4 bg-gray-200 border border-gray-400">actions</th>
         </tr>  
-    </tbody> 
-  </table> 
-</div> 
-
-<div style=" width: calc(100vw - 10rem);" class=" rounded-xl mr-2 ml-2 pt-0"> 
+      </thead>   
+      <tbody class="table-fixed">
+        <ng-container *ngIf="paginate.count_current_data > 0; else noData">
+          <tr *ngFor="let row of dataSource.data; index as index" class="hover:bg-slate-300 text-xl">
+            <td class="py-2 px-4 border border-gray-400 text-center">
+              {{ (index + 1) + ((paginate.current - 1) * paginate.items_per_page) }}
+            </td>
+            <td *ngFor="let header of dataSource.headers" class="py-2 px-4 border border-gray-400">
+              {{ row[header] }}
+            </td>
+            <td class="py-2 px-4 border border-gray-400 text-center">
+              <i class="fas fa-pen mr-2 cursor-pointer text-blue-500" (click)="emittEventClickAction(row, 'view')"></i>
+            </td>
+          </tr>
+        </ng-container>
+        <ng-template #noData>
+          <tr>
+            <td [colSpan]="dataSource.headers.length + 2" class="text-xl text-center  py-4 w-full border-4 border-gray-400 bg-gray-100 rounded-xl">
+              <div class="">No data found...</div>
+            </td>
+          </tr>
+        </ng-template>
+      </tbody> 
+    </table> 
+  </div>
   <app-paginate
     [current]="paginate.current" 
     [itemsPerPage]="paginate.items_per_page" 
@@ -43,5 +48,7 @@
     (previous)="onPaginateChange($event)"
     (perPage)="onPerPageChange($event)"
     ></app-paginate>
+</div>
+<div class="mb-4">
 
 </div>
