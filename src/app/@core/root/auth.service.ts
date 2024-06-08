@@ -25,14 +25,11 @@ export class AuthService extends HeaderOption {
     const url = `auth/login`;
     return this.httpClient.post<any>(url, body, {}).pipe(
       map((response) => {
-        console.log({ response })
-        if (!response.token)
-          return response;
-        // TODO: Set token localstora
-        const { access_token } = response;
-        this.tokenService.set(access_token);
-        // TODO: Redict home page
-        this.router.navigateByUrl('/pages/');
+        if (!!response.access_token) {
+          const { access_token } = response;
+          this.tokenService.set(access_token);
+          this.router.navigateByUrl('/pages/products/table-paginate');
+        }
         return response;
       })
     );

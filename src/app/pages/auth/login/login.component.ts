@@ -1,4 +1,10 @@
-import { Component, OnDestroy, OnInit } from '@angular/core';
+import {
+  Component,
+  OnChanges,
+  OnDestroy,
+  OnInit,
+  SimpleChanges,
+} from '@angular/core';
 import { AuthService } from '../../../@core/root/auth.service';
 import {
   AbstractControl,
@@ -14,11 +20,15 @@ import { Subject, takeUntil } from 'rxjs';
   templateUrl: './login.component.html',
   styleUrls: ['./login.component.css'],
 })
-export class LoginComponent implements OnInit, OnDestroy {
+export class LoginComponent implements OnInit, OnDestroy, OnChanges {
   constructor(
     protected readonly authService: AuthService,
     protected formBuilder: FormBuilder
-  ) { }
+  ) {}
+  ngOnChanges(changes: SimpleChanges): void {
+    console.log({ changes });
+    throw new Error('Method not implemented.');
+  }
 
   ngOnDestroy() {
     this.destroy$.next();
@@ -26,7 +36,7 @@ export class LoginComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit(): void {
-    this.authService.logOut$()
+    this.authService.logOut$();
     this.initForm();
   }
 
@@ -51,15 +61,11 @@ export class LoginComponent implements OnInit, OnDestroy {
         .login$(body)
         .pipe(takeUntil(this.destroy$))
         .subscribe((res) => {
-          this.error_form_response = res.exception.response.error;
-          setInterval(
-            () => { this.error_form_response = '' },
-            5000
-          )
-          console.log(this.error_form_response)
+          if (!!res.exception)
+            this.error_form_response = res.exception.response.error;
+
           this.loading = false;
         });
-
     } else {
       this.loading = false;
     }
@@ -80,16 +86,18 @@ export class LoginComponent implements OnInit, OnDestroy {
       return control.errors.required
         ? `${controlName} field is required.`
         : control.errors.pattern && controlName === 'email'
-          ? `EL formato no corresponde a un correo válido.`
-          : control.errors.pattern && controlName === 'password'
-            ? `Mínimo 8 caracteres con sibomolos, mayúsculas, minúsculas y numeros.`
-            : '';
+        ? `EL formato no corresponde a un correo válido.`
+        : control.errors.pattern && controlName === 'password'
+        ? `Mínimo 8 caracteres con sibomolos, mayúsculas, minúsculas y numeros.`
+        : '';
     return '';
   }
 
   public controlValid(controlName: string): boolean {
     const control: any = this.formGroup.get(controlName);
-    return (control.dirty && control.invalid) || (this.submitted && control.invalid);
+    return (
+      (control.dirty && control.invalid) || (this.submitted && control.invalid)
+    );
   }
 
   private destroy$: Subject<void> = new Subject<void>();
