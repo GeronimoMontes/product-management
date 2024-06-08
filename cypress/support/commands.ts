@@ -11,26 +11,37 @@
 //
 //
 // -- This is a parent command --
+
+/**
+ * Session: Authenticate user
+ */
 Cypress.Commands.add('login', (userCredenctials) => {
-	cy.session(
-		userCredenctials,
-		() => {
-			cy.visit('auth/login/');
-			cy.get('[data-cy=cy-input-username]').type(userCredenctials.username);
-			cy.get('[data-cy=cy-input-password]').type(userCredenctials.password);
-			cy.get('[data-cy=cy-form-login]').submit();
-			cy.location('pathname').should('contains', '/pages/');
-		},
-		{
-			validate: () => {
-				cy.getAllLocalStorage({ log: true }).then((result) => {
-					expect(result)
-						.to.have.ownProperty('http://localhost:4200')
-						.ownProperty('token');
-				});
-			},
-		}
-	);
+  cy.session(
+    userCredenctials,
+    () => {
+      cy.visit('/auth/login/');
+
+      cy.get('[data-cy=cy-input-username]').type(userCredenctials.username);
+
+      cy.get('[data-cy=cy-input-password]').type(userCredenctials.password);
+
+      cy.get('[data-cy=cy-form-login]').submit();
+
+      cy.location('pathname').should(
+        'contains',
+        '/pages/products/table-paginate'
+      );
+    },
+    {
+      validate: () => {
+        cy.getAllLocalStorage({ log: true }).then((result) => {
+          expect(result)
+            .to.have.ownProperty('http://localhost:4200')
+            .ownProperty('token');
+        });
+      },
+    }
+  );
 });
 //
 //

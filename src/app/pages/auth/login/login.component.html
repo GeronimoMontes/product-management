@@ -34,7 +34,11 @@
           class="border rounded-xl w-full px-3 py-2 focus:border-blue-500 border-gray-300 focus:outline-none"
           [class.border-red-500]="controlValid('username')"
         />
-        <div *ngIf="controlValid('username')" class="text-red-500 text-sm mt-1">
+        <div
+          data-cy="cy-error-username"
+          *ngIf="controlValid('username')"
+          class="text-red-500 text-sm mt-1"
+        >
           {{ getError("username") }}
         </div>
       </div>
@@ -55,7 +59,11 @@
           placeholder="Contraseña"
           [class.border-red-500]="controlValid('password')"
         />
-        <div *ngIf="controlValid('password')" class="text-red-500 text-sm mt-1">
+        <div
+          data-cy="cy-error-password"
+          *ngIf="controlValid('password')"
+          class="text-red-500 text-sm mt-1"
+        >
           {{ getError("password") }}
         </div>
       </div>
@@ -63,10 +71,14 @@
         data-cy="cy-button-submit"
         type="submit"
         class="bg-blue-500 text-white px-4 py-2 rounded-xl hover:bg-blue-600 focus:outline-none focus:bg-blue-600"
-      >
+        >
         Iniciar sesión
-      </button>
-      <div *ngIf="!!error_form_response" class="flex flex-row justify-center w-full rounded-sm border border-red-600 bg-red-400 font-bold text-red-950  m-auto mt-4 p-2">
+        </button>
+        <div
+        data-cy="cy-error-form"
+        *ngIf="!!error_form_response"
+        class="flex flex-row justify-center w-full rounded-sm border border-red-600 bg-red-400 font-bold text-red-950 m-auto mt-4 p-2"
+      >
         {{ error_form_response }}
       </div>
     </form>
