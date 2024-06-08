@@ -1,4 +1,3 @@
-import Swal from 'sweetalert2'
 import { Component, ElementRef, Input, OnInit } from '@angular/core';
 import { ModalService } from '../../../@core/root/modal.service';
 import { Subject } from 'rxjs';
@@ -94,12 +93,7 @@ export class FormProductComponent implements OnInit {
     };
 
     this.closeModal(false);
-    Swal.fire({
-      title: 'Error!',
-      text: 'Do you want to continue',
-      icon: 'error',
-      confirmButtonText: 'Cool'
-    })
+  
     this.modalService
       .openModal(DeleteProductComponent, modalData)
       .subscribe((response) => {
