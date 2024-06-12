@@ -18,16 +18,15 @@ export class TableScrollProductComponent implements OnInit, OnDestroy {
     protected readonly modalService: ModalService,
     protected readonly notificationService: NotificationService,
     protected readonly searchService: SearchService
-  ) { }
+  ) {}
 
   ngOnInit() {
     this.searchService.currentSearchQuery
       .pipe(takeUntil(this.destroy$))
-      .subscribe(query => {
+      .subscribe((query) => {
         this.search = query;
-        if (this.search !== '')
-          this.datasource.data = [];
-        this.fetchData()
+        if (this.search !== '') this.datasource.data = [];
+        this.fetchData();
       });
   }
 
@@ -42,7 +41,7 @@ export class TableScrollProductComponent implements OnInit, OnDestroy {
 
   onScrollEvent($event: any) {
     this.paginate.current = $event;
-    this.loaddata = true
+    this.loaddata = true;
     this.searchService.changeSearchQuery(this.search);
   }
 
@@ -50,15 +49,18 @@ export class TableScrollProductComponent implements OnInit, OnDestroy {
     this.loaddata = true;
 
     this.productService
-      .getAllProducts$(this.paginate.current, this.paginate.items_per_page, this.search)
+      .getAllProducts$(
+        this.paginate.current,
+        this.paginate.items_per_page,
+        this.search
+      )
       .pipe(takeUntil(this.destroy$))
       .subscribe((data: any) => {
-        this.datasource.data = this.datasource.data.concat(data.data)
-        this.paginate.results_count = + data.resultsCount;
+        this.datasource.data = this.datasource.data.concat(data.data);
+        this.paginate.results_count += data.resultsCount;
         this.paginate.count_pages = data.countPages;
         this.paginate.count_current_data += data.count_current_data;
 
-        console.log(this.datasource)
         this.loaddata = false;
       });
   }
@@ -78,7 +80,6 @@ export class TableScrollProductComponent implements OnInit, OnDestroy {
   public datasource: DataSoucer = {
     data: [],
     headers: ['name', 'description', 'price'],
-
   };
   public search: string = '';
   public paginate: PaginateData = {
@@ -88,5 +89,5 @@ export class TableScrollProductComponent implements OnInit, OnDestroy {
     results_count: 0,
     count_current_data: 0,
     render_only_totalElements: false,
-  }
+  };
 }

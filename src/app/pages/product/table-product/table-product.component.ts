@@ -6,6 +6,7 @@ import { FormProductComponent } from '../form-product/form-product.component';
 import { DeleteProductComponent } from '../delete-product/delete-product.component';
 import { NotificationService } from '../../../@theme/components/notification/notification.service';
 import { DataSoucer, PaginateData } from '../../../@theme/components';
+import { SearchService } from '../../../@core/root/search.service';
 
 @Component({
   selector: 'app-table-products',
@@ -16,28 +17,33 @@ export class TableProductComponent implements OnInit, OnDestroy {
   constructor(
     protected readonly productService: ProductData,
     protected readonly modalService: ModalService,
-    protected readonly notificationService: NotificationService
-  ) { }
+    protected readonly notificationService: NotificationService,
+    protected readonly searchService: SearchService
+  ) {}
 
   ngOnInit() {
-    this.fetchData();
+    this.searchService.currentSearchQuery
+      .pipe(takeUntil(this.destroy$))
+      .subscribe((query) => {
+        this.search = query;
+        if (this.search !== '') this.datasource.data = [];
+        this.paginate.current = 1;
+        this.fetchData();
+      });
   }
   ngOnDestroy() {
     this.destroy$.next();
     this.destroy$.complete();
   }
-
-  searchEvent($event: any) {
-    this.search = $event;
-    this.paginate.current = 1;
-    this.fetchData();
+  onSearchChange($event: any) {
+    this.searchService.changeSearchQuery($event.target.value);
   }
   perPageChangeEmitter($event: number) {
-    this.paginate.items_per_page = $event
+    this.paginate.items_per_page = $event;
     this.fetchData();
   }
   pageChangeEmitter($event: number) {
-    this.paginate.current = $event
+    this.paginate.current = $event;
     this.fetchData();
   }
 
@@ -104,5 +110,5 @@ export class TableProductComponent implements OnInit, OnDestroy {
     results_count: 0,
     count_current_data: 0,
     render_only_totalElements: true,
-  }
+  };
 }
