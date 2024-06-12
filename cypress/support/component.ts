@@ -33,6 +33,7 @@ declare global {
     interface Chainable {
       mount: typeof mount;
       login: (user: User) => {};
+      product: (data:any) => {};
     }
   }
 }

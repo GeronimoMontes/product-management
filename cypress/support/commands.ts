@@ -15,6 +15,18 @@
 /**
  * Session: Authenticate user
  */
+Cypress.Commands.add('product', (data) => {
+  cy.get('[data-cy=cy-input-name]').type(data.name);
+
+  cy.get('[data-cy=cy-input-description]').type(data.description);
+
+  cy.get('[data-cy=cy-input-price]').type(data.price.toString());
+
+  cy.get('[data-cy=cy-button-add]').click();
+
+  cy.get('.swal2-confirm').click();
+});
+
 Cypress.Commands.add('login', (userCredenctials) => {
   cy.session(
     userCredenctials,
