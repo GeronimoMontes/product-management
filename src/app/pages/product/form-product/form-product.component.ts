@@ -57,11 +57,11 @@ export class FormProductComponent implements OnInit {
       _id: new FormControl(this.data?._id, []),
       name: new FormControl(this.data?.name, [
         Validators.required,
-        Validators.maxLength(300),
+        Validators.maxLength(60),
       ]),
       description: new FormControl(this.data?.description, [
         Validators.required,
-        Validators.maxLength(300),
+        Validators.maxLength(100),
       ]),
       price: new FormControl(this.data?.price, [
         Validators.required,
@@ -71,8 +71,8 @@ export class FormProductComponent implements OnInit {
   }
 
   public formSubmit() {
-    this.loadingData = false;
-    this.submitted = false;
+    this.loadingData = true;
+    this.submitted = true;
 
     if (this.formGroup.valid) {
       const data = this.formGroup.value;
