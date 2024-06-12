@@ -15,6 +15,7 @@ import {
   ModalProdcutData,
 } from '../delete-product/delete-product.component';
 import Swal from 'sweetalert2';
+import { uniqueNameValidator } from './unique-name.validator';
 
 @Component({
   selector: 'app-form-product',
@@ -28,7 +29,7 @@ export class FormProductComponent implements OnInit {
     protected formBuilder: FormBuilder,
     protected readonly productService: ProductService,
     protected readonly notificationService: NotificationService
-  ) { }
+  ) {}
 
   ngOnInit() {
     console.log({ data: this.data });
@@ -55,10 +56,11 @@ export class FormProductComponent implements OnInit {
   private initForm() {
     this.formGroup = this.formBuilder.group({
       _id: new FormControl(this.data?._id, []),
-      name: new FormControl(this.data?.name, [
-        Validators.required,
-        Validators.maxLength(60),
-      ]),
+      name: new FormControl(
+        this.data?.name,
+        [Validators.required, Validators.maxLength(60)],
+        [uniqueNameValidator(this.productService)]
+      ),
       description: new FormControl(this.data?.description, [
         Validators.required,
         Validators.maxLength(100),
@@ -107,13 +109,16 @@ export class FormProductComponent implements OnInit {
     const control = this.formGroup.get(controlName);
 
     if (control.touched && control.errors != null)
+     console.log (control.errors);
       return control.errors.required
         ? `${controlName} field is required.`
         : control.errors.pattern && controlName === 'price'
-          ? `Please enter only positive numbers.`
-          : control.errors.pattern && controlName === 'password'
-            ? `Minimum 8 characters with symbols, uppercase, lowercase, and numbers.`
-            : '';
+        ? `Please enter only positive numbers.`
+        : control.errors.pattern && controlName === 'password'
+        ? `Minimum 8 characters with symbols, uppercase, lowercase, and numbers.`
+        : control.errors['uniqueName'] && controlName === 'name'
+        ? `The product name is already registered.`
+        : '';
     return '';
   }
 

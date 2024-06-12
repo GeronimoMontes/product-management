@@ -10,6 +10,13 @@ export class ProductService extends ProductData {
   constructor(protected httpClient: HttpClient) {
     super(httpClient);
   }
+  isNameTaken(name: string): Observable<boolean> {
+    const options = {
+      params: new HttpParams()
+        .set('name', name.split(" ").filter(e => e !== '').join(" ").trim()),
+    };
+    return this.httpClient.get<boolean>(`${this.apiUrl}/name-unique/`, options);
+  }
 
   // GET /products
   getAllProducts$(skip: number = 1, limit: number = 25, search: string = '') {
