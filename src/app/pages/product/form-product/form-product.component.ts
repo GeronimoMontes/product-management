@@ -14,6 +14,7 @@ import {
   DeleteProductComponent,
   ModalProdcutData,
 } from '../delete-product/delete-product.component';
+import Swal from 'sweetalert2';
 
 @Component({
   selector: 'app-form-product',
@@ -69,51 +70,34 @@ export class FormProductComponent implements OnInit {
     });
   }
 
-  public formSubmit(form: FormGroup) {
-    this.loadingData = !this.loadingData;
+  public formSubmit() {
+    this.loadingData = false;
+    this.submitted = false;
 
-    if (!form.valid) {
-      this.loadingData = false;
-      console.log({ form });
-      return;
-    }
-    const data = this.formGroup.value;
-    const modalData: ModalProdcutData = {
-      product: data,
-      message: `You want to ${this.actionClick} the ${data.name} product from the system?`,
-      title: `${this.actionClick.charAt(0).toUpperCase() + this.actionClick.slice(1)
-        } product.`,
-      icon: 'fa fa-question',
-      colorBtn:
-        this.actionClick === 'delete'
-          ? 'bg-red-600'
-          : this.actionClick === 'create'
-            ? 'bg-blue-600'
-            : 'bg-yellow-600',
-    };
+    if (this.formGroup.valid) {
+      const data = this.formGroup.value;
 
-    this.closeModal(false);
-  
-    this.modalService
-      .openModal(DeleteProductComponent, modalData)
-      .subscribe((response) => {
-        if (response) {
-          // REVIEW: generar metodo get promise event
+      Swal.fire({
+        title: `You want to ${this.actionClick} the ${data.name} product from the system?`,
+        showCancelButton: true,
+        confirmButtonText: 'Acept',
+      }).then((result) => {
+        if (result.isConfirmed) {
           this.productService
             .productFetch$(this.actionClick, data)
             .subscribe((updateProduct: IProduct) => {
               this.notificationService.showNotification({
                 type: 'success',
-                title: 'Producto actualizado',
-                message: `El producto ${updateProduct.name} se ha actualizado de forma correcta.`,
+                title: 'Update product',
+                message: `The product ${updateProduct.name} has been successfully updated.`,
                 duration: 50000,
               });
               this.loadingData = !this.loadingData;
-              // REVIEW: No debe retornar false
               this.closeModal(false);
             });
         }
       });
+    }
   }
 
   public getError(controlName: string): string {
@@ -126,24 +110,23 @@ export class FormProductComponent implements OnInit {
       return control.errors.required
         ? `${controlName} field is required.`
         : control.errors.pattern && controlName === 'price'
-          ? `Ingrese solo numeros positivos.`
+          ? `Please enter only positive numbers.`
           : control.errors.pattern && controlName === 'password'
-            ? `Mínimo 8 caracteres con sibomolos, mayúsculas, minúsculas y numeros.`
+            ? `Minimum 8 characters with symbols, uppercase, lowercase, and numbers.`
             : '';
     return '';
   }
 
-  public controlValid(controlName: string, form: any): boolean {
-    const control = form.get(controlName);
-    return control.dirty && control.touched && control.valid;
-  }
-
-  eventClick() {
-    console.log('click');
+  public controlValid(controlName: string): boolean {
+    const control: any = this.formGroup.get(controlName);
+    return (
+      (control.dirty && control.invalid) || (this.submitted && control.invalid)
+    );
   }
 
   private destroy$: Subject<void> = new Subject<void>();
   public loadingData: boolean = false;
+  public submitted: boolean = false;
   public actionClick: any;
   public formGroup: any;
   @Input() data: IProduct | undefined;
