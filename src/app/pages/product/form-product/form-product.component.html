@@ -22,7 +22,11 @@
             <i class="fas fa-times-circle text-2xl"></i>
           </button>
           <h2 class="text-xl font-semibold mb-4">Formulario Producto</h2>
-          <form [formGroup]="formGroup" (submit)="formSubmit()">
+          <form
+            [formGroup]="formGroup"
+            (submit)="formSubmit()"
+            data-cy="cy-form-product"
+          >
             <input
               [class.border-red-500]="controlValid('name')"
               type="hidden"

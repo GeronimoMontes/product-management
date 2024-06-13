@@ -11,6 +11,10 @@ describe('Product: Create product', () => {
     cy.get('[data-cy=cy-product-add]').should('exist').click();
   });
 
+  afterEach(() => {
+    cy.visit('/pages/products/table-paginate/');
+  });
+
   it('should load the input-name', () => {
     cy.get('[data-cy=cy-input-name]').should('exist');
   });

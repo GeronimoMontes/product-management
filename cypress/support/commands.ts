@@ -15,6 +15,34 @@
 /**
  * Session: Authenticate user
  */
+Cypress.Commands.add('find_product', (name: any) => {
+  cy.get('[data-cy=cy-product-search]').type(name);
+
+  // Busca el elemento en la tabla
+  // Esperar a que las filas de la tabla aparezcan
+  cy.get('[data-cy=cy-table-products] tbody tr').should(
+    'not.have.text',
+    'No data found...'
+  );
+
+  let found = false;
+  // Iterar sobre cada fila y buscar el elemento
+  return cy.get('[data-cy=cy-table-products] tbody tr').each(($row) => {
+    cy.wrap($row)
+      .then((row) => {
+        if (row.find('td').eq(1).text === name) {
+          // Encontrar el botón de acción en la misma fila y hacer clic
+          cy.wrap(row).get('td').eq(4).first().click();
+          found = true;
+        }
+      })
+      .then(() => {
+        return cy.wrap(found);
+        // Devolver el valor de 'found' envuelto en un comando de Cypress
+      });
+  });
+  // expect(found).to.be.false;
+});
 Cypress.Commands.add('product', (data) => {
   cy.get('[data-cy=cy-input-name]').type(data.name);
 

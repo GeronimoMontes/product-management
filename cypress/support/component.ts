@@ -15,12 +15,12 @@
 
 // Import commands.js using ES2015 syntax:
 import { LoginComponent } from '../../src/app/pages/auth/login/login.component';
-import './commands'
+import './commands';
 
 // Alternatively you can use CommonJS syntax:
 // require('./commands')
 
-import { mount } from 'cypress/angular'
+import { mount } from 'cypress/angular';
 
 // Augment the Cypress namespace to include type definitions for
 // your custom command.
@@ -28,17 +28,21 @@ import { mount } from 'cypress/angular'
 // with a <reference path="./component" /> at the top of your spec.
 declare global {
   namespace Cypress {
-    interface User { username: string, password: string }
-    
+    interface User {
+      username: string;
+      password: string;
+    }
+
     interface Chainable {
       mount: typeof mount;
       login: (user: User) => {};
-      product: (data:any) => {};
+      product: (data: any) => {};
+      find_product: any;
     }
   }
 }
 
-Cypress.Commands.add('mount', mount)
+Cypress.Commands.add('mount', mount);
 
 // Example use:
-cy.mount(LoginComponent)
+cy.mount(LoginComponent);
