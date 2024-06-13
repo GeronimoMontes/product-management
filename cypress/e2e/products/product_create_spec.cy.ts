@@ -5,6 +5,8 @@ describe('Product: Create product', () => {
     price: 120.0,
   };
 
+  const name_taken = 'Anisette - Mcguiness';
+
   beforeEach(() => {
     cy.login(Cypress.env('auth'));
     cy.visit('/pages/products/table-paginate/');
@@ -64,13 +66,9 @@ describe('Product: Create product', () => {
   });
 
   it('should unique name: Inpunt Name', () => {
-    cy.get('[data-cy=cy-input-name]').should('exist').type(data.name);
-    cy.get('[data-cy=cy-input-description]')
-      .should('exist')
-      .type(data.description);
-    cy.get('[data-cy=cy-input-price]')
-      .should('exist')
-      .type(data.price.toString());
+    cy.get('[data-cy=cy-input-name]').should('exist').type(name_taken);
+    cy.get('[data-cy=cy-input-description]').should('exist').type(name_taken);
+    cy.get('[data-cy=cy-input-price]').should('exist').type('000');
     cy.get('[data-cy=cy-button-add]').click();
     let $el;
 
@@ -109,13 +107,6 @@ describe('Product: Create product', () => {
   });
 
   it('should create: new Product', () => {
-    const str_random = Math.random().toString(36).substr(2, 10);
-    const product = {
-      name: str_random + ': ' + data.name,
-      description: str_random + ': ' + data.description,
-      price: data.price,
-    };
-
-    cy.product(product);
+    cy.product(data);
   });
 });

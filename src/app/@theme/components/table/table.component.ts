@@ -1,4 +1,11 @@
-import { Component, EventEmitter, Input, OnChanges, Output, SimpleChanges } from '@angular/core';
+import {
+  Component,
+  EventEmitter,
+  Input,
+  OnChanges,
+  Output,
+  SimpleChanges,
+} from '@angular/core';
 import { PaginateData } from '../paginate/paginate.component';
 import { Observable } from 'rxjs';
 
@@ -24,10 +31,10 @@ export interface EmitterData {
   styleUrls: ['./table.component.css'],
 })
 export class TableComponent implements OnChanges {
-  constructor() { }
+  constructor() {}
 
   ngOnChanges(changes: SimpleChanges): void {
-    console.log({ changes })
+    console.log({ changes });
   }
 
   emittEventClickAction(rowSelected: any, action: Action) {
@@ -35,8 +42,11 @@ export class TableComponent implements OnChanges {
   }
 
   onScroll($event: any) {
-    if (Math.round($event.target.scrollTop) + $event.target.offsetHeight >= $event.target.scrollHeight - 1) {
-      this.emitterScrollAction.emit(this.paginate.current + 1)
+    if (
+      Math.round($event.target.scrollTop) + $event.target.offsetHeight >=
+      $event.target.scrollHeight - 1
+    ) {
+      this.emitterScrollAction.emit(this.paginate.current + 1);
     }
   }
 

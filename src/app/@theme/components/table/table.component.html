@@ -42,10 +42,13 @@
               {{ row[header] }}
             </td>
             <td class="py-2 px-4 border border-gray-400 text-center">
-              <i
-                class="fas fa-pen mr-2 cursor-pointer text-blue-500"
+              <button
+                data-cy="cy-button-action"
+                [name]="row['name'] | replace : ' ' : '-'"
                 (click)="emittEventClickAction(row, 'view')"
-              ></i>
+              >
+                <i class="fas fa-pen mr-2 cursor-pointer text-blue-500"></i>
+              </button>
             </td>
           </tr>
         </ng-container>

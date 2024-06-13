@@ -11,6 +11,7 @@ import {
   PaginateComponent,
   TableComponent,
 } from './components';
+import { ReplacePipe } from './pipes/replace.pipe';
 
 const MODULES: any[] = [ReactiveFormsModule, FormsModule, RouterModule];
 
@@ -23,7 +24,7 @@ const COMPONENTS: any[] = [
   TableComponent,
 ];
 
-const PIPES: any[] = [];
+const PIPES: any[] = [ReplacePipe];
 
 const DIRECTIVES: any[] = [];
 
