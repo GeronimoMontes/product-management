@@ -68,32 +68,9 @@ export class TableProductComponent implements OnInit, OnDestroy {
       .openModal(FormProductComponent, product)
       .pipe(takeUntil(this.destroy$))
       .subscribe((result) => {
-        console.log('Modal closed with result:', result);
         this.fetchData();
       });
   }
-
-  // public showDialogDelete(product: IProduct) {
-  //   this.modalService
-  //     .openModal(DeleteProductComponent, product)
-  //     .pipe(takeUntil(this.destroy$))
-  //     .subscribe((result: boolean) => {
-  //       if (result) {
-  //         this.productService
-  //           .deleteProduct$(product._id, product)
-  //           .pipe(takeUntil(this.destroy$))
-  //           .subscribe((response) => {
-  //             this.notificationService.showNotification({
-  //               title: `Delete Product`,
-  //               type: 'success',
-  //               message: `El producto ${product.name} se ha eliminado.`,
-  //               duration: 5000,
-  //             });
-  //             this.fetchData();
-  //           });
-  //       }
-  //     });
-  // }
 
   private destroy$: Subject<void> = new Subject<void>();
   public loaddata: boolean = false;

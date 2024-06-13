@@ -15,13 +15,9 @@ export interface ModalProdcutData {
   templateUrl: './delete-product.component.html',
   styleUrls: ['./delete-product.component.css'],
 })
-export class DeleteProductComponent implements OnInit {
+export class DeleteProductComponent {
   constructor(private el: ElementRef, private modalService: ModalService) {}
 
-  ngOnInit(): void {
-    console.log(this.data );
-  }
-  
   emittResponse(response: boolean) {
     this.modalService.closeModal(response);
   }

@@ -23,7 +23,6 @@ export interface PaginateData {
 })
 export class PaginateComponent implements OnChanges {
   ngOnChanges(changes: SimpleChanges): void {
-    console.log(changes)
     if (
       (changes['current'] && changes['current'].currentValue) ||
       (changes['total'] && changes['total'].currentValue)

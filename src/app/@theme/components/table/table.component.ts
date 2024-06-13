@@ -30,12 +30,8 @@ export interface EmitterData {
   templateUrl: './table.component.html',
   styleUrls: ['./table.component.css'],
 })
-export class TableComponent implements OnChanges {
+export class TableComponent {
   constructor() {}
-
-  ngOnChanges(changes: SimpleChanges): void {
-    console.log({ changes });
-  }
 
   emittEventClickAction(rowSelected: any, action: Action) {
     this.emitterRowAction.emit({ rowSelected, action });

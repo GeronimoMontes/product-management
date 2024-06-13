@@ -32,7 +32,6 @@ export class FormProductComponent implements OnInit {
   ) {}
 
   ngOnInit() {
-    console.log({ data: this.data });
     this.initForm();
   }
 
@@ -108,7 +107,6 @@ export class FormProductComponent implements OnInit {
     this.formGroup.get(controlName).markAsTouched();
     const control = this.formGroup.get(controlName);
 
-    if (control.touched && control.errors != null) console.log(control.errors);
     return control.errors.required
       ? `${controlName} field is required.`
       : control.errors.pattern && controlName === 'price'
@@ -118,7 +116,6 @@ export class FormProductComponent implements OnInit {
       : control.errors['uniqueName'] && controlName === 'name'
       ? `The product name is already registered.`
       : '';
-    return '';
   }
 
   public controlValid(controlName: string): boolean {

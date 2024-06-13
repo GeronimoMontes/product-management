@@ -10,9 +10,14 @@
     >
       Previous
     </button>
-    <div>
+    <div *ngIf="render_only_totalElements">
       <p class="px-2 py-2 text-sm text-gray-700">
         {{ current }} / {{ total }} pages
+      </p>
+    </div>
+    <div *ngIf="!render_only_totalElements">
+      <p class="px-2 py-2 text-sm text-gray-700">
+        {{ count_current_data }} / {{ resultsCount }} products
       </p>
     </div>
     <button
@@ -34,11 +39,8 @@
 
   <div class="hidden sm:flex sm:flex-1 sm:items-center sm:justify-between">
     <div>
-      <p class="text-sm text-gray-700">
-        Showing
-        <span class="font-medium"> {{ current }} page </span>
-        to
-        <span class="font-medium"> {{ total }} pages </span>
+      <p *ngIf="render_only_totalElements" class="text-sm text-gray-700">
+        <span class="font-medium"> {{ current }} / {{ total }} pages </span>
       </p>
     </div>
 

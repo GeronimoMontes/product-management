@@ -20,15 +20,11 @@ import { Subject, takeUntil } from 'rxjs';
   templateUrl: './login.component.html',
   styleUrls: ['./login.component.css'],
 })
-export class LoginComponent implements OnInit, OnDestroy, OnChanges {
+export class LoginComponent implements OnInit, OnDestroy {
   constructor(
     protected readonly authService: AuthService,
     protected formBuilder: FormBuilder
   ) {}
-  ngOnChanges(changes: SimpleChanges): void {
-    console.log({ changes });
-    throw new Error('Method not implemented.');
-  }
 
   ngOnDestroy() {
     this.destroy$.next();
