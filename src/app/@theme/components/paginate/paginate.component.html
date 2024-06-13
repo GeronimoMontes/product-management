@@ -1,24 +1,32 @@
-<div class="flex items-center justify-between rounded-b-xl border-t border-gray-200 bg-white px-4 py-3 sm:px-6">
-  <div   class="flex flex-1 justify-between sm:hidden">
+<div
+  class="flex items-center justify-between rounded-b-xl border-t border-gray-200 bg-white px-4 py-3 sm:px-6"
+>
+  <div class="flex flex-1 justify-between sm:hidden">
     <button
       *ngIf="render_only_totalElements"
-      [disabled]="current === 1" 
+      [disabled]="current === 1"
       (click)="onPrevious()"
-      class="relative inline-flex items-center rounded-xl border border-gray-400 bg-white px-4 py-2 text-sm font-medium text-gray-700 hover:bg-gray-50">
-        Previous
+      class="relative inline-flex items-center rounded-xl border border-gray-400 bg-white px-2 py-2 text-sm font-medium text-gray-700 hover:bg-gray-50"
+    >
+      Previous
     </button>
+    <div>
+      <p class="px-2 py-2 text-sm text-gray-700">
+        {{ current }} / {{ total }} pages
+      </p>
+    </div>
     <button
       *ngIf="render_only_totalElements"
       [disabled]="current === total"
       (click)="onNext()"
-      class="relative ml-3 inline-flex items-center rounded-xl border border-gray-300 bg-white px-4 py-2 text-sm font-medium text-gray-700 hover:bg-gray-50">
+      class="relative ml-3 inline-flex items-center rounded-xl border border-gray-400 bg-white px-2 py-2 text-sm font-medium text-gray-700 hover:bg-gray-50"
+    >
       Next
     </button>
-    <div 
-      *ngIf="!render_only_totalElements"
-      class="flex flex-1 justify-end"
-    >
-      <button  class=" relative  rounded-xl px-2 py-2 text-gray-800 ring-1 ring-inset shadow shadow-slate-600 ring-gray-300 hover:bg-indigo-100 focus:z-20 focus:outline-offset-0">
+    <div *ngIf="!render_only_totalElements" class="flex flex-1 justify-end">
+      <button
+        class="relative rounded-xl px-2 py-2 text-gray-800 ring-1 ring-inset shadow shadow-slate-600 ring-gray-300 hover:bg-indigo-100 focus:z-20 focus:outline-offset-0"
+      >
         <i class="fas fa-angle-double-up"></i>
       </button>
     </div>
@@ -28,55 +36,82 @@
     <div>
       <p class="text-sm text-gray-700">
         Showing
-        <span class="font-medium">
-          {{current}} page
-        </span>
+        <span class="font-medium"> {{ current }} page </span>
         to
-        <span class="font-medium">
-          {{total}} pages
-        </span>
-        of
-        <span class="font-medium">
-          {{count_current_data}}
-        </span>
-        of
-        <span class="font-medium">
-          {{resultsCount}}
-        </span>
-        results
+        <span class="font-medium"> {{ total }} pages </span>
       </p>
     </div>
 
-    <div *ngIf="render_only_totalElements" class="hidden sm:flex sm:flex-1 sm:items-center sm:justify-center">
-      <label for="itemsPerPage" class="block text-sm font-medium text-gray-700 mr-2">Items per page:</label>
-      <select (change)="onPerPage($event)" [ngModel]="itemsPerPage" id="itemsPerPage" class="relative inline-flex items-center rounded-xl px-2 py-2 text-gray-900 ring-1 ring-inset ring-gray-300 hover:bg-indigo-100 focus:z-20 focus:outline-offset-0">
-          <option [value]="i" *ngFor="let i of [5,10,15,20,25]">{{i}}</option>
+    <div
+      *ngIf="render_only_totalElements"
+      class="hidden sm:flex sm:flex-1 sm:items-center sm:justify-center"
+    >
+      <label
+        for="itemsPerPage"
+        class="block text-sm font-medium text-gray-700 mr-2"
+        >Items per page:</label
+      >
+      <select
+        (change)="onPerPage($event)"
+        [ngModel]="itemsPerPage"
+        id="itemsPerPage"
+        class="relative inline-flex items-center rounded-xl px-2 py-2 text-gray-900 ring-1 ring-inset ring-gray-300 hover:bg-indigo-100 focus:z-20 focus:outline-offset-0"
+      >
+        <option [value]="i" *ngFor="let i of [5, 10, 15, 20, 25]">
+          {{ i }}
+        </option>
       </select>
     </div>
 
     <div *ngIf="render_only_totalElements">
-      <nav class="isolate inline-flex -space-x-px rounded-xl shadow-sm" aria-label="Pagination">
-        <button [disabled]="current === 1" (click)="onFirst()"
-          class="relative inline-flex items-center rounded-l-md px-2 py-2 text-gray-400 ring-1 ring-inset ring-gray-300 hover:bg-indigo-100 focus:z-20 focus:outline-offset-0">
+      <nav
+        class="isolate inline-flex -space-x-px rounded-xl shadow-sm"
+        aria-label="Pagination"
+      >
+        <button
+          [disabled]="current === 1"
+          (click)="onFirst()"
+          class="relative inline-flex items-center rounded-l-md px-2 py-2 text-gray-400 ring-1 ring-inset ring-gray-300 hover:bg-indigo-100 focus:z-20 focus:outline-offset-0"
+        >
           <span class="sr-only">Previous</span>
           <i class="fas fa-angle-double-left"></i>
         </button>
 
-        <button [disabled]="current === 1" (click)="onPrevious()"
-          class="relative inline-flex items-center rounded-l-md px-2 py-2 text-gray-400 ring-1 ring-inset ring-gray-300 hover:bg-indigo-100 focus:z-20 focus:outline-offset-0">
+        <button
+          [disabled]="current === 1"
+          (click)="onPrevious()"
+          class="relative inline-flex items-center rounded-l-md px-2 py-2 text-gray-400 ring-1 ring-inset ring-gray-300 hover:bg-indigo-100 focus:z-20 focus:outline-offset-0"
+        >
           <span class="sr-only">Previous</span>
           <i class="fas fa-angle-left"></i>
         </button>
 
-        <button (click)="onChangePage(page);" *ngFor="let page of pages" class="relative inline-flex items-center px-4 py-2 text-sm font-semibold text-gray-900 ring-1 ring-inset ring-gray-300 hover:bg-indigo-100 focus:z-20 focus:outline-offset-0" [ngClass]="{'z-10 bg-indigo-600 text-white focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600': current === page}">{{page}}</button>
+        <button
+          (click)="onChangePage(page)"
+          *ngFor="let page of pages"
+          class="relative inline-flex items-center px-4 py-2 text-sm font-semibold text-gray-900 ring-1 ring-inset ring-gray-300 hover:bg-indigo-100 focus:z-20 focus:outline-offset-0"
+          [ngClass]="{
+            'z-10 bg-indigo-600 text-white focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600':
+              current === page
+          }"
+        >
+          {{ page }}
+        </button>
 
-        <button [disabled]="current === total" (click)="onNext()"
-          class="relative inline-flex items-center rounded-r-md px-2 py-2 text-gray-400 ring-1 ring-inset ring-gray-300 hover:bg-indigo-100 focus:z-20 focus:outline-offset-0">
+        <button
+          [disabled]="current === total"
+          (click)="onNext()"
+          class="relative inline-flex items-center rounded-r-md px-2 py-2 text-gray-400 ring-1 ring-inset ring-gray-300 hover:bg-indigo-100 focus:z-20 focus:outline-offset-0"
+        >
           <span class="sr-only">Next</span>
           <i class="fas fa-angle-right"></i>
         </button>
 
-        <button [disabled]="current === total" (click)="onLast()" class="relative inline-flex items-center rounded-r-md px-2 py-2 text-gray-400 ring-1 ring-inset ring-gray-300 hover:bg-indigo-100 focus:z-20 focus:outline-offset-0">
+        <button
+          [disabled]="current === total"
+          (click)="onLast()"
+          class="relative inline-flex items-center rounded-r-md px-2 py-2 text-gray-400 ring-1 ring-inset ring-gray-300 hover:bg-indigo-100 focus:z-20 focus:outline-offset-0"
+        >
           <span class="sr-only">Next</span>
           <i class="fas fa-angle-double-right"></i>
         </button>
@@ -84,8 +119,11 @@
     </div>
 
     <div *ngIf="!render_only_totalElements" class="flex flex-1 justify-end">
-      <button  class=" relative  rounded-xl px-2 py-2 text-gray-800 ring-1 ring-inset shadow shadow-slate-600 ring-gray-300 hover:bg-indigo-100 focus:z-20 focus:outline-offset-0">
+      <button
+        class="relative rounded-xl px-2 py-2 text-gray-800 ring-1 ring-inset shadow shadow-slate-600 ring-gray-300 hover:bg-indigo-100 focus:z-20 focus:outline-offset-0"
+      >
         <i class="fas fa-angle-double-up"></i>
       </button>
     </div>
   </div>
+</div>

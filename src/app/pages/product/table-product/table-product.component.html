@@ -1,11 +1,11 @@
-<div class="mb-4 p-4 pt-6 flex items-center justify-between">
+<div class="p-4 pt-6 flex items-center justify-between">
   <h1 class="hidden md:flex text-2xl font-bold">Lista de Productos</h1>
-  <div class="flex items-center">
+  <div class="w-full md:w-80 flex justify-between">
     <input
       (input)="onSearchChange($event)"
       type="text"
       placeholder="Buscar..."
-      class="border border-gray-400 rounded-xl px-2 py-2 focus:outline-none focus:border-blue-500 mr-6"
+      class="w-full border border-gray-400 rounded-xl px-2 py-2 focus:outline-none focus:border-blue-500 mr-6"
       data-cy="cy-product-search"
     />
     <button

@@ -13,47 +13,59 @@
     class="overflow-y-auto"
     style="height: calc(100vh - 17rem)"
   >
-    <table class="table w-full" data-cy="cy-table-products">
-      <thead class="sticky top-0 bg-gray-200">
-        <tr class="py-2 px-4 bg-gray-200 border border-gray-400">
-          <th class="py-2 px-4 bg-gray-200 border border-gray-400">#</th>
+    <table
+      data-cy="cy-table-products"
+      class="w-full flex flex-row flex-no-wrap sm:bg-white rounded-lg overflow-hidden sm:shadow-lg ml-2 mr-2"
+    >
+      <thead class="text-white">
+        <tr
+          class="bg-gray-700 border-white flex flex-col flex-no wrap sm:table-row rounded-l-lg sm:rounded-none mb-2 sm:mb-0"
+          *ngFor="let row of dataSource.data"
+        >
+          <th class="sm:border sm:border-white p-1 text-left">#</th>
           <th
+            class="sm:border sm:border-white p-1 text-left"
             *ngFor="let header of dataSource.headers"
-            class="py-2 px-4 bg-gray-200 border border-gray-400"
           >
             {{ header }}
           </th>
-          <th class="py-2 px-4 bg-gray-200 border border-gray-400">actions</th>
+          <th class="sm:border sm:border-white p-1 text-left" width="110px">
+            actions
+          </th>
         </tr>
       </thead>
-      <tbody class="table-fixed">
+      <tbody class="flex-1 sm:flex-none bg-gray-200">
         <ng-container *ngIf="paginate.count_current_data > 0; else noData">
           <tr
+            class="border border-gray-400 flex flex-col flex-no wrap sm:table-row rounded-lg mb-2 sm:mb-0"
             *ngFor="let row of dataSource.data; index as index"
-            class="hover:bg-slate-300 text-xl"
           >
-            <td class="py-2 px-4 border border-gray-400 text-center">
+            <td class="border border-gray-400 hover:bg-gray-100 p-1">
               {{ index + 1 + (paginate.current - 1) * paginate.items_per_page }}
             </td>
             <td
+              class="border border-gray-400 hover:bg-gray-100 p-1 truncate"
               *ngFor="let header of dataSource.headers"
-              class="py-2 px-4 border border-gray-400"
             >
               {{ row[header] }}
             </td>
-            <td class="py-2 px-4 border border-gray-400 text-center">
+            <td class="border border-gray-400 hover:bg-gray-100 p-1">
               <button
+                class="cursor-pointer m-auto rounded-xl border pr-2 pl-2 border-blue-600 text-blue-600 text-sm font-semibold shadow-sm"
                 data-cy="cy-button-action"
                 [name]="row['name'] | replace : ' ' : '-'"
                 (click)="emittEventClickAction(row, 'view')"
               >
-                <i class="fas fa-pen mr-2 cursor-pointer text-blue-500"></i>
+                <p class="">Edit</p>
+                <i class="hidden fas fa-pen text-blue-500"></i>
               </button>
             </td>
           </tr>
         </ng-container>
         <ng-template #noData>
-          <tr>
+          <tr
+            class="border border-gray-400 flex flex-col flex-no wrap sm:table-row rounded-lg mb-2 sm:mb-0"
+          >
             <td
               [colSpan]="dataSource.headers.length + 2"
               class="text-xl text-center py-4 w-full border-4 border-gray-400 bg-gray-100 rounded-xl"
