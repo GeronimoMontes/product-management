@@ -4,3 +4,4 @@ export * from "./sidebar/sidebar.component"
 export * from "./notification/notification.component"
 export * from "./table/table.component"
 export * from "./paginate/paginate.component"
+export * from './dynamic-component/dynamic-notification.component'

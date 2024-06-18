@@ -12,6 +12,7 @@ import {
   TableComponent,
 } from './components';
 import { ReplacePipe } from './pipes/replace.pipe';
+import { DynamicComponent } from './components/dynamic-component/dynamic.component';
 
 const MODULES: any[] = [ReactiveFormsModule, FormsModule, RouterModule];
 

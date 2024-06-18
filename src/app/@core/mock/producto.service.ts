@@ -19,12 +19,12 @@ export class ProductService extends ProductData {
   }
 
   // GET /products
-  getAllProducts$(skip: number = 1, limit: number = 25, search: string = '') {
-    const _skip = (skip - 1) * limit;
+  getAllProducts$(page: number = 1, limit: number = 25, search: string = '') {
+    // const _skip = (skip - 1) * limit;
 
     const options = {
       params: new HttpParams()
-        .set('skip', _skip)
+        .set('page', page)
         .set('limit', limit)
         .set('search', search.split(" ").filter(e => e !== '').join(" ").trim()),
     };

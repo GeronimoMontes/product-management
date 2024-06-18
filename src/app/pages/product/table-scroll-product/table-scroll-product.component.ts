@@ -1,4 +1,4 @@
-import { Component, OnDestroy, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit, ViewContainerRef } from '@angular/core';
 import { Observable, Subject, takeUntil } from 'rxjs';
 import { IProduct, ProductData } from '../../../@core/data/producto.model';
 import { ModalService } from '../../../@core/root/modal.service';
@@ -6,19 +6,28 @@ import { FormProductComponent } from '../form-product/form-product.component';
 import { NotificationService } from '../../../@theme/components/notification/notification.service';
 import { DataSoucer, PaginateData } from '../../../@theme/components';
 import { SearchService } from '../../../@core/root/search.service';
+import { DynamicComponentAbstract } from '../../../@theme/components/dynamic-component/dynamic.model';
+import { DynamicComponentService } from '../../../@theme/components/dynamic-component/dynamic-component.service';
 
 @Component({
   selector: 'app-table-scroll-product',
   templateUrl: './table-scroll-product.component.html',
   styleUrls: ['./table-scroll-product.component.css'],
 })
-export class TableScrollProductComponent implements OnInit, OnDestroy {
+export class TableScrollProductComponent
+  extends DynamicComponentAbstract
+  implements OnInit, OnDestroy
+{
   constructor(
     protected readonly productService: ProductData,
     protected readonly modalService: ModalService,
     protected readonly notificationService: NotificationService,
-    protected readonly searchService: SearchService
-  ) {}
+    protected readonly searchService: SearchService,
+    dynamicComponentService: DynamicComponentService,
+    viewContainerRef: ViewContainerRef
+  ) {
+    super(dynamicComponentService, viewContainerRef);
+  }
 
   ngOnInit() {
     this.searchService.currentSearchQuery
@@ -40,28 +49,26 @@ export class TableScrollProductComponent implements OnInit, OnDestroy {
   }
 
   onScrollEvent($event: any) {
-    this.loaddata = true;
-    this.paginate.current = $event;
-    this.searchService.changeSearchQuery(this.search);
+    this.paginate.currentPage = $event;
+    this.fetchData()
   }
 
   private fetchData() {
-    this.loaddata = true;
-
+    this.loadComponent();
     this.productService
       .getAllProducts$(
-        this.paginate.current,
-        this.paginate.items_per_page,
+        this.paginate.currentPage,
+        this.paginate.itemsPerPage,
         this.search
       )
       .pipe(takeUntil(this.destroy$))
       .subscribe((data: any) => {
         this.datasource.data = this.datasource.data.concat(data.data);
-        this.paginate.results_count = data.resultsCount;
-        this.paginate.count_pages = data.countPages;
-        this.paginate.count_current_data += data.count_current_data;
-
+        this.paginate.totalItems = data.metadata.totalItems;
+        this.paginate.totalPages = data.metadata.totalPages;
+        this.paginate.itemsPerPageCount += data.metadata.itemsPerPageCount;
         this.loaddata = false;
+        this.destroyComponent();
       });
   }
 
@@ -82,11 +89,11 @@ export class TableScrollProductComponent implements OnInit, OnDestroy {
   };
   public search: string = '';
   public paginate: PaginateData = {
-    current: 1,
-    items_per_page: 25,
-    count_pages: 0,
-    results_count: 0,
-    count_current_data: 0,
+    currentPage: 1,
+    itemsPerPage: 25,
+    totalPages: 0,
+    totalItems: 0,
+    itemsPerPageCount: 0,
     render_only_totalElements: false,
   };
 }

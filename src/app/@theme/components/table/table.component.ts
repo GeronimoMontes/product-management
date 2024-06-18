@@ -42,7 +42,7 @@ export class TableComponent {
       Math.round($event.target.scrollTop) + $event.target.offsetHeight >=
       $event.target.scrollHeight - 1
     ) {
-      this.emitterScrollAction.emit(this.paginate.current + 1);
+      this.emitterScrollAction.emit(this.paginate.currentPage + 1);
     }
   }
 

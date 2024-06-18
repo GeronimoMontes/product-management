@@ -3,31 +3,34 @@ import {
   EventEmitter,
   Input,
   OnChanges,
+  OnInit,
   Output,
   SimpleChanges,
 } from '@angular/core';
 export interface PaginateData {
-  current: number,
-  items_per_page: number,
-  count_pages: number,
-  results_count: number;
-  count_current_data: number;
+  currentPage: number;
+  itemsPerPage: number;
+  totalPages: number;
+  totalItems: number;
+  itemsPerPageCount: number;
   render_only_totalElements: boolean;
 }
-
 
 @Component({
   selector: 'app-paginate',
   templateUrl: './paginate.component.html',
   styleUrls: ['./paginate.component.css'],
 })
-export class PaginateComponent implements OnChanges {
+export class PaginateComponent implements OnChanges, OnInit {
+  ngOnInit(): void {
+    this.pages = this.getPages(this.currentPage, this.totalPages)
+  }
   ngOnChanges(changes: SimpleChanges): void {
     if (
-      (changes['current'] && changes['current'].currentValue) ||
-      (changes['total'] && changes['total'].currentValue)
+      (changes['currentPage'] && changes['currentPage'].currentValue) ||
+      (changes['totalPages'] && changes['totalPages'].currentValue)
     ) {
-      this.pages = this.getPages(this.current, this.total);
+      this.pages = this.getPages(this.currentPage, this.totalPages);
     }
   }
   public onChangePage(page: number): void {
@@ -35,11 +38,11 @@ export class PaginateComponent implements OnChanges {
   }
 
   public onNext(): void {
-    this.next.emit(this.current + 1);
+    this.next.emit(this.currentPage + 1);
   }
 
   public onPrevious(): void {
-    this.previous.next(this.current - 1);
+    this.previous.next(this.currentPage - 1);
   }
 
   public onFirst(): void {
@@ -47,37 +50,36 @@ export class PaginateComponent implements OnChanges {
   }
 
   public onLast(): void {
-    this.onChangePage(this.total);
+    this.onChangePage(this.totalPages);
   }
 
   public onPerPage($event: any): void {
     this.perPage.emit($event.target.value);
   }
 
-
   private getPages(current: number, total: number): number[] {
     if (total <= 3) {
-      return [...Array(total).keys()].map(x => ++x)
+      return [...Array(total).keys()].map((x) => ++x);
     }
 
     if (current >= 3) {
       if (current >= total - 2) {
-        return [ total - 2, total - 1, total]
+        return [total - 2, total - 1, total];
       } else {
-        return [current - 1, current, current + 1]
+        return [current - 1, current, current + 1];
       }
     }
 
-    return [1, 2, 3]
+    return [1, 2, 3];
   }
 
   public pages: number[] = [];
 
-  @Input() total!: number;
-  @Input() current!: number;
+  @Input() totalPages!: number;
+  @Input() currentPage!: number;
   @Input() itemsPerPage!: number;
-  @Input() resultsCount!: number;
-  @Input() count_current_data!: number;
+  @Input() totalItems!: number;
+  @Input() itemsPerPageCount!: number;
   @Input() render_only_totalElements!: boolean;
 
   @Output() changePage: EventEmitter<number> = new EventEmitter<number>();
