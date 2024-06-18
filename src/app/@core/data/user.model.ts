@@ -6,7 +6,13 @@ export interface IUser {
   ruta_imagen: string;
 }
 
-export abstract class UserData {
-  abstract getUser$(): Observable<boolean>;
+export interface IUserCredencials {
+  username: string;
+  password: string;
+}
+
+export abstract class UserData extends HeaderOption {
+  abstract isAuthenticate(): Observable<boolean>;
+  abstract login$(body: IUserCredencials): Observable<any>;
   abstract logOut$(): void;
 }

@@ -14,6 +14,7 @@ import {
   Validators,
 } from '@angular/forms';
 import { Subject, takeUntil } from 'rxjs';
+import { UserData } from '../../../@core/data';
 
 @Component({
   selector: 'app-login',
@@ -22,7 +23,7 @@ import { Subject, takeUntil } from 'rxjs';
 })
 export class LoginComponent implements OnInit, OnDestroy {
   constructor(
-    protected readonly authService: AuthService,
+    protected readonly authService: UserData,
     protected formBuilder: FormBuilder
   ) {}
 

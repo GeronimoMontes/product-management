@@ -1,14 +1,12 @@
-import { Injectable } from '@angular/core';
-import { TokenStorage, TokenStoreService } from '../mock/token.service';
-import { Observable, map } from 'rxjs';
 import { HttpClient } from '@angular/common/http';
-import { HeaderOption } from '../data/headerOptions';
+import { Injectable } from '@angular/core';
 import { Router } from '@angular/router';
+import { Observable, map } from 'rxjs';
+import { UserData } from '../data';
+import { TokenStorage, TokenStoreService } from '../mock/token.service';
 
-@Injectable({
-  providedIn: 'root',
-})
-export class AuthService extends HeaderOption {
+@Injectable()
+export class AuthService extends UserData {
   constructor(
     protected readonly tokenService: TokenStoreService,
     protected readonly httpClient: HttpClient,
@@ -36,16 +34,8 @@ export class AuthService extends HeaderOption {
   }
 
   logOut$(): void {
-    //  TODO: Add rout `auth/sign-out` in backend
     this.tokenService.clear();
     this.router.navigateByUrl('/auth/login');
-    // this.httpClient
-    //   .delete<any>(`auth/sign-out`, this.getOptions())
-    //   .subscribe((response) => {
-    //     if (response.response)
-    //       this.tokenService.clear()
-    //       this.router.navigateByUrl('/auth/login');
-    //   });
   }
 
   /**

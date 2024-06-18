@@ -92,7 +92,7 @@ export class FormProductComponent implements OnInit {
                 type: 'success',
                 title: 'Update product',
                 message: `The product ${updateProduct.name} has been successfully updated.`,
-                duration: 50000,
+                duration: 5000,
               });
 
               this.loadingData = !this.loadingData;

@@ -15,11 +15,15 @@ import {
 } from './http';
 import { ProductData } from './data/producto.model';
 import { ProductService } from './mock/producto.service';
-import { authGuard } from './guards';
+import { UserData } from './data';
+import { AuthService } from './mock/auth.service';
 
 const GUARDS: any[] = [];
 
-const DATA_SERVICES: any = [{ provide: ProductData, useClass: ProductService }];
+const DATA_SERVICES: any = [
+  { provide: ProductData, useClass: ProductService },
+  { provide: UserData, useClass: AuthService },
+];
 
 const INTERCEPTORES = [
   { provide: HTTP_INTERCEPTORS, useClass: URLInterceptorService, multi: true },
