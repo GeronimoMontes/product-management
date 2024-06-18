@@ -6,7 +6,7 @@ import { HttpHandler } from '@angular/common/http';
 import { HttpRequest } from '@angular/common/http';
 import { HttpInterceptor } from '@angular/common/http';
 import { environment } from '../../../environments/environment';
-import { AuthService } from '../root/auth.service';
+import { UserData } from '../data';
 
 /**
  * Rutas que no requieren autorizacion `Bearer Token`
@@ -23,7 +23,7 @@ const BODY_FORM_DATA: string[] = [];
  */
 @Injectable()
 export class AuthInterceptorService implements HttpInterceptor {
-  constructor(protected readonly authService: AuthService) {}
+  constructor(protected readonly authService: UserData) {}
 
   intercept(
     req: HttpRequest<any>,
@@ -39,7 +39,9 @@ export class AuthInterceptorService implements HttpInterceptor {
     if (!AUTH_BEARER_REQUIRE.includes(URL)) {
       if (this.authService.authenticate) {
         req = req.clone({
-          setHeaders: { Authorization: `Bearer ${this.authService.tokenString}` },
+          setHeaders: {
+            Authorization: `Bearer ${this.authService.tokenString}`,
+          },
         });
       }
     }

@@ -1,15 +1,14 @@
 import { Component, Input, OnDestroy, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { Observable, Subject } from 'rxjs';
-import { AuthService } from '../../../@core/root/auth.service';
+import { UserData } from '../../../@core/data';
 import { SidebarService } from '../../../@core/root/sidebar.service';
-
 
 export interface MenuSidebar {
   icon: string;
   action: any;
   text: string;
-  childs: MenuSidebar[] | undefined | null
+  childs: MenuSidebar[] | undefined | null;
 }
 @Component({
   selector: 'app-sidebar',
@@ -17,16 +16,13 @@ export interface MenuSidebar {
   styleUrls: ['./sidebar.component.css'],
 })
 export class SidebarComponent implements OnInit, OnDestroy {
-
-
   constructor(
     protected readonly router: Router,
     private sidebarService: SidebarService,
-    protected readonly authService: AuthService,
-) {
+    protected readonly authService: UserData
+  ) {
     this.isOpen = this.sidebarService.isOpen$;
   }
-
 
   closeSidebar() {
     this.sidebarService.closeSidebar();
@@ -35,7 +31,7 @@ export class SidebarComponent implements OnInit, OnDestroy {
   ngOnInit() {
     this.sidebarService.closeSidebar(); // Para asegurarse de que el sidebar esté cerrado al iniciar el componente
   }
-  
+
   ngOnDestroy() {
     this.destroy$.next();
     this.destroy$.complete();
@@ -43,7 +39,7 @@ export class SidebarComponent implements OnInit, OnDestroy {
 
   navigate(url: string) {
     if (url.includes('logout')) {
-      this.logOut()
+      this.logOut();
       return;
     }
 
