@@ -1,20 +1,19 @@
-import { Component, ElementRef, Input, OnInit } from '@angular/core';
-import { ModalService } from '../../../@core/root/modal.service';
+import {
+  Component,
+  ElementRef,
+  Input,
+  OnInit,
+  ViewContainerRef,
+} from '@angular/core';
+import { FormBuilder, FormControl, Validators } from '@angular/forms';
 import { Subject } from 'rxjs';
-import {
-  FormBuilder,
-  FormControl,
-  FormGroup,
-  Validators,
-} from '@angular/forms';
-import { ProductService } from '../../../@core/mock/producto.service';
-import { IProduct } from '../../../@core/data';
-import { NotificationService } from '../../../@theme/components/notification/notification.service';
-import {
-  DeleteProductComponent,
-  ModalProdcutData,
-} from '../delete-product/delete-product.component';
 import Swal from 'sweetalert2';
+import { IProduct } from '../../../@core/data';
+import { ProductService } from '../../../@core/mock/producto.service';
+import { ModalService } from '../../../@core/root/modal.service';
+import { DynamicComponentService } from '../../../@theme/components/dynamic-component/dynamic-component.service';
+import { ConfettiComponent } from '../../../@theme/components/dynamic-component/dynamic-confetti.component';
+import { NotificationService } from '../../../@theme/components/notification/notification.service';
 import { uniqueNameValidator } from './unique-name.validator';
 
 @Component({
@@ -28,7 +27,9 @@ export class FormProductComponent implements OnInit {
     private modalService: ModalService,
     protected formBuilder: FormBuilder,
     protected readonly productService: ProductService,
-    protected readonly notificationService: NotificationService
+    protected readonly notificationService: NotificationService,
+    protected readonly dynamicService: DynamicComponentService,
+    protected readonly ref: ViewContainerRef
   ) {}
 
   ngOnInit() {
@@ -93,8 +94,19 @@ export class FormProductComponent implements OnInit {
                 message: `The product ${updateProduct.name} has been successfully updated.`,
                 duration: 50000,
               });
+
               this.loadingData = !this.loadingData;
               this.closeModal(false);
+
+              if (this.actionClick === 'create') {
+                const { id } = this.dynamicService.create(
+                  this.ref,
+                  ConfettiComponent
+                );
+                setTimeout(() => {
+                  this.dynamicService.close(id);
+                }, 2000);
+              }
             });
         }
       });

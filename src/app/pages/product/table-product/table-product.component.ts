@@ -2,33 +2,28 @@ import { Component, OnDestroy, OnInit, ViewContainerRef } from '@angular/core';
 import { Subject, takeUntil } from 'rxjs';
 import { IProduct, ProductData } from '../../../@core/data/producto.model';
 import { ModalService } from '../../../@core/root/modal.service';
-import { FormProductComponent } from '../form-product/form-product.component';
-import { DeleteProductComponent } from '../delete-product/delete-product.component';
-import { NotificationService } from '../../../@theme/components/notification/notification.service';
-import { DataSoucer, PaginateData } from '../../../@theme/components';
 import { SearchService } from '../../../@core/root/search.service';
-import { DynamicComponentAbstract } from '../../../@theme/components/dynamic-component/dynamic.model';
+import { DataSoucer, PaginateData } from '../../../@theme/components';
 import { DynamicComponentService } from '../../../@theme/components/dynamic-component/dynamic-component.service';
+import { NotificationService } from '../../../@theme/components/notification/notification.service';
+import { FormProductComponent } from '../form-product/form-product.component';
+import { ConfettiComponent } from '../../../@theme/components/dynamic-component/dynamic-confetti.component';
+import { DynamicComponent } from '../../../@theme/components/dynamic-component/dynamic.component';
 
 @Component({
   selector: 'app-table-products',
   templateUrl: './table-product.component.html',
   styleUrls: ['./table-product.component.css'],
 })
-export class TableProductComponent
-  extends DynamicComponentAbstract
-  implements OnInit, OnDestroy
-{
+export class TableProductComponent implements OnInit, OnDestroy {
   constructor(
     protected readonly productService: ProductData,
     protected readonly modalService: ModalService,
     protected readonly notificationService: NotificationService,
     protected readonly searchService: SearchService,
-    dynamicComponentService: DynamicComponentService,
-    viewContainerRef: ViewContainerRef
-  ) {
-    super(dynamicComponentService, viewContainerRef);
-  }
+    protected readonly dynamicService: DynamicComponentService,
+    protected readonly ref: ViewContainerRef
+  ) {}
 
   ngOnInit() {
     this.searchService.currentSearchQuery
@@ -57,7 +52,7 @@ export class TableProductComponent
   }
 
   private fetchData() {
-    this.loadComponent();
+    const { id } = this.dynamicService.create(this.ref, DynamicComponent);
     const { currentPage, itemsPerPage } = this.paginate;
 
     this.productService
@@ -69,7 +64,7 @@ export class TableProductComponent
         this.paginate.totalItems = data.metadata.totalItems;
         this.paginate.totalPages = data.metadata.totalPages;
         this.paginate.itemsPerPageCount = data.metadata.itemsPerPageCount;
-        this.destroyComponent();
+        this.dynamicService.close(id);
       });
   }
 

@@ -1,18 +1,17 @@
-import { ModuleWithProviders, NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import { ModuleWithProviders, NgModule } from '@angular/core';
 
-import { RouterModule } from '@angular/router';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { RouterModule } from '@angular/router';
 import {
   FooterComponent,
   HeaderComponent,
   NotificationComponent,
-  SidebarComponent,
   PaginateComponent,
+  SidebarComponent,
   TableComponent,
 } from './components';
 import { ReplacePipe } from './pipes/replace.pipe';
-import { DynamicComponent } from './components/dynamic-component/dynamic.component';
 
 const MODULES: any[] = [ReactiveFormsModule, FormsModule, RouterModule];
 

@@ -8,6 +8,7 @@ import { DataSoucer, PaginateData } from '../../../@theme/components';
 import { SearchService } from '../../../@core/root/search.service';
 import { DynamicComponentAbstract } from '../../../@theme/components/dynamic-component/dynamic.model';
 import { DynamicComponentService } from '../../../@theme/components/dynamic-component/dynamic-component.service';
+import { DynamicComponent } from '../../../@theme/components/dynamic-component/dynamic.component';
 
 @Component({
   selector: 'app-table-scroll-product',
@@ -54,7 +55,7 @@ export class TableScrollProductComponent
   }
 
   private fetchData() {
-    this.loadComponent();
+    this.loadComponent(DynamicComponent);
     this.productService
       .getAllProducts$(
         this.paginate.currentPage,
