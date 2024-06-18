@@ -20,17 +20,14 @@ export interface ToolsDynamicComponent {
   providedIn: 'root',
 })
 export class DynamicComponentService {
-  constructor(
-    private injector: Injector,
-    private cfr: ComponentFactoryResolver
-  ) {}
+  constructor(private cfr: ComponentFactoryResolver) {}
 
   private components: ToolsDynamicComponent[] = [];
 
-  createComponent<T>(
+  create<T>(
     vcr: ViewContainerRef,
     component: Type<T>
-  ): { ref: ComponentRef<T>; id: string } {
+  ): { ref: any; id: string } {
     const factory = this.cfr.resolveComponentFactory(component);
     const componentRef = vcr.createComponent(factory);
     const id = Utils.guidGenerator();
@@ -38,7 +35,7 @@ export class DynamicComponentService {
     return { ref: componentRef, id };
   }
 
-  closeComponent(id: string) {
+  close(id: string) {
     const componentIndex = this.components.findIndex((comp) => comp.id === id);
     if (componentIndex !== -1) {
       const component = this.components[componentIndex];

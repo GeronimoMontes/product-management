@@ -43,7 +43,7 @@ export class DynamicComponent {
   }
 
   loadComponent() {
-    const { ref, id } = this.dynamicComponentService.createComponent(
+    const { ref, id } = this.dynamicComponentService.create(
       this.vcr,
       DynamicComponent
     );
@@ -51,6 +51,6 @@ export class DynamicComponent {
   }
 
   destroyComponent() {
-    this.dynamicComponentService.closeComponent(this.componentId);
+    this.dynamicComponentService.close(this.componentId);
   }
 }
