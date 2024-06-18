@@ -15,6 +15,7 @@ import { DynamicComponentService } from '../../../@theme/components/dynamic-comp
 import { ConfettiComponent } from '../../../@theme/components/dynamic-component/dynamic-confetti.component';
 import { NotificationService } from '../../../@theme/components/notification/notification.service';
 import { uniqueNameValidator } from './unique-name.validator';
+import { ConfettiService } from '../../../@core/root/confetti.service';
 
 @Component({
   selector: 'app-form-product',
@@ -28,8 +29,7 @@ export class FormProductComponent implements OnInit {
     protected formBuilder: FormBuilder,
     protected readonly productService: ProductService,
     protected readonly notificationService: NotificationService,
-    protected readonly dynamicService: DynamicComponentService,
-    protected readonly ref: ViewContainerRef
+    protected readonly confettiService: ConfettiService
   ) {}
 
   ngOnInit() {
@@ -88,6 +88,8 @@ export class FormProductComponent implements OnInit {
           this.productService
             .productFetch$(this.actionClick, data)
             .subscribe((updateProduct: IProduct) => {
+              if (this.actionClick === 'create') this.confettiService.show();
+
               this.notificationService.showNotification({
                 type: 'success',
                 title: 'Update product',
@@ -97,16 +99,6 @@ export class FormProductComponent implements OnInit {
 
               this.loadingData = !this.loadingData;
               this.closeModal(false);
-
-              if (this.actionClick === 'create') {
-                const { id } = this.dynamicService.create(
-                  this.ref,
-                  ConfettiComponent
-                );
-                setTimeout(() => {
-                  this.dynamicService.close(id);
-                }, 2000);
-              }
             });
         }
       });

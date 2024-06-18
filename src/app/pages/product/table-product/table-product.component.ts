@@ -9,6 +9,7 @@ import { NotificationService } from '../../../@theme/components/notification/not
 import { FormProductComponent } from '../form-product/form-product.component';
 import { ConfettiComponent } from '../../../@theme/components/dynamic-component/dynamic-confetti.component';
 import { DynamicComponent } from '../../../@theme/components/dynamic-component/dynamic.component';
+import { ConfettiService } from '../../../@core/root/confetti.service';
 
 @Component({
   selector: 'app-table-products',
@@ -54,7 +55,6 @@ export class TableProductComponent implements OnInit, OnDestroy {
   private fetchData() {
     const { id } = this.dynamicService.create(this.ref, DynamicComponent);
     const { currentPage, itemsPerPage } = this.paginate;
-
     this.productService
       .getAllProducts$(currentPage, itemsPerPage, this.search)
       .pipe(takeUntil(this.destroy$))
