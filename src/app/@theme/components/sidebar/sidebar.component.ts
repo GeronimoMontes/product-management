@@ -2,7 +2,7 @@ import { Component, Input, OnDestroy, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { Observable, Subject } from 'rxjs';
 import { UserData } from '../../../@core/data';
-import { SidebarService } from '../../../@core/root/sidebar.service';
+import { SidebarService } from './sidebar.service';
 
 export interface MenuSidebar {
   icon: string;
@@ -25,7 +25,10 @@ export class SidebarComponent implements OnInit, OnDestroy {
   }
 
   closeSidebar() {
-    this.sidebarService.closeSidebar();
+    const a = setTimeout(() => {
+      this.sidebarService.closeSidebar();
+      clearTimeout(a);
+    }, 300);
   }
 
   ngOnInit() {
@@ -44,6 +47,7 @@ export class SidebarComponent implements OnInit, OnDestroy {
     }
 
     this.router.navigateByUrl(url);
+    this.sidebarService.toggleSidebar();
     return false;
   }
 

@@ -1,7 +1,7 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { Subject } from 'rxjs';
 import { filter, map, takeUntil } from 'rxjs/operators';
-import { SidebarService } from '../../../@core/root/sidebar.service';
+import { SidebarService } from '../sidebar/sidebar.service';
 
 @Component({
   selector: 'app-header',
@@ -9,19 +9,18 @@ import { SidebarService } from '../../../@core/root/sidebar.service';
   styleUrls: ['./header.component.css'],
 })
 export class HeaderComponent implements OnInit, OnDestroy {
-  
-  constructor(private sidebarService: SidebarService) { }
-  
+  constructor(private sidebarService: SidebarService) {}
+
   toggleSidebar() {
     this.sidebarService.toggleSidebar();
   }
-  
-  ngOnInit(): void { }
-  
+
+  ngOnInit(): void {}
+
   ngOnDestroy() {
     this.destroy$.next();
     this.destroy$.complete();
-    }
+  }
 
-    private destroy$: Subject<void> = new Subject<void>();
+  private destroy$: Subject<void> = new Subject<void>();
 }
