@@ -2,8 +2,6 @@ import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 import { ProductComponent } from './product.component';
 import { TableProductComponent } from './table-product/table-product.component';
-import { ViewProductComponent } from './view-product/view-product.component';
-import { FormProductComponent } from './form-product/form-product.component';
 import { TableScrollProductComponent } from './table-scroll-product/table-scroll-product.component';
 
 const routes: Routes = [

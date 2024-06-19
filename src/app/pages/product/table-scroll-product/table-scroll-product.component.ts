@@ -1,14 +1,14 @@
 import { Component, OnDestroy, OnInit, ViewContainerRef } from '@angular/core';
-import { Observable, Subject, takeUntil } from 'rxjs';
+import { Subject, takeUntil } from 'rxjs';
 import { IProduct, ProductData } from '../../../@core/data/producto.model';
 import { ModalService } from '../../../@core/root/modal.service';
-import { FormProductComponent } from '../form-product/form-product.component';
-import { NotificationService } from '../../../@theme/components/notification/notification.service';
-import { DataSoucer, PaginateData } from '../../../@theme/components';
 import { SearchService } from '../../../@core/root/search.service';
-import { DynamicComponentAbstract } from '../../../@theme/components/dynamic-component/dynamic.model';
+import { DataSoucer, PaginateData } from '../../../@theme/components';
 import { DynamicComponentService } from '../../../@theme/components/dynamic-component/dynamic-component.service';
 import { DynamicComponent } from '../../../@theme/components/dynamic-component/dynamic.component';
+import { DynamicComponentAbstract } from '../../../@theme/components/dynamic-component/dynamic.model';
+import { NotificationService } from '../../../@theme/components/notification/notification.service';
+import { FormProductComponent } from '../form-product/form-product.component';
 
 @Component({
   selector: 'app-table-scroll-product',

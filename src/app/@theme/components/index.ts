@@ -5,3 +5,4 @@ export * from './notification/notification.component';
 export * from './table/table.component';
 export * from './paginate/paginate.component';
 export * from './dynamic-component/dynamic-notification.component';
+export * from './search/search.component';

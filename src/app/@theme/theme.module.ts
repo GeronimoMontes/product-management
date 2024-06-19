@@ -8,6 +8,7 @@ import {
   HeaderComponent,
   NotificationComponent,
   PaginateComponent,
+  SearchComponent,
   SidebarComponent,
   TableComponent,
 } from './components';
@@ -22,6 +23,7 @@ const COMPONENTS: any[] = [
   NotificationComponent,
   PaginateComponent,
   TableComponent,
+  SearchComponent,
 ];
 
 const PIPES: any[] = [ReplacePipe];
