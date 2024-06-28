@@ -2,7 +2,7 @@ name: Cypress Tests
 on:
   push:
     branches:
-      - master # Cambia según la rama en la que quieres ejecutar las pruebas
+      - master  # Cambia según la rama en la que quieres ejecutar las pruebas
 
 jobs:
   cypress-run:
@@ -11,7 +11,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        containers: [1, 2] # Ejecutar pruebas en 2 contenedores paralelos
+        containers: [1, 2]  # Ejecutar pruebas en 2 contenedores paralelos
 
     steps:
       - name: Checkout Frontend
@@ -20,27 +20,24 @@ jobs:
       - name: Checkout Backend
         uses: actions/checkout@v4
         with:
-          repository: GeronimoMontes/api-product-management # Repositorio del backend
-          path: backend # Ruta donde se clonará el backend
+          repository: GeronimoMontes/api-product-management  # Repositorio del backend
+          path: backend  # Ruta donde se clonará el backend
 
       - name: Setup and Start Backend
         run: |
           cd backend
           npm install  # Instala dependencias del backend
           npm run build  # Compila el backend (ajusta según tu script de build)
-          echo "MONGODB_URI: ${{ secrets.MONGODB_URI }}"  # Imprime la URI para depuración
           npm run start:dev &  # Inicia el backend en modo desarrollo
         env:
           MONGODB_URI: ${{ secrets.MONGODB_URI }}
           CI: true
-          
+
       - name: Wait for Backend to be ready
-        uses: nick-invision/retry@v2
+        uses: jakejarvis/wait-action@v1
         with:
-          command: "curl -sSf http://localhost:3000"
-          retry_count: 20
-          retry_interval_seconds: 10
-          timeout_seconds: 180  # Agrega el tiempo de espera en segundos  
+          url: 'http://localhost:3000'
+          timeout: 180  # Agrega el tiempo de espera en segundos
 
       - name: Cache npm dependencies
         uses: actions/cache@v2
@@ -59,32 +56,30 @@ jobs:
             cypress-cache-${{ runner.os }}
 
       - name: Install Frontend dependencies
-        run: npm install # Instala dependencias del frontend
+        run: npm install  # Instala dependencias del frontend
 
       - name: Start Frontend
-        run: npm start -- --port 4200 & # Inicia el frontend en segundo plano
+        run: npm start &  # Inicia el frontend en segundo plano
         env:
           CI: true
-
+      
       - name: Wait for Frontend to be ready
-        uses: nick-invision/retry@v2
+        uses: jakejarvis/wait-action@v1
         with:
-          command: "curl -sSf http://localhost:4200"
-          retry_count: 20
-          retry_interval_seconds: 10
-          timeout_seconds: 180  # Agrega el tiempo de espera en segundos
+          url: 'http://localhost:4200'
+          timeout: 180  # Agrega el tiempo de espera en segundos
 
       - name: Run Cypress tests
         uses: cypress-io/github-action@v6
         with:
-          wait-on: "http://localhost:4200" # Ajusta según el puerto del frontend
+          wait-on: 'http://localhost:4200'  # Ajusta según el puerto del frontend
           wait-on-timeout: 180
-          record: true # Opcional: graba los resultados en Cypress Dashboard
-          parallel: true # Ejecuta pruebas en paralelo
+          record: true  # Opcional: graba los resultados en Cypress Dashboard
+          parallel: true  # Ejecuta pruebas en paralelo
         env:
           CYPRESS_RECORD_KEY: ${{ secrets.CYPRESS_RECORD_KEY }}
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Output server logs if failed
         if: failure()
-        run: cat backend/logs/server.log # Ajusta según la ubicación del archivo de logs del backend
+        run: cat backend/logs/server.log  # Ajusta según la ubicación del archivo de logs del backend
