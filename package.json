@@ -4,10 +4,10 @@
   "scripts": {
     "ng": "ng",
     "start": "ng serve",
-    "build": "ng build",
     "watch": "ng build --watch --configuration development",
     "test": "ng test",
-    "cy:open": "cypress open"
+    "cy:open": "cypress open",
+    "build": "npx cypress run --record --key af6a31f3-8425-4d2e-8657-82754d0677a3"
   },
   "private": true,
   "dependencies": {
