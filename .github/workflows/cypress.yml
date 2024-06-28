@@ -28,11 +28,12 @@ jobs:
           cd backend
           npm install  # Instala dependencias del backend
           npm run build  # Compila el backend (ajusta según tu script de build)
+          echo "MONGODB_URI: ${{ secrets.MONGODB_URI }}"  # Imprime la URI para depuración
           npm run start:dev &  # Inicia el backend en modo desarrollo
         env:
           MONGODB_URI: ${{ secrets.MONGODB_URI }}
           CI: true
-
+          
       - name: Wait for Backend to be ready
         uses: nick-invision/retry@v2
         with:
