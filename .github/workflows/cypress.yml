@@ -1,98 +1,85 @@
-name: Cypress Tests and Build Image
-
+name: Cypress Tests
 on:
   push:
-    branches: [main]
+    branches:
+      - main # Cambia según la rama en la que quieres ejecutar las pruebas
 
 jobs:
-  cypress-and-build:
+  cypress-run:
     runs-on: ubuntu-latest
-    permissions:
-      id-token: write
-      packages: write
-      contents: read
-      attestations: write
-    env:
-      REGISTRY: ghcr.io
-      IMAGE_NAME: ${{ github.repository }}
+
+    strategy:
+      fail-fast: false
+      matrix:
+        containers: [1, 2] # Ejecutar pruebas en 2 contenedores paralelos
 
     steps:
-      - name: Checkout
+      - name: Checkout Frontend
         uses: actions/checkout@v4
 
-      # Step to setup and start your backend (similar to your previous Cypress setup)
+      - name: Checkout Backend
+        uses: actions/checkout@v4
+        with:
+          repository: GeronimoMontes/api-product-management # Repositorio del backend
+          path: backend # Ruta donde se clonará el backend
+
       - name: Setup and Start Backend
         run: |
           cd backend
-          npm install
-          npm run build
-          npm run start:dev &
+          npm install  # Instala dependencias del backend
+          npm run build  # Compila el backend (ajusta según tu script de build)
+          npm run start:dev &  # Inicia el backend en modo desarrollo
         env:
           MONGODB_URI: ${{ secrets.MONGODB_URI }}
           CI: true
 
-      # Wait for Backend to be ready
-      - name: Wait for Backend
+      - name: Wait for Backend to be ready
         uses: jakejarvis/wait-action@v1
         with:
-          url: 'http://localhost:3000'
-          timeout: '180'
+          url: "http://localhost:3000" # Ajusta según el puerto del backend
+          timeout: "180"
 
-      # Step to setup and start your frontend (similar to your previous Cypress setup)
-      - name: Install and Start Frontend
-        run: |
-          npm install
-          npm start -- --port 4200 &
+      - name: Cache npm dependencies
+        uses: actions/cache@v2
+        with:
+          path: ~/.npm
+          key: npm-cache-${{ runner.os }}-${{ hashFiles('**/package-lock.json') }}
+          restore-keys: |
+            npm-cache-${{ runner.os }}
+
+      - name: Cache Cypress binary
+        uses: actions/cache@v2
+        with:
+          path: ~/.cache/Cypress
+          key: cypress-cache-${{ runner.os }}-${{ hashFiles('**/package-lock.json') }}
+          restore-keys: |
+            cypress-cache-${{ runner.os }}
+
+      - name: Install Frontend dependencies
+        run: npm install # Instala dependencias del frontend
+
+      - name: Start Frontend
+        run: npm start -- --port 4200 & # Inicia el frontend en segundo plano
         env:
           CI: true
 
-      # Wait for Frontend to be ready
-      - name: Wait for Frontend
+      - name: Wait for Frontend to be ready
         uses: jakejarvis/wait-action@v1
         with:
-          url: 'http://localhost:4200'
-          timeout: '180'
+          url: "http://localhost:4200" # Ajusta según el puerto del frontend
+          timeout: "180"
 
-      # Run Cypress tests
       - name: Run Cypress tests
         uses: cypress-io/github-action@v6
         with:
-          wait-on: 'http://localhost:4200'
+          wait-on: "http://localhost:4200" # Ajusta según el puerto del frontend
           wait-on-timeout: 180
-          record: true
-          parallel: true
+          record: true # Opcional: graba los resultados en Cypress Dashboard
+          parallel: true # Ejecuta pruebas en paralelo
         env:
           CYPRESS_RECORD_KEY: ${{ secrets.CYPRESS_RECORD_KEY }}
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
-      # Build and push image
-      - name: Login to GitHub Container Registry
-        uses: docker/login-action@v3
-        with:
-          registry: ${{ env.REGISTRY }}
-          username: ${{ github.actor }}
-          password: ${{ secrets.GITHUB_TOKEN }}
-
-      - name: Build and push image
-        id: push
-        uses: docker/build-push-action@v5.0.0
-        with:
-          context: .
-          push: true
-          tags: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:latest
-
-      # Wait for image to be pushed
-      - name: Wait for image to be pushed
-        uses: jakejarvis/wait-action@v1
-        with:
-          url: 'https://${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}'
-          timeout: '300'
-
-      # Attest image
-      - name: Attest
-        uses: actions/attest-build-provenance@v1
-        id: attest
-        with:
-          subject-name: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}
-          subject-digest: ${{ steps.push.outputs.digest }}
-          push-to-registry: true
+      - name: Output server logs if failed
+        if: failure()
+        run: cat backend/logs/server.log # Ajusta según la ubicación del archivo de logs del backend
