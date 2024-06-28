@@ -16,28 +16,30 @@ jobs:
     steps:
       - name: Checkout Frontend
         uses: actions/checkout@v4
-
       - name: Checkout Backend
         uses: actions/checkout@v4
         with:
           repository: GeronimoMontes/api-product-management  # Repositorio del backend
           path: backend  # Ruta donde se clonará el backend
-
       - name: Setup and Start Backend
         run: |
           cd backend
           npm install  # Instala dependencias del backend
-          npm run build  # Compila el backend (ajusta según tu script de build)
           npm run start:dev &  # Inicia el backend en modo desarrollo
         env:
           MONGODB_URI: ${{ secrets.MONGODB_URI }}
           CI: true
 
-      - name: Wait for Backend to be ready
-        uses: actions/wait@v1
-        with:
-          timeout_seconds: 180  # Tiempo de espera en segundos
-
+      - name: Wait for backend to be ready  
+        run: |
+          echo "Waiting for backend to be ready..."
+          for i in {1..30}; do
+            curl -s http://localhost:3000 > /dev/null && break
+            echo "Waiting for 10 seconds..."
+            sleep 10
+          done
+          echo "Backend is ready!"
+          
       - name: Cache npm dependencies
         uses: actions/cache@v2
         with:
@@ -57,16 +59,21 @@ jobs:
       - name: Install Frontend dependencies
         run: npm install  # Instala dependencias del frontend
 
-      - name: Start Frontend
-        run: npm start &  # Inicia el frontend en segundo plano
+      - name: Start Frontend   
+        run: npm start -- --port 4200 & # Inicia el frontend en segundo plano
         env:
           CI: true
       
-      - name: Wait for Frontend to be ready
-        uses: actions/wait@v1
-        with:
-          timeout_seconds: 180  # Tiempo de espera en segundos
-
+      - name: Wait for backend to be ready  
+        run: |
+          echo "Waiting for backend to be ready..."
+          for i in {1..30}; do
+            curl -s http://localhost:3000 > /dev/null && break
+            echo "Waiting for 10 seconds..."
+            sleep 10
+          done
+          echo "Backend is ready!"
+  
       - name: Run Cypress tests
         uses: cypress-io/github-action@v6
         with:
