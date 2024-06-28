@@ -59,20 +59,20 @@ jobs:
         run: npm install  # Instala dependencias del frontend
 
       - name: Start Frontend
-        run: npm start &  # Inicia el frontend en segundo plano
+        run: npm start -- --port 4200 &  # Asegúrate de que el frontend se inicie en el puerto 4200
         env:
           CI: true
-      
+
       - name: Wait for Frontend to be ready
         uses: jakejarvis/wait-action@v1
         with:
-          url: 'http://localhost:4200'  # Ajusta según el puerto del frontend
+          url: 'http://localhost:4200'  # Espera a que el frontend esté listo en el puerto 4200
           timeout: '180'
 
       - name: Run Cypress tests
         uses: cypress-io/github-action@v6
         with:
-          wait-on: 'http://localhost:4200'  # Ajusta según el puerto del frontend
+          wait-on: 'http://localhost:4200'  # Cypress espera que el frontend esté listo en el puerto 4200
           wait-on-timeout: 180
           record: true  # Opcional: graba los resultados en Cypress Dashboard
           parallel: true  # Ejecuta pruebas en paralelo
