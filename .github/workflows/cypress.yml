@@ -2,7 +2,7 @@ name: Cypress Tests
 on:
   push:
     branches:
-      - master  # Cambia según la rama en la que quieres ejecutar las pruebas
+      - main  # Cambia según la rama en la que quieres ejecutar las pruebas
 
 jobs:
   cypress-run:
@@ -37,7 +37,7 @@ jobs:
         uses: jakejarvis/wait-action@v1
         with:
           url: 'http://localhost:3000'  # Ajusta según el puerto del backend
-          timeout: '180'
+          timeout: '180'  # Tiempo de espera en segundos
 
       - name: Cache npm dependencies
         uses: actions/cache@v2
@@ -62,12 +62,12 @@ jobs:
         run: npm start -- --port 4200 &  # Asegúrate de que el frontend se inicie en el puerto 4200
         env:
           CI: true
-
+      
       - name: Wait for Frontend to be ready
         uses: jakejarvis/wait-action@v1
         with:
           url: 'http://localhost:4200'  # Espera a que el frontend esté listo en el puerto 4200
-          timeout: '180'
+          timeout: '180'  # Tiempo de espera en segundos
 
       - name: Run Cypress tests
         uses: cypress-io/github-action@v6
