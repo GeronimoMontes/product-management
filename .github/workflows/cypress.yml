@@ -2,7 +2,7 @@ name: Cypress Tests
 on:
   push:
     branches:
-      - master # Cambia según la rama en la que quieres ejecutar las pruebas
+      - master  # Cambia según la rama en la que quieres ejecutar las pruebas
 
 jobs:
   cypress-run:
@@ -34,7 +34,7 @@ jobs:
           CI: true
 
       - name: Wait for Backend to be ready
-        uses: lewagon/wait-on-check-action@v1.1.0
+        uses: jakejarvis/wait-action@v1
         with:
           url: 'http://localhost:3000'  # Ajusta según el puerto del backend
           timeout: '180'  # Tiempo de espera en segundos
@@ -64,7 +64,7 @@ jobs:
           CI: true
       
       - name: Wait for Frontend to be ready
-        uses: lewagon/wait-on-check-action@v1.1.0
+        uses: jakejarvis/wait-action@v1
         with:
           url: 'http://localhost:4200'  # Espera a que el frontend esté listo en el puerto 4200
           timeout: '180'  # Tiempo de espera en segundos
