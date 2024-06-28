@@ -16,11 +16,13 @@ jobs:
     steps:
       - name: Checkout Frontend
         uses: actions/checkout@v4
+        
       - name: Checkout Backend
         uses: actions/checkout@v4
         with:
           repository: GeronimoMontes/api-product-management  # Repositorio del backend
           path: backend  # Ruta donde se clonará el backend
+          
       - name: Setup and Start Backend
         run: |
           cd backend
